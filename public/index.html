@@ -195,65 +195,79 @@
     <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
   </div>
 
-  <script>
-  let uploadedImage = null;
-  let selectedGender = null;
-  let selectedHair = null;
+    <script>
+    // 업로드/선택 상태 저장용 변수
+    let uploadedImage = null;
+    let selectedGender = null;
+    let selectedHair = null;
 
-  const API_BASE = "https://ai-hair-stylist.onrender.com"; // 나중에 진짜 AI 붙일 때 다시 사용
+    console.log("index 스크립트 로드됨");
 
-  document.getElementById("photoInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    // 사진 업로드 처리
+    const photoInput = document.getElementById("photoInput");
+    const previewImg = document.getElementById("preview");
 
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      uploadedImage = ev.target.result;
-      const img = document.getElementById("preview");
-      img.src = uploadedImage;
-      img.style.display = "block";
-    };
-    reader.readAsDataURL(file);
-  });
+    photoInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
 
-  function toggleSelect(btn, type) {
-    const group = btn.parentNode.querySelectorAll(".select-btn");
-    group.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        uploadedImage = ev.target.result;
+        previewImg.src = uploadedImage;
+        previewImg.style.display = "block";
+        console.log("이미지 업로드 완료");
+      };
+      reader.readAsDataURL(file);
+    });
 
-    if (type === "gender") selectedGender = btn.dataset.value;
-    if (type === "hair") selectedHair = btn.dataset.value;
-  }
+    // 성별/머리길이 선택 버튼
+    function toggleSelect(btn, type) {
+      const all = btn.parentNode.querySelectorAll(".select-btn");
+      all.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
 
-  function goNext() {
-    // 👉 이 alert은 이제 빼도 됨. 남겨두고 싶으면 놔둬도 되고.
-    // alert("버튼 클릭 감지 (goNext 실행됨)");
-
-    if (!uploadedImage) {
-      alert("사진을 업로드해주세요.");
-      return;
-    }
-    if (!selectedGender) {
-      alert("성별을 선택해주세요.");
-      return;
-    }
-    if (!selectedHair) {
-      alert("머리 길이를 선택해주세요.");
-      return;
+      if (type === "gender") {
+        selectedGender = btn.dataset.value;
+        console.log("성별 선택:", selectedGender);
+      }
+      if (type === "hair") {
+        selectedHair = btn.dataset.value;
+        console.log("머리 길이 선택:", selectedHair);
+      }
     }
 
-    // 원본 사진 저장
-    sessionStorage.setItem("basePhoto", uploadedImage);
+    // 결과 페이지로 넘어가기
+    function goNext() {
+      console.log("goNext 실행");
 
-    // 🔥 서버 없이 테스트용: 같은 사진으로 스타일 3개 만들어서 저장
-    const dummyStyles = [
-      { name: "스타일 1 (테스트)", image: uploadedImage },
-      { name: "스타일 2 (테스트)", image: uploadedImage },
-      { name: "스타일 3 (테스트)", image: uploadedImage },
-    ];
-    sessionStorage.setItem("hairStyles", JSON.stringify(dummyStyles));
+      if (!uploadedImage) {
+        alert("사진을 업로드해주세요.");
+        return;
+      }
+      if (!selectedGender) {
+        alert("성별을 선택해주세요.");
+        return;
+      }
+      if (!selectedHair) {
+        alert("머리 길이를 선택해주세요.");
+        return;
+      }
 
-    // 결과 페이지로 이동
-    window.location.href = "/result.html";
-  }
-</script>
+      // 원본 사진 저장
+      sessionStorage.setItem("basePhoto", uploadedImage);
+
+      // 🔥 테스트용: 같은 사진을 3개 스타일로 만들어서 저장
+      const dummyStyles = [
+        { name: "스타일 1 (테스트)", image: uploadedImage },
+        { name: "스타일 2 (테스트)", image: uploadedImage },
+        { name: "스타일 3 (테스트)", image: uploadedImage },
+      ];
+      sessionStorage.setItem("hairStyles", JSON.stringify(dummyStyles));
+
+      // 결과 페이지로 이동
+      window.location.href = "/result.html";
+    }
+  </script>
+</body>
+</html>
