@@ -9,9 +9,8 @@
       --purple-top: #a855f7;
       --purple-mid: #ec4899;
       --purple-bottom: #f97316;
-      --card-bg: rgba(15, 23, 42, 0.96);
-      --chip-bg: rgba(148, 163, 255, 0.18);
-      --border-soft: rgba(148, 163, 255, 0.35);
+      --border-soft: rgba(148, 163, 255, 0.45);
+      --chip-bg: rgba(15, 23, 42, 0.7);
     }
 
     * {
@@ -50,18 +49,18 @@
       background: radial-gradient(circle at top,
         rgba(255,255,255,0.06),
         rgba(15,23,42,0.98));
-      padding: 18px 14px 16px;
+      padding: 18px 14px 14px;
     }
 
-    .header {
+    header.header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .title-wrap h1 {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       letter-spacing: -0.04em;
       margin-bottom: 4px;
@@ -74,16 +73,16 @@
     }
 
     .badge {
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,255,0.6);
+      border: 1px solid rgba(148,163,255,0.7);
       font-size: 11px;
-      background: rgba(15,23,42,0.8);
-      box-shadow: 0 4px 12px rgba(15,23,42,0.7);
+      background: rgba(15,23,42,0.9);
+      box-shadow: 0 4px 14px rgba(15,23,42,0.7);
     }
 
     .product-list {
-      margin-top: 10px;
+      margin-top: 6px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -96,27 +95,27 @@
       display: flex;
       gap: 10px;
       padding: 10px;
-      border-radius: 18px;
-      background: linear-gradient(135deg,
-        rgba(15,23,42,0.96),
-        rgba(30,64,175,0.88));
+      border-radius: 20px;
+      background: radial-gradient(circle at top left,
+        rgba(37, 99, 235, 0.98),
+        rgba(15, 23, 42, 0.98));
       border: 1px solid var(--border-soft);
-      box-shadow: 0 10px 26px rgba(15,23,42,0.9);
+      box-shadow: 0 14px 32px rgba(15,23,42,0.95);
     }
 
     .thumb {
-      width: 78px;
-      min-width: 78px;
-      height: 78px;
-      border-radius: 16px;
+      width: 74px;
+      min-width: 74px;
+      height: 74px;
+      border-radius: 18px;
       background: radial-gradient(circle at top,
-        rgba(248,250,252,0.95),
-        rgba(148,163,255,0.8));
+        rgba(248,250,252,0.96),
+        rgba(148,163,255,0.85));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      color: #1f2937;
+      font-size: 11px;
+      color: #111827;
       text-align: center;
       padding: 6px;
       overflow: hidden;
@@ -126,7 +125,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 14px;
+      border-radius: 16px;
     }
 
     .info {
@@ -154,7 +153,7 @@
       border-radius: 999px;
       font-size: 10px;
       background: var(--chip-bg);
-      border: 1px solid rgba(129,140,248,0.5);
+      border: 1px solid rgba(129,140,248,0.6);
       white-space: nowrap;
     }
 
@@ -162,34 +161,35 @@
       font-size: 11px;
       opacity: 0.9;
       line-height: 1.4;
+      margin-top: 2px;
     }
 
     .bottom-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 4px;
+      margin-top: 6px;
       gap: 6px;
     }
 
     .price {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
     }
 
     .btn-link {
-      padding: 7px 10px;
+      padding: 7px 11px;
       border-radius: 999px;
       border: none;
       font-size: 11px;
       font-weight: 600;
       color: #0b1120;
-      background: linear-gradient(135deg,#fde68a,#f9a8d4);
+      background: linear-gradient(135deg,#fde68a,#fb7185);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 6px 16px rgba(15,23,42,0.85);
+      box-shadow: 0 8px 20px rgba(15,23,42,0.95);
       flex-shrink: 0;
     }
 
@@ -208,7 +208,7 @@
     }
 
     .nav-row {
-      margin-top: 12px;
+      margin-top: 10px;
       display: flex;
       gap: 8px;
     }
@@ -218,7 +218,7 @@
       padding: 10px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,255,0.6);
-      background: rgba(15,23,42,0.85);
+      background: rgba(15,23,42,0.9);
       color: #e5e7eb;
       font-size: 12px;
       font-weight: 500;
@@ -243,17 +243,14 @@
     a { text-decoration: none; color: inherit; }
 
     @media (max-width: 420px) {
-      .inner {
-        padding: 16px 10px 14px;
-      }
-      .product-card {
-        padding: 9px;
-      }
+      .inner { padding: 16px 10px 12px; }
+      .product-card { padding: 9px; }
       .thumb {
-        width: 72px;
-        min-width: 72px;
-        height: 72px;
+        width: 70px;
+        min-width: 70px;
+        height: 70px;
       }
+      .product-desc { font-size: 10.5px; }
     }
   </style>
 </head>
@@ -268,82 +265,8 @@
         <div class="badge">추천 상품</div>
       </header>
 
-      <main class="product-list">
-        <!-- ✅ 상품 1 -->
-        <article class="product-card">
-          <div class="thumb">
-            <!-- 실제 이미지를 쓰고 싶으면 아래 img의 src를 교체 -->
-            <!-- <img src="이미지주소" alt="상품 이미지" /> -->
-            대표 이미지
-          </div>
-          <div class="info">
-            <div class="product-title">볼륨 살려주는 루트 리프팅 스프레이</div>
-            <div class="tags">
-              <span class="tag">정수리 볼륨 고민</span>
-              <span class="tag">자연스러운 고정력</span>
-              <span class="tag">데일리 스타일링</span>
-            </div>
-            <p class="product-desc">
-              뿌리 부분만 가볍게 살려주는 타입이라 답답하지 않고, 초보자도 쉽게 볼륨 스타일을 연출할 수 있는 스프레이입니다.
-            </p>
-            <div class="bottom-row">
-              <div class="price">쿠팡 기준 약 1만~2만원대</div>
-              <button class="btn-link"
-                      onclick="window.open('https://www.coupang.com', '_blank')">
-                <span>↗</span> 쿠팡에서 보기
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- ✅ 상품 2 -->
-        <article class="product-card">
-          <div class="thumb">대표 이미지</div>
-          <div class="info">
-            <div class="product-title">손상 모발 집중 케어 트리트먼트</div>
-            <div class="tags">
-              <span class="tag">염색·펌 모발</span>
-              <span class="tag">집중 영양</span>
-              <span class="tag">주 1–2회 사용</span>
-            </div>
-            <p class="product-desc">
-              건조하고 끊어지는 모발에 수분과 단백질을 동시에 공급해 주는 집중 케어 트리트먼트로, 샴푸 후 5분만으로도 촉촉한 머릿결을 유지할 수 있습니다.
-            </p>
-            <div class="bottom-row">
-              <div class="price">쿠팡 기준 약 1만~3만원대</div>
-              <button class="btn-link"
-                      onclick="window.open('https://www.coupang.com', '_blank')">
-                <span>↗</span> 쿠팡에서 보기
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- ✅ 상품 3 -->
-        <article class="product-card">
-          <div class="thumb">대표 이미지</div>
-          <div class="info">
-            <div class="product-title">애즈·가르마 연출용 하드 왁스</div>
-            <div class="tags">
-              <span class="tag">남녀 공용</span>
-              <span class="tag">강한 고정력</span>
-              <span class="tag">번들거림 최소화</span>
-            </div>
-            <p class="product-desc">
-              가벼운 사용감에 비해 고정력이 좋아, 애즈펌·가르마 스타일을 하루 종일 유지하고 싶은 분께 어울리는 왁스 타입입니다.
-            </p>
-            <div class="bottom-row">
-              <div class="price">쿠팡 기준 약 1만대</div>
-              <button class="btn-link"
-                      onclick="window.open('https://www.coupang.com', '_blank')">
-                <span>↗</span> 쿠팡에서 보기
-              </button>
-            </div>
-          </div>
-        </article>
-
-        <!-- 필요하면 아래에 같은 형식으로 상품 더 추가하면 됨 -->
-      </main>
+      <!-- JS가 상품 카드를 자동으로 넣어줄 영역 -->
+      <main id="productList" class="product-list"></main>
 
       <section class="footer-note">
         이 페이지의 링크에는 파트너스 제휴 코드가 포함될 수 있으며,<br />
@@ -360,5 +283,87 @@
       </div>
     </div>
   </div>
+
+  <!-- ▶ 상품 데이터 파일 -->
+  <script src="products-data.js"></script>
+
+  <!-- ▶ 화면에 카드 그려주는 스크립트 -->
+  <script>
+    const listEl = document.getElementById("productList");
+
+    if (Array.isArray(PRODUCTS)) {
+      PRODUCTS.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "product-card";
+
+        // 썸네일
+        const thumb = document.createElement("div");
+        thumb.className = "thumb";
+        if (p.imageUrl) {
+          const img = document.createElement("img");
+          img.src = p.imageUrl;
+          img.alt = p.title || "상품 이미지";
+          thumb.appendChild(img);
+        } else {
+          thumb.textContent = p.thumbLabel || "대표 이미지";
+        }
+
+        // 정보 영역
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const title = document.createElement("div");
+        title.className = "product-title";
+        title.textContent = p.title || "";
+
+        const tagsWrap = document.createElement("div");
+        tagsWrap.className = "tags";
+        (p.tags || []).forEach((tag) => {
+          const t = document.createElement("span");
+          t.className = "tag";
+          t.textContent = tag;
+          tagsWrap.appendChild(t);
+        });
+
+        const desc = document.createElement("p");
+        desc.className = "product-desc";
+        desc.textContent = p.desc || "";
+
+        const bottom = document.createElement("div");
+        bottom.className = "bottom-row";
+
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = p.priceText || "";
+
+        const btn = document.createElement("button");
+        btn.className = "btn-link";
+        btn.type = "button";
+        btn.innerHTML = '<span>↗</span> 쿠팡에서 보기';
+        btn.addEventListener("click", () => {
+          if (p.link) {
+            window.open(p.link, "_blank");
+          } else {
+            alert("쿠팡 링크가 아직 설정되지 않았습니다.");
+          }
+        });
+
+        bottom.appendChild(price);
+        bottom.appendChild(btn);
+
+        info.appendChild(title);
+        if (p.tags && p.tags.length) info.appendChild(tagsWrap);
+        if (p.desc) info.appendChild(desc);
+        info.appendChild(bottom);
+
+        card.appendChild(thumb);
+        card.appendChild(info);
+
+        listEl.appendChild(card);
+      });
+    } else {
+      listEl.innerHTML = "<p>표시할 추천 상품이 없습니다.</p>";
+    }
+  </script>
 </body>
 </html>
