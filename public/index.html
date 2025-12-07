@@ -8,10 +8,10 @@
     :root {
       --purple-top: #a855f7;
       --purple-bottom: #ec4899;
+      --card-bg: rgba(255, 255, 255, 0.96);
       --phone-bg: #f5f5f7;
       --text-main: #0f172a;
       --text-sub: #6b7280;
-      --accent: #6366f1;
     }
 
     * {
@@ -28,18 +28,28 @@
       align-items: center;
       padding: 16px;
       background: linear-gradient(180deg, var(--purple-top), var(--purple-bottom));
-      color: #ffffff;
     }
 
     .frame {
       width: 100%;
       max-width: 520px;
-      border-radius: 28px;
-      background: rgba(15, 23, 42, 0.2);
+      border-radius: 32px;
+      background: linear-gradient(145deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(15, 23, 42, 0.35));
+      padding: 18px 16px 20px;
       box-shadow:
         0 20px 60px rgba(15, 23, 42, 0.7),
-        0 0 0 1px rgba(148, 163, 255, 0.35);
-      padding: 18px 18px 22px;
+        0 0 0 1px rgba(148, 163, 255, 0.3);
+      color: #f9fafb;
+    }
+
+    .inner {
+      border-radius: 26px;
+      background: radial-gradient(circle at top,
+        rgba(255, 255, 255, 0.06),
+        rgba(15, 23, 42, 0.9));
+      padding: 18px 14px 18px;
     }
 
     .header-text {
@@ -62,12 +72,13 @@
 
     /* “폰” 카드 */
     .phone-wrap {
-      margin: 10px auto 16px;
+      margin: 10px auto 14px;
       max-width: 360px;
-      border-radius: 34px;
+      border-radius: 36px;
       padding: 10px 10px 12px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(209,213,219,0.9));
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
+      background: var(--card-bg);
+      box-shadow:
+        0 18px 40px rgba(15, 23, 42, 0.45);
     }
 
     .phone-inner {
@@ -86,8 +97,8 @@
       padding: 0 4px;
     }
 
-    .phone-chip {
-      padding: 4px 10px;
+    .phone-chip-left {
+      padding: 4px 12px;
       border-radius: 999px;
       border: 1px solid #e5e7eb;
       font-size: 11px;
@@ -95,7 +106,7 @@
       color: var(--text-sub);
     }
 
-    .upload-hint {
+    .phone-chip-right {
       font-size: 11px;
       color: var(--text-sub);
     }
@@ -117,7 +128,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       color: var(--text-sub);
       font-size: 12px;
       text-align: center;
@@ -125,14 +136,14 @@
     }
 
     .upload-circle {
-      width: 46px;
-      height: 46px;
+      width: 50px;
+      height: 50px;
       border-radius: 999px;
-      border: 2px dashed #d1d5db;
+      border: 2px dashed #d4d4d8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 24px;
       background: #f9fafb;
     }
 
@@ -146,20 +157,20 @@
     .guide-text {
       margin-top: 6px;
       font-size: 11px;
-      color: var(--text-sub);
+      color: rgba(209, 213, 219, 0.95);
       text-align: center;
     }
 
     .primary-btn {
       width: 100%;
-      margin-top: 14px;
+      margin-top: 16px;
       padding: 13px;
       border-radius: 999px;
       border: none;
       font-size: 14px;
       font-weight: 600;
       color: #fff;
-      background: linear-gradient(135deg, #f97316, #6366f1);
+      background: linear-gradient(135deg, #fb923c, #6366f1);
       box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
       display: flex;
       align-items: center;
@@ -183,11 +194,12 @@
     }
 
     .note {
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 10px;
       opacity: 0.9;
       line-height: 1.4;
       text-align: center;
+      color: #e5e7eb;
     }
 
     #photoInput {
@@ -196,7 +208,11 @@
 
     @media (max-width: 400px) {
       .frame {
-        padding: 16px 14px 18px;
+        padding: 14px 12px 16px;
+      }
+
+      .inner {
+        padding: 16px 10px 16px;
       }
 
       .phone-wrap {
@@ -207,44 +223,48 @@
 </head>
 <body>
   <div class="frame">
-    <div class="header-text">
-      <h1>AI 헤어 스타일 체험</h1>
-      <p>셀카 한 장으로 나에게 어울리는 헤어스타일 3가지를 미리 확인해 보세요.</p>
-    </div>
+    <div class="inner">
+      <div class="header-text">
+        <h1>AI 헤어 스타일 체험</h1>
+        <p>셀카 한 장으로 나에게 어울리는 헤어스타일 3가지를 미리 확인해 보세요.</p>
+      </div>
 
-    <!-- 휴대폰 모양 업로드 박스 -->
-    <div class="phone-wrap" id="uploadArea">
-      <div class="phone-inner">
-        <div class="phone-top-bar">
-          <div style="width:24px;"></div>
-          <div class="phone-chip">사진 업로드 / 촬영하기</div>
-          <div style="font-size: 11px; color: var(--text-sub);">AI 프리뷰</div>
-        </div>
-
-        <div class="phone-main-img-wrap">
-          <div id="placeholder" class="upload-placeholder">
-            <div class="upload-circle">📷</div>
-            <div>정면에 가까운 얼굴 사진을 업로드하거나<br />카메라로 촬영해 주세요.</div>
+      <!-- 휴대폰 모양 업로드 박스 -->
+      <div class="phone-wrap" id="uploadArea">
+        <div class="phone-inner">
+          <div class="phone-top-bar">
+            <div class="phone-chip-left">사진 업로드 / 촬영하기</div>
+            <div class="phone-chip-right">AI 프리뷰</div>
           </div>
-          <img id="previewImage" alt="업로드한 사진 미리보기" />
+
+          <div class="phone-main-img-wrap">
+            <div id="placeholder" class="upload-placeholder">
+              <div class="upload-circle">📷</div>
+              <div>
+                정면에 가까운 얼굴 사진을 업로드하거나<br />
+                카메라로 촬영해 주세요.
+              </div>
+            </div>
+            <img id="previewImage" alt="업로드한 사진 미리보기" />
+          </div>
         </div>
       </div>
+
+      <input id="photoInput" type="file" accept="image/*" capture="user" />
+
+      <p class="guide-text">
+        얼굴 전체가 보이고 정면에 가까운 사진일수록 스타일 미리보기가 더 자연스럽게 보입니다.
+      </p>
+
+      <button id="goResultBtn" class="primary-btn" disabled>
+        AI 헤어스타일 3가지 보기
+      </button>
+
+      <p class="note">
+        AI가 생성한 이미지는 참고용으로 제공되며,<br />
+        실제 헤어 시술 결과와는 차이가 있을 수 있습니다.
+      </p>
     </div>
-
-    <input id="photoInput" type="file" accept="image/*" />
-
-    <p class="guide-text">
-      * 얼굴 전체가 보이고 정면에 가까운 사진일수록 더 자연스럽게 보입니다.
-    </p>
-
-    <button id="goResultBtn" class="primary-btn" disabled>
-      AI 헤어스타일 3가지 보기
-    </button>
-
-    <p class="note">
-      지금은 테스트 단계로, 같은 사진이 스타일 3종에 표시됩니다.<br />
-      나중에 실제 AI 헤어 변환 모델이 연결되면 스타일마다 머리 모양과 컬러가 달라집니다.
-    </p>
   </div>
 
   <script>
@@ -256,23 +276,58 @@
 
     let imageBase64 = null;
 
-    // 업로드 영역 클릭 → 파일 선택 열기
+    // 업로드 영역 클릭 → 파일 선택 / 카메라 열기
     uploadArea.addEventListener("click", () => {
       photoInput.click();
     });
 
-    // 파일 선택 시 미리보기 + base64 저장
+    // 이미지 리사이즈 함수 (용량 줄이기: 카메라 사진 대비)
+    function resizeDataUrl(dataUrl, maxSize, callback) {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height && width > maxSize) {
+          height = Math.round((height * maxSize) / width);
+          width = maxSize;
+        } else if (height >= width && height > maxSize) {
+          width = Math.round((width * maxSize) / height);
+          height = maxSize;
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const resized = canvas.toDataURL("image/jpeg", 0.86); // 품질 0.86
+        callback(resized);
+      };
+      img.onerror = () => {
+        alert("이미지를 불러오는 중 문제가 발생했습니다. 다시 시도해 주세요.");
+      };
+      img.src = dataUrl;
+    }
+
+    // 파일 선택 시: 미리보기 + 압축 후 base64 저장
     photoInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        imageBase64 = event.target.result;
-        previewImage.src = imageBase64;
-        previewImage.style.display = "block";
-        placeholder.style.display = "none";
-        goResultBtn.disabled = false;
+        const rawDataUrl = event.target.result;
+
+        // 카메라 사진 대비 자동 리사이즈 (최대 1000px 정도로 축소)
+        resizeDataUrl(rawDataUrl, 1000, (resizedDataUrl) => {
+          imageBase64 = resizedDataUrl;
+          previewImage.src = imageBase64;
+          previewImage.style.display = "block";
+          placeholder.style.display = "none";
+          goResultBtn.disabled = false;
+        });
       };
       reader.readAsDataURL(file);
     });
@@ -284,9 +339,14 @@
         return;
       }
 
-      // 결과페이지에서 둘 다 대응할 수 있게 두 키 모두 저장
-      localStorage.setItem("hair_image_base64", imageBase64);
-      localStorage.setItem("image_base64", imageBase64);
+      try {
+        // 결과페이지가 둘 중 아무 키로나 읽을 수 있게 둘 다 저장
+        localStorage.setItem("hair_image_base64", imageBase64);
+        localStorage.setItem("image_base64", imageBase64);
+      } catch (e) {
+        alert("사진 용량이 너무 커서 저장할 수 없습니다.\n사진 크기를 조금 줄여서 다시 시도해 주세요.");
+        return;
+      }
 
       window.location.href = "result.html";
     });
