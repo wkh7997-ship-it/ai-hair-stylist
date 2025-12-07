@@ -68,6 +68,7 @@
       border-radius: 20px;
       padding: 16px 14px;
       text-align: center;
+      cursor: pointer;
     }
 
     .upload-icon {
@@ -83,7 +84,7 @@
 
     .img-preview {
       width: 100%;
-      max-width: 180px;
+      max-width: 160px;
       margin: 8px auto;
       border-radius: 14px;
       border: 1px solid rgba(148,163,255,0.7);
@@ -91,9 +92,7 @@
       object-fit: contain;
     }
 
-    #photoInput {
-      display: none;
-    }
+    #photoInput { display: none; }
 
     .upload-btn {
       margin-top: 8px;
@@ -103,10 +102,9 @@
       border: 1px solid rgba(148,163,255,0.3);
       color: var(--text);
       font-size: 12px;
-      cursor: pointer;
     }
 
-    /* 선택 버튼들 */
+    /* 선택 버튼 */
     .section-title {
       font-size: 14px;
       font-weight: 600;
@@ -152,9 +150,61 @@
       margin-top: 10px;
     }
 
+    /* 🔥 로딩 오버레이 */
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 10, 25, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loading-box {
+      background: rgba(15, 23, 42, 0.92);
+      padding: 20px 26px;
+      border-radius: 18px;
+      text-align: center;
+      border: 1px solid rgba(148,163,255,0.2);
+    }
+
+    .loader {
+      border: 4px solid rgba(255,255,255,0.15);
+      border-top: 4px solid #f97316;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 13px;
+      color: #f1f5f9;
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- 🔥 AI 작업 로딩 오버레이 -->
+  <div id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loader"></div>
+      <div class="loading-text">AI가 스타일 생성 중입니다...</div>
+    </div>
+  </div>
+
   <div class="app">
 
     <header>
@@ -162,7 +212,7 @@
       <div class="app-sub">셀카 한 장으로 어울리는 헤어스타일을 찾아보세요</div>
     </header>
 
-    <!-- 사진 업로드 박스 -->
+    <!-- 사진 업로드 -->
     <div class="upload-box" onclick="document.getElementById('photoInput').click()">
       <div class="upload-icon">📷</div>
       <div class="upload-text">얼굴이 잘 보이는 사진을 업로드해주세요</div>
@@ -173,7 +223,7 @@
       <input type="file" id="photoInput" accept="image/*" />
     </div>
 
-    <!-- 성별 선택 -->
+    <!-- 성별 -->
     <div>
       <div class="section-title">성별</div>
       <div class="select-group">
@@ -182,7 +232,7 @@
       </div>
     </div>
 
-    <!-- 머리 길이 선택 -->
+    <!-- 머리길이 -->
     <div>
       <div class="section-title">현재 머리 길이</div>
       <div class="select-group">
@@ -192,7 +242,7 @@
       </div>
     </div>
 
-    <!-- AI 분석 버튼 -->
+    <!-- 버튼 -->
     <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
 
   </div>
@@ -244,6 +294,9 @@
 
       sessionStorage.setItem("basePhoto", uploadedImage);
 
+      // 🔥 로딩 표시 ON
+      document.getElementById("loadingOverlay").style.display = "flex";
+
       fetch("/api/hair-preview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -259,11 +312,13 @@
             sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
             window.location.href = "/result.html";
           } else {
-            alert("AI 분석에 실패했습니다.");
+            alert("AI 분석 실패!");
+            document.getElementById("loadingOverlay").style.display = "none";
           }
         })
         .catch(() => {
-          alert("서버 연결 오류가 발생했습니다.");
+          alert("서버 연결 오류!");
+          document.getElementById("loadingOverlay").style.display = "none";
         });
     }
   </script>
