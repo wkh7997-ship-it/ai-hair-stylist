@@ -16,7 +16,10 @@
       --text-sub: #cbd5e1;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, system-ui; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui;
+    }
 
     body {
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -42,10 +45,7 @@
       gap: 18px;
     }
 
-    header {
-      text-align: center;
-      padding-bottom: 10px;
-    }
+    header { text-align: center; padding-bottom: 10px; }
 
     .title {
       font-size: 22px;
@@ -67,9 +67,7 @@
       transition: 0.2s;
     }
 
-    .upload-box:hover {
-      background: rgba(255,255,255,0.12);
-    }
+    .upload-box:hover { background: rgba(255,255,255,0.12); }
 
     .img-preview {
       width: 100%;
@@ -123,12 +121,12 @@
       color: white;
       box-shadow: 0 8px 24px rgba(250,112,154,0.35);
       transition: 0.2s;
+      margin-top: 4px;
     }
 
-    .go-btn:active {
-      transform: scale(0.97);
-    }
+    .go-btn:active { transform: scale(0.97); }
 
+    /* 로딩 오버레이 */
     #loadingOverlay {
       display: none;
       position: fixed;
@@ -154,6 +152,7 @@
 </head>
 <body>
 
+  <!-- 로딩 -->
   <div id="loadingOverlay">
     <div>
       <div class="loader"></div>
@@ -167,12 +166,14 @@
       <div class="sub">네온 감성으로 스타일 미리보기</div>
     </header>
 
+    <!-- 업로드 -->
     <div class="upload-box" onclick="document.getElementById('photoInput').click()">
       <div style="font-size:15px;">📷 사진 업로드</div>
       <img id="preview" class="img-preview" alt="미리보기" />
       <input type="file" id="photoInput" accept="image/*" />
     </div>
 
+    <!-- 성별 -->
     <div>
       <div class="section-title">성별</div>
       <div class="select-group">
@@ -181,6 +182,7 @@
       </div>
     </div>
 
+    <!-- 머리 길이 -->
     <div>
       <div class="section-title">현재 머리 길이</div>
       <div class="select-group">
@@ -194,15 +196,19 @@
   </div>
 
   <script>
+    // 🔗 Render 서버 주소
     const API_BASE = "https://ai-hair-stylist.onrender.com";
 
     let uploadedImage = null;
     let selectedGender = null;
     let selectedHair = null;
 
+    console.log("index.js 로드됨");
+
     document.getElementById("photoInput").addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
+
       const reader = new FileReader();
       reader.onload = (ev) => {
         uploadedImage = ev.target.result;
@@ -215,13 +221,17 @@
 
     function toggleSelect(btn, type) {
       const group = btn.parentNode.querySelectorAll(".select-btn");
-      group.forEach(b => b.classList.remove("active"));
+      group.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
+
       if (type === "gender") selectedGender = btn.dataset.value;
       if (type === "hair") selectedHair = btn.dataset.value;
     }
 
     function goNext() {
+      // 🔥 1단계: 버튼이 실제로 눌렸는지 확인
+      alert("버튼 클릭 감지 (goNext 실행됨)");
+
       if (!uploadedImage) {
         alert("사진을 업로드해주세요.");
         return;
@@ -236,7 +246,11 @@
       }
 
       sessionStorage.setItem("basePhoto", uploadedImage);
+
       document.getElementById("loadingOverlay").style.display = "flex";
+
+      // 🔥 디버그 로그
+      console.log("API 호출 시작:", API_BASE + "/api/hair-preview");
 
       fetch(API_BASE + "/api/hair-preview", {
         method: "POST",
@@ -247,20 +261,28 @@
           base_style: selectedHair
         })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
-          window.location.href = "/result.html";
-        } else {
-          alert("AI 분석 실패");
+        .then((res) => {
+          console.log("서버 응답 코드:", res.status);
+          if (!res.ok) {
+            alert("서버 응답 코드: " + res.status);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("서버 응답 데이터:", data);
+          if (data && data.success) {
+            sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
+            window.location.href = "/result.html";
+          } else {
+            alert("AI 분석 실패 또는 success=false");
+            document.getElementById("loadingOverlay").style.display = "none";
+          }
+        })
+        .catch((err) => {
+          console.error("fetch 에러:", err);
+          alert("fetch 에러: " + err.message);
           document.getElementById("loadingOverlay").style.display = "none";
-        }
-      })
-      .catch(() => {
-        alert("서버 연결 오류");
-        document.getElementById("loadingOverlay").style.display = "none";
-      });
+        });
     }
   </script>
 
