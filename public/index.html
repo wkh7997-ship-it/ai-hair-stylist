@@ -350,7 +350,7 @@
       reader.readAsDataURL(file);
     });
 
-    // 버튼 → 로컬스토리지에 저장 후 결과 페이지로 이동
+    // 버튼 → 로컬스토리지에 저장 후 "로딩 페이지"로 이동
     goResultBtn.addEventListener("click", () => {
       if (!imageBase64) {
         alert("먼저 사진을 업로드해 주세요.");
@@ -366,7 +366,8 @@
         return;
       }
 
-      window.location.href = "result.html";
+      // 바로 result.html이 아니라, 로딩 화면을 한번 거치게
+      window.location.href = "loading.html";
     });
   </script>
 </body>
