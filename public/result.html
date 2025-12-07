@@ -5,259 +5,436 @@
   <title>AI 헤어 스타일 결과</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-  :root {
-    --primary: #9b8bff;
-    --primary-strong: #5c6bff;
-    --bg-deep: #050616;
-    --bg-top: #11152b;
-    --glass: rgba(10, 14, 32, 0.96);
-    --text-main: #f9fafb;
-    --text-sub: #cbd5f5;
-    --border-soft: rgba(148, 163, 255, 0.35);
-  }
+    :root {
+      --purple-top: #a855f7;
+      --purple-bottom: #ec4899;
+      --phone-bg: #f5f5f7;
+      --text-main: #0f172a;
+      --text-sub: #6b7280;
+      --accent: #6366f1;
+      --dark-bg: #020617;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at top, #1d2545, #050616 60%);
-    color: var(--text-main);
-    padding: 16px;
-  }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      background: linear-gradient(180deg, var(--purple-top), var(--purple-bottom));
+      color: #ffffff;
+    }
 
-  .app {
-    width: 100%;
-    max-width: 540px;
-    background: var(--glass);
-    border-radius: 24px;
-    border: 1px solid var(--border-soft);
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
-    padding: 20px 18px 24px;
-    position: relative;
-    overflow: hidden;
-  }
+    .frame {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 28px;
+      background: rgba(15, 23, 42, 0.2);
+      box-shadow:
+        0 20px 60px rgba(15, 23, 42, 0.7),
+        0 0 0 1px rgba(148, 163, 255, 0.3);
+      padding: 18px 18px 20px;
+    }
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+    .header-text {
+      text-align: center;
+      margin-bottom: 14px;
+    }
 
-  .title-main {
-    font-size: 18px;
-    font-weight: 700;
-  }
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
 
-  .title-sub {
-    font-size: 11px;
-    color: var(--text-sub);
-  }
+    .header-text p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
 
-  .spinner-wrapper {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(6px);
-    background: rgba(15, 23, 42, 0.6);
-    z-index: 10;
-  }
+    /* “폰” 카드 */
+    .phone-wrap {
+      margin: 12px auto 14px;
+      max-width: 360px;
+      border-radius: 34px;
+      padding: 10px 10px 12px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(209,213,219,0.9));
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
+    }
 
-  .spinner-circle {
-    width: 60px;
-    height: 60px;
-    border-radius: 999px;
-    border: 2px solid rgba(148, 163, 255, 0.4);
-    border-top-color: var(--primary-strong);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: spin 1s linear infinite;
-    position: relative;
-  }
+    .phone-inner {
+      border-radius: 26px;
+      background: var(--phone-bg);
+      padding: 10px 10px 14px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .spinner-text {
-    position: absolute;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
+    .phone-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 0 4px;
+    }
 
-  .spinner-label {
-    margin-top: 10px;
-    font-size: 11px;
-    color: var(--text-sub);
-    text-align: center;
-  }
+    .phone-back {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      background: #ffffff;
+    }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+    .phone-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      font-size: 11px;
+      background: #ffffff;
+      color: var(--text-sub);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-  .image-wrapper {
-    margin-top: 14px;
-    display: flex;
-    justify-content: center;
-  }
+    .phone-main-img-wrap {
+      border-radius: 22px;
+      overflow: hidden;
+      background: #e5e7eb;
+      aspect-ratio: 3 / 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
 
-  /* ✅ 여기만 크게 변경됨 */
-  .result-img {
-    width: 100%;              /* 카드 가로 꽉 채우기 */
-    max-width: 480px;         /* 태블릿에서도 넉넉하게 */
-    aspect-ratio: 3 / 4;
-    border-radius: 20px;
-    border: 1px solid rgba(148, 163, 255, 0.5);
-    object-fit: cover;
-    background: #020617;
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
-  }
+    #mainImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-  .style-name {
-    margin-top: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    text-align: center;
-  }
+    .phone-caption {
+      margin-top: 8px;
+      text-align: center;
+      color: var(--text-main);
+    }
 
-  .pager {
-    margin-top: 4px;
-    font-size: 11px;
-    color: var(--text-sub);
-    text-align: center;
-  }
+    .phone-caption-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
 
-  .controls {
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
+    .phone-caption-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
 
-  .nav-btn {
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 255, 0.5);
-    background: rgba(15, 23, 42, 0.9);
-    color: var(--text-main);
-    font-size: 12px;
-    cursor: pointer;
-  }
+    /* 썸네일 리스트 */
+    .thumb-strip {
+      max-width: 420px;
+      margin: 6px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
 
-  .nav-btn:disabled {
-    opacity: 0.4;
-    cursor: default;
-  }
+    .thumb-item {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .bottom-links {
-    margin-top: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-  .link-button {
-    width: 100%;
-    padding: 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 255, 0.5);
-    background: rgba(15, 23, 42, 0.9);
-    color: var(--text-sub);
-    font-size: 12px;
-    cursor: pointer;
-    text-align: center;
-  }
-</style>
+    .thumb-item.active {
+      border-color: #f97316;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.5);
+    }
 
+    /* 인덱스/네비게이션 */
+    .index-row {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .nav-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.6);
+      padding: 6px 12px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.35);
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .index-dot-wrap {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(249, 250, 251, 0.3);
+    }
+
+    .dot.active {
+      width: 14px;
+      background: #ffffff;
+    }
+
+    .index-text {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    /* 하단 버튼들 */
+    .bottom-buttons {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn-wide {
+      width: 100%;
+      border-radius: 999px;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border: 1px solid rgba(15, 23, 42, 1);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.15);
+      color: #f9fafb;
+      border: 1px solid rgba(248, 250, 252, 0.4);
+    }
+
+    .helper-text {
+      margin-top: 6px;
+      font-size: 10px;
+      opacity: 0.85;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    /* 로딩 오버레이 */
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 2px solid #e5e7eb;
+      border-top-color: var(--accent);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 400px) {
+      .frame {
+        padding: 16px 14px 18px;
+      }
+
+      .phone-wrap {
+        max-width: 340px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div>
-        <div class="title-main">AI 스타일 결과</div>
-        <div class="title-sub">3가지 스타일을 한 장씩 넘겨보세요.</div>
+  <div class="frame">
+    <div class="header-text">
+      <h1>AI 스타일 결과</h1>
+      <p>당신의 얼굴에 어울리는 3가지 스타일을 한 번에 확인해 보세요.</p>
+    </div>
+
+    <!-- “폰” 카드 -->
+    <div class="phone-wrap">
+      <div class="phone-inner">
+        <div class="phone-top-bar">
+          <div class="phone-back" id="backFromPhone">‹</div>
+          <div class="phone-chip">
+            <span>AI 스타일 미리보기</span>
+          </div>
+        </div>
+        <div class="phone-main-img-wrap">
+          <img id="mainImage" alt="헤어 스타일 미리보기" />
+          <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+            <div>AI가 스타일을 준비 중입니다...</div>
+          </div>
+        </div>
+        <div class="phone-caption">
+          <div id="styleTitle" class="phone-caption-title">스타일 1 (테스트용)</div>
+          <div id="styleSub" class="phone-caption-sub">1 / 3</div>
+        </div>
       </div>
     </div>
 
-    <!-- SKINNER 스타일 로딩 -->
-    <div class="spinner-wrapper" id="spinner">
-      <div class="spinner-circle">
-        <div class="spinner-text">SKINNER</div>
+    <!-- 썸네일 3개 -->
+    <div id="thumbStrip" class="thumb-strip"></div>
+
+    <!-- 인덱스 & 이전/다음 -->
+    <div class="index-row">
+      <button id="prevBtn" class="nav-btn">← 이전 스타일</button>
+      <div class="index-dot-wrap">
+        <div id="dot0" class="dot active"></div>
+        <div id="dot1" class="dot"></div>
+        <div id="dot2" class="dot"></div>
       </div>
-      <div class="spinner-label">AI가 스타일을 준비하는 중입니다...</div>
+      <button id="nextBtn" class="nav-btn">다음 스타일 →</button>
     </div>
 
-    <div class="image-wrapper">
-      <img id="resultImg" class="result-img" alt="AI 스타일" />
-    </div>
-    <div class="style-name" id="styleName"></div>
-    <div class="pager" id="pager"></div>
-
-    <div class="controls">
-      <button class="nav-btn" id="prevBtn">← 이전 스타일</button>
-      <button class="nav-btn" id="nextBtn">다음 스타일 →</button>
-    </div>
-
-    <div class="bottom-links">
-      <button class="link-button" onclick="window.location.href='/'">
+    <!-- 하단 버튼 -->
+    <div class="bottom-buttons">
+      <button class="btn-wide btn-primary" id="toProducts">
+        💄 헤어케어 · 스타일링 추천 상품 보러가기
+      </button>
+      <button class="btn-wide btn-secondary" id="toHome">
         처음으로 돌아가기
       </button>
-      <button class="link-button" onclick="window.location.href='/products.html'">
-        💄 헤어케어 / 스타일링 추천 상품 보러가기
-      </button>
+    </div>
+
+    <div class="helper-text">
+      * 현재는 테스트 단계로, 같은 사진이 3가지 스타일로 표시됩니다.<br />
+      * 나중에 실제 AI 헤어 변환 모델이 연결되면, 스타일별로 머리 모양과 컬러가 달라집니다.
     </div>
   </div>
 
   <script>
-    const spinner = document.getElementById("spinner");
-    const resultImg = document.getElementById("resultImg");
-    const styleNameEl = document.getElementById("styleName");
-    const pagerEl = document.getElementById("pager");
+    const mainImage = document.getElementById("mainImage");
+    const styleTitle = document.getElementById("styleTitle");
+    const styleSub = document.getElementById("styleSub");
+    const loadingOverlay = document.getElementById("loadingOverlay");
+    const thumbStrip = document.getElementById("thumbStrip");
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
+    const toHome = document.getElementById("toHome");
+    const toProducts = document.getElementById("toProducts");
+    const backFromPhone = document.getElementById("backFromPhone");
 
-    let styles = [];
+    let stylesData = [];
     let currentIndex = 0;
 
-    function renderStyle() {
-      if (!styles.length) return;
-      const item = styles[currentIndex];
-      resultImg.src = item.image;
-      styleNameEl.textContent = item.name;
-      pagerEl.textContent = `${currentIndex + 1} / ${styles.length}`;
-      prevBtn.disabled = currentIndex === 0;
-      nextBtn.disabled = currentIndex === styles.length - 1;
+    function updateView(index) {
+      if (!stylesData.length) return;
+      const style = stylesData[index];
+      mainImage.src = style.image;
+      styleTitle.textContent = style.name || `스타일 ${index + 1}`;
+      styleSub.textContent = `${index + 1} / ${stylesData.length}`;
+
+      for (let i = 0; i < stylesData.length; i++) {
+        const dot = document.getElementById("dot" + i);
+        if (dot) dot.classList.toggle("active", i === index);
+      }
+
+      document.querySelectorAll(".thumb-item").forEach((el, i) => {
+        el.classList.toggle("active", i === index);
+      });
+
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === stylesData.length - 1;
     }
 
-    prevBtn.addEventListener("click", () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        renderStyle();
-      }
-    });
-
-    nextBtn.addEventListener("click", () => {
-      if (currentIndex < styles.length - 1) {
-        currentIndex++;
-        renderStyle();
-      }
-    });
+    function renderThumbs() {
+      thumbStrip.innerHTML = "";
+      stylesData.forEach((s, i) => {
+        const div = document.createElement("div");
+        div.className = "thumb-item" + (i === 0 ? " active" : "");
+        div.innerHTML = `<img src="${s.image}" alt="스타일 ${i + 1}" />`;
+        div.addEventListener("click", () => {
+          currentIndex = i;
+          updateView(currentIndex);
+        });
+        thumbStrip.appendChild(div);
+      });
+    }
 
     async function loadStyles() {
-      const imageBase64 = localStorage.getItem("hair_image_base64");
-      const gender = localStorage.getItem("hair_gender") || "female";
-      const baseStyle = localStorage.getItem("hair_base_style") || "short";
+      // 인덱스 페이지에서 저장해 둔 값 읽어오기 (두 가지 케이스 모두 지원)
+      const baseImage =
+        localStorage.getItem("hair_image_base64") ||
+        localStorage.getItem("image_base64");
 
-      if (!imageBase64) {
-        alert("사진 정보가 없습니다. 처음 화면으로 돌아갑니다.");
-        window.location.href = "/";
+      const gender =
+        localStorage.getItem("hair_gender") ||
+        localStorage.getItem("gender") ||
+        "여성";
+
+      const baseStyle =
+        localStorage.getItem("hair_length") ||
+        localStorage.getItem("base_style") ||
+        "짧음";
+
+      if (!baseImage) {
+        alert("먼저 사진을 업로드해 주세요.");
+        window.location.href = "index.html";
         return;
       }
 
@@ -266,26 +443,58 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            image_base64: imageBase64,
+            image_base64: baseImage,
             gender,
             base_style: baseStyle
           })
         });
 
         if (!res.ok) throw new Error("서버 응답 오류");
-        const data = await res.json();
-        if (!data.success || !data.styles) throw new Error("AI 결과가 올바르지 않습니다.");
 
-        styles = data.styles;
-        currentIndex = 0;
-        spinner.style.display = "none";
-        renderStyle();
+        const data = await res.json();
+        if (!data.success || !data.styles) {
+          throw new Error("AI 결과가 올바르지 않습니다.");
+        }
+
+        stylesData = data.styles;
+        loadingOverlay.style.display = "none";
+        renderThumbs();
+        updateView(0);
       } catch (err) {
         console.error(err);
-        alert("결과를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-        spinner.style.display = "none";
+        loadingOverlay.innerHTML = `
+          <div>오류가 발생했습니다.</div>
+          <div style="font-size:11px; margin-top:4px;">잠시 후 다시 시도해 주세요.</div>
+        `;
       }
     }
+
+    // 네비게이션
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        updateView(currentIndex);
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < stylesData.length - 1) {
+        currentIndex += 1;
+        updateView(currentIndex);
+      }
+    });
+
+    toHome.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    backFromPhone.addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    toProducts.addEventListener("click", () => {
+      window.location.href = "products.html";
+    });
 
     loadStyles();
   </script>
