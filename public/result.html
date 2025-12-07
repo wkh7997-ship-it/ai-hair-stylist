@@ -2,266 +2,289 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>AI 스타일 결과</title>
+  <title>AI 헤어 스타일 결과</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <style>
     :root {
-      --bg1: #020617;
-      --bg2: #020617;
-      --card: rgba(15, 23, 42, 0.96);
-      --card-soft: rgba(15, 23, 42, 0.9);
-      --accent: #f97316;
-      --accent-strong: #ea580c;
-      --border: rgba(51, 65, 85, 0.9);
+      --primary: #9b8bff;
+      --primary-strong: #5c6bff;
+      --bg-deep: #050616;
+      --bg-top: #11152b;
+      --glass: rgba(10, 14, 32, 0.96);
       --text-main: #f9fafb;
-      --text-sub: #9ca3af;
+      --text-sub: #cbd5f5;
+      --border-soft: rgba(148, 163, 255, 0.35);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2) 55%, #000);
-      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 16px 10px;
+      align-items: center;
+      background: radial-gradient(circle at top, #1d2545, #050616 60%);
+      color: var(--text-main);
+      padding: 16px;
     }
 
     .app {
       width: 100%;
-      max-width: 480px;
-      background: rgba(15, 23, 42, 0.98);
-      border-radius: 28px;
-      border: 1px solid rgba(30, 64, 175, 0.6);
-      padding: 14px;
+      max-width: 520px;
+      background: var(--glass);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      padding: 20px 18px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .title-main {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .title-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .spinner-wrapper {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    header {
-      display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 10px;
-      padding-bottom: 10px;
+      backdrop-filter: blur(6px);
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 10;
     }
 
-    .back-btn {
-      width: 30px;
-      height: 30px;
+    .spinner-circle {
+      width: 60px;
+      height: 60px;
       border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.7);
+      border: 2px solid rgba(148, 163, 255, 0.4);
+      border-top-color: var(--primary-strong);
       display: flex;
-      justify-content: center;
       align-items: center;
-      cursor: pointer;
-    }
-
-    .card {
-      background: var(--card);
-      padding: 12px;
-      border-radius: 18px;
-      border: 1px solid var(--border);
-    }
-
-    /* 기준 사진 */
-    .base-photo img {
-      width: 72px;
-      max-height: 96px;
-      object-fit: contain;
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,255,0.9);
-    }
-
-    /* 슬라이드 영역 */
-    .slider-wrap {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 20px;
-    }
-
-    .slider {
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-    }
-
-    .slider::-webkit-scrollbar {
-      display: none;
-    }
-
-    .slide-card {
-      min-width: 88%;
-      background: var(--card-soft);
-      padding: 10px;
-      border-radius: 16px;
-      border: 1px solid rgba(148,163,255,0.3);
-      scroll-snap-align: center;
-    }
-
-    .slide-card img {
-      width: 100%;
-      height: auto;
-      max-height: 360px;
-      object-fit: contain;
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,255,0.7);
-    }
-
-    .slider-indicator {
-      display: flex;
       justify-content: center;
-      gap: 6px;
-      margin-top: 6px;
+      animation: spin 1s linear infinite;
+      position: relative;
     }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #475569;
+    .spinner-text {
+      position: absolute;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
-    .dot.active {
-      background: var(--accent);
-      transform: scale(1.15);
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
+    .spinner-label {
       margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
     }
 
-    .btn-primary,
-    .btn-secondary {
-      flex: 1;
-      padding: 11px;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .image-wrapper {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .result-img {
+      width: 70%;
+      max-width: 260px;
+      aspect-ratio: 3 / 4;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      object-fit: cover;
+      background: #020617;
+    }
+
+    .style-name {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .pager {
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+    }
+
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      padding: 8px 14px;
       border-radius: 999px;
-      border: none;
-      font-size: 13px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 12px;
       cursor: pointer;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #fff;
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
     }
 
-    .btn-secondary {
-      background: rgba(15, 23, 42, 0.96);
+    .bottom-links {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .link-button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.9);
       color: var(--text-sub);
-      border: 1px solid rgba(148,163,255,0.4);
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
     }
-
   </style>
 </head>
 <body>
-
   <div class="app">
-
-    <header>
-      <div class="back-btn" onclick="goBack()">←</div>
+    <div class="header">
       <div>
-        <div style="font-size:16px;font-weight:600;">AI 스타일 결과</div>
-        <div style="font-size:11px;color:var(--text-sub);">
-          옆으로 넘기면서 3가지 스타일을 확인하세요.
-        </div>
+        <div class="title-main">AI 스타일 결과</div>
+        <div class="title-sub">3가지 스타일을 한 장씩 넘겨보세요.</div>
       </div>
-    </header>
+    </div>
 
-    <section class="card">
-
-      <!-- 기준 사진 -->
-      <div class="base-photo" id="basePhotoBlock" style="display:none;">
-        <img id="basePhoto" />
-        <div style="font-size:11px;color:var(--text-sub);margin-left:10px;">
-          이 사진을 기반으로<br/>AI가 스타일을 생성했습니다.
-        </div>
+    <!-- SKINNER 스타일 로딩 -->
+    <div class="spinner-wrapper" id="spinner">
+      <div class="spinner-circle">
+        <div class="spinner-text">SKINNER</div>
       </div>
+      <div class="spinner-label">AI가 스타일을 준비하는 중입니다...</div>
+    </div>
 
-      <!-- 슬라이드 -->
-      <div class="slider-wrap">
-        <div class="slider" id="slider"></div>
-      </div>
+    <div class="image-wrapper">
+      <img id="resultImg" class="result-img" alt="AI 스타일" />
+    </div>
+    <div class="style-name" id="styleName"></div>
+    <div class="pager" id="pager"></div>
 
-      <!-- 인디케이터 -->
-      <div class="slider-indicator" id="indicator"></div>
+    <div class="controls">
+      <button class="nav-btn" id="prevBtn">← 이전 스타일</button>
+      <button class="nav-btn" id="nextBtn">다음 스타일 →</button>
+    </div>
 
-      <!-- 버튼 -->
-      <div class="btn-row">
-        <button class="btn-secondary" onclick="goBack()">↩ 다시 시도</button>
-        <button class="btn-primary" onclick="goProducts()">🛍 제품 보기</button>
-      </div>
-
-    </section>
-
+    <div class="bottom-links">
+      <button class="link-button" onclick="window.location.href='/'">
+        처음으로 돌아가기
+      </button>
+      <button class="link-button" onclick="window.location.href='/products.html'">
+        💄 헤어케어 / 스타일링 추천 상품 보러가기
+      </button>
+    </div>
   </div>
 
   <script>
-    function goBack() {
-      window.location.href = "/";
+    const spinner = document.getElementById("spinner");
+    const resultImg = document.getElementById("resultImg");
+    const styleNameEl = document.getElementById("styleName");
+    const pagerEl = document.getElementById("pager");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let styles = [];
+    let currentIndex = 0;
+
+    function renderStyle() {
+      if (!styles.length) return;
+      const item = styles[currentIndex];
+      resultImg.src = item.image;
+      styleNameEl.textContent = item.name;
+      pagerEl.textContent = `${currentIndex + 1} / ${styles.length}`;
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === styles.length - 1;
     }
 
-    function goProducts() {
-      window.location.href = "/products.html";
-    }
+    prevBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderStyle();
+      }
+    });
 
-    const stylesJson = sessionStorage.getItem("hairStyles");
-    const basePhoto = sessionStorage.getItem("basePhoto");
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < styles.length - 1) {
+        currentIndex++;
+        renderStyle();
+      }
+    });
 
-    const slider = document.getElementById("slider");
-    const indicator = document.getElementById("indicator");
-    const basePhotoBlock = document.getElementById("basePhotoBlock");
-    const basePhotoImg = document.getElementById("basePhoto");
+    async function loadStyles() {
+      const imageBase64 = localStorage.getItem("hair_image_base64");
+      const gender = localStorage.getItem("hair_gender") || "female";
+      const baseStyle = localStorage.getItem("hair_base_style") || "short";
 
-    if (basePhoto) {
-      basePhotoBlock.style.display = "flex";
-      basePhotoImg.src = basePhoto;
-    }
+      if (!imageBase64) {
+        alert("사진 정보가 없습니다. 처음 화면으로 돌아갑니다.");
+        window.location.href = "/";
+        return;
+      }
 
-    if (stylesJson) {
-      const styles = JSON.parse(stylesJson);
-
-      styles.forEach((style, idx) => {
-        const card = document.createElement("div");
-        card.className = "slide-card";
-
-        card.innerHTML = `
-          <div style="font-size:14px;font-weight:600;margin-bottom:6px;">
-            ${style.name}
-          </div>
-          <img src="${style.image}">
-        `;
-
-        slider.appendChild(card);
-
-        const dot = document.createElement("div");
-        dot.className = "dot";
-        if (idx === 0) dot.classList.add("active");
-        indicator.appendChild(dot);
-      });
-
-      slider.addEventListener("scroll", () => {
-        const cards = slider.querySelectorAll(".slide-card");
-        const scrollLeft = slider.scrollLeft;
-        const cardWidth = cards[0].offsetWidth + 16;
-        const index = Math.round(scrollLeft / cardWidth);
-
-        indicator.querySelectorAll(".dot").forEach((d, i) => {
-          d.classList.toggle("active", i === index);
+      try {
+        const res = await fetch("/api/hair-preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image_base64: imageBase64,
+            gender,
+            base_style: baseStyle
+          })
         });
-      });
-    }
-  </script>
 
+        if (!res.ok) throw new Error("서버 응답 오류");
+        const data = await res.json();
+        if (!data.success || !data.styles) throw new Error("AI 결과가 올바르지 않습니다.");
+
+        styles = data.styles;
+        currentIndex = 0;
+        spinner.style.display = "none";
+        renderStyle();
+      } catch (err) {
+        console.error(err);
+        alert("결과를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        spinner.style.display = "none";
+      }
+    }
+
+    loadStyles();
+  </script>
 </body>
 </html>
