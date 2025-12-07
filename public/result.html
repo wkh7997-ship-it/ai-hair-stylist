@@ -134,62 +134,6 @@
       line-height: 1.4;
     }
 
-    .grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .style-card {
-      background: var(--card-soft);
-      border-radius: 18px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      padding: 9px 9px 10px;
-    }
-
-    .style-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 6px;
-    }
-
-    .style-name {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .style-tag {
-      font-size: 10px;
-      padding: 3px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      color: var(--text-sub);
-    }
-
-    .style-img {
-      width: 100%;
-      max-height: 340px;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 255, 0.85);
-      object-fit: cover;
-      display: block;
-    }
-
-    .style-desc {
-      font-size: 11px;
-      color: var(--text-sub);
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .empty {
-      font-size: 12px;
-      color: var(--text-sub);
-      text-align: center;
-      padding: 40px 10px;
-    }
-
     .btn-row {
       display: flex;
       gap: 8px;
@@ -228,17 +172,104 @@
       color: var(--text-sub);
       text-align: right;
     }
+
+    .empty {
+      font-size: 12px;
+      color: var(--text-sub);
+      text-align: center;
+      padding: 40px 10px;
+    }
+
+    /* 🔥 슬라이더 영역 */
+    .slider-wrap {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 20px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+    }
+
+    .slider {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 12px;
+    }
+
+    .slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .slide-card {
+      min-width: 88%;
+      flex-shrink: 0;
+      background: var(--card-soft);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      padding: 10px;
+      scroll-snap-align: center;
+    }
+
+    .slide-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slide-tag {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--text-sub);
+    }
+
+    .slide-card img {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      margin-top: 4px;
+    }
+
+    .slide-desc {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .slider-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 6px 0 10px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #475569;
+      transition: 0.15s;
+    }
+
+    .dot.active {
+      background: #f97316;
+      transform: scale(1.15);
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <div class="back-btn" onclick="goBack()">
-        ←
-      </div>
+      <div class="back-btn" onclick="goBack()">←</div>
       <div class="title-wrap">
         <div class="title">AI 스타일 결과</div>
-        <div class="sub">3가지 헤어 옵션 중 마음에 드는 스타일을 골라보세요.</div>
+        <div class="sub">카드를 옆으로 넘기면서 스타일 3가지를 비교해 보세요.</div>
       </div>
     </header>
 
@@ -246,10 +277,11 @@
       <section class="card" id="resultSection">
         <div class="card-title">추천 스타일 3가지</div>
         <p class="card-caption">
-          지금은 테스트 단계라 비슷한 이미지가 보일 수 있어요.  
-          그래도 전체적인 느낌을 확인해 보세요.
+          지금은 테스트 단계라 비슷한 사진이 보일 수 있지만,<br />
+          전체적인 스타일 느낌 위주로 봐주세요.
         </p>
 
+        <!-- 기준 사진 -->
         <div class="base-photo" id="basePhotoBlock" style="display:none;">
           <img id="basePhoto" alt="기준 사진" />
           <div class="base-photo-text">
@@ -258,22 +290,24 @@
           </div>
         </div>
 
-        <div id="stylesGrid" class="grid"></div>
+        <!-- 🔥 가로 슬라이드 -->
+        <div class="slider-wrap">
+          <div class="slider" id="slider"></div>
+        </div>
 
-        <div id="emptyState" class="empty" style="display:none;">
+        <!-- ● ● ● 인디케이터 -->
+        <div class="slider-indicator" id="indicator"></div>
+
+        <div class="empty" id="emptyState" style="display:none;">
           불러올 스타일 정보가 없습니다.<br />
           처음 화면에서 다시 스타일을 만들어 주세요.
         </div>
 
         <div class="btn-row">
-          <button class="btn-secondary" onclick="goBack()">
-            ↩ 다시 찍어보기
-          </button>
-          <button class="btn-primary" onclick="goProducts()">
-            🛍 추천 스타일 제품 보기
-          </button>
+          <button class="btn-secondary" onclick="goBack()">↩ 다시 시도</button>
+          <button class="btn-primary" onclick="goProducts()">🛍 스타일 제품 보기</button>
         </div>
-        <div class="foot">일부 링크에는 제휴 또는 광고가 포함될 수 있습니다.</div>
+        <div class="foot">일부 링크에는 제휴 상품이 포함될 수 있습니다.</div>
       </section>
     </main>
   </div>
@@ -287,50 +321,68 @@
       window.location.href = "/products.html";
     }
 
-    // sessionStorage에서 결과 불러오기
     const stylesJson = sessionStorage.getItem("hairStyles");
     const basePhoto = sessionStorage.getItem("basePhoto");
 
-    const stylesGrid = document.getElementById("stylesGrid");
+    const slider = document.getElementById("slider");
+    const indicator = document.getElementById("indicator");
     const emptyState = document.getElementById("emptyState");
     const basePhotoBlock = document.getElementById("basePhotoBlock");
     const basePhotoImg = document.getElementById("basePhoto");
+
+    if (basePhoto) {
+      basePhotoBlock.style.display = "flex";
+      basePhotoImg.src = basePhoto;
+    }
 
     if (!stylesJson) {
       emptyState.style.display = "block";
     } else {
       const styles = JSON.parse(stylesJson);
 
-      if (basePhoto) {
-        basePhotoBlock.style.display = "flex";
-        basePhotoImg.src = basePhoto;
-      }
-
       const defaultDescs = [
         "부드러운 인상을 살려주는 자연스러운 스타일입니다. 일상용으로 부담 없이 어울려요.",
         "조금 더 또렷한 인상을 주는 스타일입니다. 사진 촬영이나 약간 꾸미고 싶은 날에 추천!",
-        "조금 더 과감하고 분위기 있는 느낌의 스타일입니다. 스타일 변화를 주고 싶을 때 어울립니다."
+        "분위기 전환에 좋은 스타일입니다. 스타일 변화를 주고 싶을 때 어울립니다."
       ];
-
-      stylesGrid.innerHTML = "";
 
       styles.forEach((style, idx) => {
         const card = document.createElement("div");
-        card.className = "style-card";
+        card.className = "slide-card";
 
         const name = style.name || `스타일 옵션 ${idx + 1}`;
         const img = style.image;
         const desc = style.desc || defaultDescs[idx] || defaultDescs[defaultDescs.length - 1];
 
         card.innerHTML = `
-          <div class="style-header">
-            <div class="style-name">${name}</div>
-            <div class="style-tag">옵션 ${idx + 1}</div>
+          <div class="slide-title">
+            <span>${name}</span>
+            <span class="slide-tag">옵션 ${idx + 1}</span>
           </div>
-          <img class="style-img" src="${img}" alt="${name}" />
-          <p class="style-desc">${desc}</p>
+          <img src="${img}" alt="${name}" />
+          <div class="slide-desc">${desc}</div>
         `;
-        stylesGrid.appendChild(card);
+        slider.appendChild(card);
+
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        if (idx === 0) dot.classList.add("active");
+        indicator.appendChild(dot);
+      });
+
+      // 슬라이드 스크롤에 따라 인디케이터 변경
+      slider.addEventListener("scroll", () => {
+        const cards = slider.querySelectorAll(".slide-card");
+        if (!cards.length) return;
+
+        const scrollLeft = slider.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 18; // gap 포함
+
+        const index = Math.round(scrollLeft / cardWidth);
+
+        document.querySelectorAll(".dot").forEach((d, i) => {
+          d.classList.toggle("active", i === index);
+        });
       });
     }
   </script>
