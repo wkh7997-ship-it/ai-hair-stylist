@@ -14,11 +14,9 @@
       --border: rgba(255,255,255,0.18);
       --text: #f8fafc;
       --text-sub: #cbd5e1;
-      --primary: #a855f7;
-      --primary-strong: #9333ea;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, system-ui; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, system-ui; }
 
     body {
       background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -59,7 +57,6 @@
 
     .sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
 
-    /* 업로드 박스 */
     .upload-box {
       padding: 18px;
       border-radius: 20px;
@@ -115,7 +112,6 @@
       box-shadow: 0 4px 14px rgba(192,132,252,0.4);
     }
 
-    /* 버튼 */
     .go-btn {
       padding: 14px;
       border-radius: 18px;
@@ -133,7 +129,6 @@
       transform: scale(0.97);
     }
 
-    /* 로딩 오버레이 */
     #loadingOverlay {
       display: none;
       position: fixed;
@@ -147,8 +142,7 @@
     }
 
     .loader {
-      width: 46px;
-      height: 46px;
+      width: 46px; height: 46px;
       border: 5px solid rgba(255,255,255,0.3);
       border-top-color: var(--neon1);
       border-radius: 50%;
@@ -156,124 +150,119 @@
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
-
   </style>
 </head>
 <body>
 
-<!-- 로딩 -->
-<div id="loadingOverlay">
-  <div>
-    <div class="loader"></div>
-    <p style="margin-top:10px; font-size:14px;">AI가 스타일 생성 중...</p>
-  </div>
-</div>
-
-<div class="app">
-
-  <header>
-    <div class="title">AI 헤어 스타일러</div>
-    <div class="sub">네온 감성으로 더 새로워진 스타일 추천</div>
-  </header>
-
-  <!-- 이미지 업로드 -->
-  <div class="upload-box" onclick="document.getElementById('photoInput').click()">
-    <div style="font-size:15px;">📷 사진 업로드</div>
-    <img id="preview" class="img-preview" />
-    <input type="file" id="photoInput" accept="image/*" />
-  </div>
-
-  <!-- 성별 -->
-  <div>
-    <div class="section-title">성별</div>
-    <div class="select-group">
-      <div class="select-btn" data-value="female" onclick="toggleSelect(this,'gender')">여성</div>
-      <div class="select-btn" data-value="male" onclick="toggleSelect(this,'gender')">남성</div>
+  <div id="loadingOverlay">
+    <div>
+      <div class="loader"></div>
+      <p style="margin-top:10px; font-size:14px; color:var(--text)">AI가 스타일 생성 중...</p>
     </div>
   </div>
 
-  <!-- 머리 길이 -->
-  <div>
-    <div class="section-title">현재 머리 길이</div>
-    <div class="select-group">
-      <div class="select-btn" data-value="short" onclick="toggleSelect(this,'hair')">짧음</div>
-      <div class="select-btn" data-value="mid" onclick="toggleSelect(this,'hair')">중간</div>
-      <div class="select-btn" data-value="long" onclick="toggleSelect(this,'hair')">김</div>
+  <div class="app">
+    <header>
+      <div class="title">AI 헤어 스타일러</div>
+      <div class="sub">네온 감성으로 스타일 미리보기</div>
+    </header>
+
+    <div class="upload-box" onclick="document.getElementById('photoInput').click()">
+      <div style="font-size:15px;">📷 사진 업로드</div>
+      <img id="preview" class="img-preview" alt="미리보기" />
+      <input type="file" id="photoInput" accept="image/*" />
     </div>
+
+    <div>
+      <div class="section-title">성별</div>
+      <div class="select-group">
+        <div class="select-btn" data-value="female" onclick="toggleSelect(this,'gender')">여성</div>
+        <div class="select-btn" data-value="male" onclick="toggleSelect(this,'gender')">남성</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title">현재 머리 길이</div>
+      <div class="select-group">
+        <div class="select-btn" data-value="short" onclick="toggleSelect(this,'hair')">짧음</div>
+        <div class="select-btn" data-value="mid" onclick="toggleSelect(this,'hair')">중간</div>
+        <div class="select-btn" data-value="long" onclick="toggleSelect(this,'hair')">김</div>
+      </div>
+    </div>
+
+    <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
   </div>
 
-  <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
+  <script>
+    const API_BASE = "https://ai-hair-stylist.onrender.com";
 
-</div>
+    let uploadedImage = null;
+    let selectedGender = null;
+    let selectedHair = null;
 
-<script>
-let uploadedImage = null;
-let selectedGender = null;
-let selectedHair = null;
+    document.getElementById("photoInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        uploadedImage = ev.target.result;
+        const img = document.getElementById("preview");
+        img.src = uploadedImage;
+        img.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
 
-/* 이미지 미리보기 */
-document.getElementById("photoInput").addEventListener("change", (e)=>{
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = ev => {
-    uploadedImage = ev.target.result;
-    const img = document.getElementById("preview");
-    img.src = uploadedImage;
-    img.style.display = "block";
-  };
-  reader.readAsDataURL(file);
-});
-
-/* 선택 버튼 */
-function toggleSelect(btn, type){
-  const group = btn.parentNode.querySelectorAll(".select-btn");
-  group.forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-
-  if(type==="gender") selectedGender = btn.dataset.value;
-  if(type==="hair") selectedHair = btn.dataset.value;
-}
-
-/* AI 호출 */
-function goNext(){
-  if(!uploadedImage){ alert("사진을 업로드해주세요."); return; }
-  if(!selectedGender){ alert("성별을 선택해주세요."); return; }
-  if(!selectedHair){ alert("머리 길이를 선택해주세요."); return; }
-
-  sessionStorage.setItem("basePhoto", uploadedImage);
-
-  document.getElementById("loadingOverlay").style.display = "flex";
-
-  /* ⚠️ 중요: 모바일에서 반응 없음 현상 해결하려면 API URL 바꿔야 함 */
-  const API = ""; // ← Render URL 넣으면 모바일 즉시 작동
-
-  fetch(API + "/api/hair-preview", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      image_base64: uploadedImage,
-      gender: selectedGender,
-      base_style: selectedHair
-    })
-  })
-  .then(res=>res.json())
-  .then(data=>{
-    if(data.success){
-      sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
-      window.location.href="/result.html";
-    } else {
-      alert("AI 분석 실패");
-      document.getElementById("loadingOverlay").style.display="none";
+    function toggleSelect(btn, type) {
+      const group = btn.parentNode.querySelectorAll(".select-btn");
+      group.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      if (type === "gender") selectedGender = btn.dataset.value;
+      if (type === "hair") selectedHair = btn.dataset.value;
     }
-  })
-  .catch(()=>{
-    alert("서버 연결 오류");
-    document.getElementById("loadingOverlay").style.display="none";
-  });
-}
-</script>
+
+    function goNext() {
+      if (!uploadedImage) {
+        alert("사진을 업로드해주세요.");
+        return;
+      }
+      if (!selectedGender) {
+        alert("성별을 선택해주세요.");
+        return;
+      }
+      if (!selectedHair) {
+        alert("머리 길이를 선택해주세요.");
+        return;
+      }
+
+      sessionStorage.setItem("basePhoto", uploadedImage);
+      document.getElementById("loadingOverlay").style.display = "flex";
+
+      fetch(API_BASE + "/api/hair-preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          image_base64: uploadedImage,
+          gender: selectedGender,
+          base_style: selectedHair
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
+          window.location.href = "/result.html";
+        } else {
+          alert("AI 분석 실패");
+          document.getElementById("loadingOverlay").style.display = "none";
+        }
+      })
+      .catch(() => {
+        alert("서버 연결 오류");
+        document.getElementById("loadingOverlay").style.display = "none";
+      });
+    }
+  </script>
 
 </body>
 </html>
