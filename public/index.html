@@ -7,320 +7,216 @@
 
   <style>
     :root {
-      --bg1: #020617;
-      --bg2: #0f172a;
-      --card: rgba(15, 23, 42, 0.6);
       --accent: #f97316;
       --accent-strong: #ea580c;
-      --border: rgba(61, 77, 115, 0.45);
       --text: #f1f5f9;
       --text-sub: #94a3b8;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
 
     body {
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2) 65%);
-      color: var(--text);
-      padding: 14px;
-      display: flex;
-      justify-content: center;
+      background:#0f172a;
+      padding:16px;
+      display:flex;
+      justify-content:center;
+      color:var(--text);
     }
 
     .app {
-      width: 100%;
-      max-width: 480px;
-      border-radius: 28px;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(51, 65, 85, 0.8);
-      backdrop-filter: blur(18px);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      width:100%;
+      max-width:480px;
+      background:#1e293b;
+      border-radius:20px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
     }
 
-    header {
-      text-align: center;
-      padding: 6px 0 10px;
-    }
+    header { text-align:center; }
+    header .title { font-size:20px; font-weight:600; }
+    header .sub { font-size:12px; color:var(--text-sub); margin-top:4px; }
 
-    .app-title {
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .app-sub {
-      font-size: 12px;
-      margin-top: 4px;
-      color: var(--text-sub);
-    }
-
-    /* 업로드 영역 */
     .upload-box {
-      background: var(--card);
-      border: 1.2px solid var(--border);
-      border-radius: 20px;
-      padding: 16px 14px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .upload-icon {
-      font-size: 34px;
-      margin-bottom: 8px;
-      color: var(--accent);
-    }
-
-    .upload-text {
-      font-size: 13px;
-      margin-bottom: 8px;
+      background:#16203b;
+      border:1px solid #334155;
+      border-radius:18px;
+      padding:16px;
+      text-align:center;
+      cursor:pointer;
     }
 
     .img-preview {
-      width: 100%;
-      max-width: 160px;
-      margin: 8px auto;
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,255,0.7);
-      display: none;
-      object-fit: contain;
+      width:100%;
+      max-width:180px;
+      margin:10px auto 0;
+      border-radius:12px;
+      border:1px solid #64748b;
+      display:none;
+      object-fit:contain;
     }
+    #photoInput { display:none; }
 
-    #photoInput { display: none; }
-
-    .upload-btn {
-      margin-top: 8px;
-      padding: 8px 12px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,255,0.3);
-      color: var(--text);
-      font-size: 12px;
-    }
-
-    /* 선택 버튼 */
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 4px 0 6px;
-    }
-
-    .select-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    .section-title { font-size:14px; font-weight:600; margin-top:6px; }
+    .select-group { display:flex; flex-wrap:wrap; gap:10px; }
 
     .select-btn {
-      padding: 8px 14px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(148,163,255,0.25);
-      font-size: 13px;
-      color: var(--text-sub);
-      cursor: pointer;
-      transition: 0.15s;
+      padding:8px 14px;
+      border-radius:14px;
+      border:1px solid #475569;
+      background:#1e293b;
+      color:var(--text-sub);
+      cursor:pointer;
     }
 
     .select-btn.active {
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #fff;
-      border-color: transparent;
-      transform: scale(1.02);
+      background:linear-gradient(135deg, var(--accent), var(--accent-strong));
+      border:none;
+      color:#fff;
     }
 
-    /* 결과 보기 버튼 */
     .go-btn {
-      width: 100%;
-      padding: 13px;
-      font-size: 15px;
-      border: none;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #fff;
-      box-shadow: 0 10px 24px rgba(248,113,22,0.45);
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 10px;
+      padding:13px;
+      border-radius:16px;
+      border:none;
+      background:linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color:#fff;
+      font-size:15px;
+      cursor:pointer;
+      margin-top:4px;
     }
 
-    /* 🔥 로딩 오버레이 */
+    /* 로딩 오버레이 */
     #loadingOverlay {
-      display: none;         /* ← 핵심 수정 완료 */
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(5, 10, 25, 0.7);
-      backdrop-filter: blur(4px);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .loading-box {
-      background: rgba(15, 23, 42, 0.92);
-      padding: 20px 26px;
-      border-radius: 18px;
-      text-align: center;
-      border: 1px solid rgba(148,163,255,0.2);
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.55);
+      backdrop-filter:blur(4px);
+      z-index:9999;
+      justify-content:center;
+      align-items:center;
     }
 
     .loader {
-      border: 4px solid rgba(255,255,255,0.15);
-      border-top: 4px solid #f97316;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 0.9s linear infinite;
-      margin: 0 auto 10px;
+      width:40px; height:40px;
+      border:4px solid rgba(255,255,255,0.3);
+      border-top-color:var(--accent);
+      border-radius:50%;
+      animation:spin 1s linear infinite;
     }
 
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 13px;
-      color: #f1f5f9;
-    }
+    @keyframes spin { to { transform:rotate(360deg); } }
 
   </style>
 </head>
 <body>
 
-  <!-- 🔥 AI 로딩 스피너 -->
-  <div id="loadingOverlay">
-    <div class="loading-box">
-      <div class="loader"></div>
-      <div class="loading-text">AI가 스타일 생성 중입니다...</div>
+<!-- 로딩 -->
+<div id="loadingOverlay">
+  <div>
+    <div class="loader"></div>
+    <p style="margin-top:10px; font-size:13px;">AI가 스타일 생성 중...</p>
+  </div>
+</div>
+
+<div class="app">
+
+  <header>
+    <div class="title">AI 헤어 스타일러</div>
+    <div class="sub">셀카 한 장으로 어울리는 헤어스타일을 찾아보세요</div>
+  </header>
+
+  <div class="upload-box" onclick="document.getElementById('photoInput').click()">
+    <div>📷 사진 업로드</div>
+    <img id="preview" class="img-preview" />
+    <input type="file" id="photoInput" accept="image/*" />
+  </div>
+
+  <div>
+    <div class="section-title">성별</div>
+    <div class="select-group">
+      <div class="select-btn" data-value="female" onclick="toggleSelect(this,'gender')">여성</div>
+      <div class="select-btn" data-value="male" onclick="toggleSelect(this,'gender')">남성</div>
     </div>
   </div>
 
-  <div class="app">
-
-    <header>
-      <div class="app-title">AI 헤어 스타일러</div>
-      <div class="app-sub">셀카 한 장으로 어울리는 헤어스타일을 찾아보세요</div>
-    </header>
-
-    <!-- 사진 업로드 -->
-    <div class="upload-box" onclick="document.getElementById('photoInput').click()">
-      <div class="upload-icon">📷</div>
-      <div class="upload-text">얼굴이 잘 보이는 사진을 업로드해주세요</div>
-
-      <img id="preview" class="img-preview" />
-      <div class="upload-btn">사진 선택</div>
-
-      <input type="file" id="photoInput" accept="image/*" />
+  <div>
+    <div class="section-title">현재 머리 길이</div>
+    <div class="select-group">
+      <div class="select-btn" data-value="short" onclick="toggleSelect(this,'hair')">짧음</div>
+      <div class="select-btn" data-value="mid" onclick="toggleSelect(this,'hair')">중간</div>
+      <div class="select-btn" data-value="long" onclick="toggleSelect(this,'hair')">김</div>
     </div>
-
-    <!-- 성별 -->
-    <div>
-      <div class="section-title">성별</div>
-      <div class="select-group">
-        <div class="select-btn" data-value="female" onclick="toggleSelect(this, 'gender')">여성</div>
-        <div class="select-btn" data-value="male" onclick="toggleSelect(this, 'gender')">남성</div>
-      </div>
-    </div>
-
-    <!-- 머리 길이 -->
-    <div>
-      <div class="section-title">현재 머리 길이</div>
-      <div class="select-group">
-        <div class="select-btn" data-value="short" onclick="toggleSelect(this, 'hair')">단발 / 짧은 머리</div>
-        <div class="select-btn" data-value="mid" onclick="toggleSelect(this, 'hair')">중간 길이</div>
-        <div class="select-btn" data-value="long" onclick="toggleSelect(this, 'hair')">긴 머리</div>
-      </div>
-    </div>
-
-    <!-- 버튼 -->
-    <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
-
   </div>
 
-  <script>
-    let selectedGender = null;
-    let selectedHair = null;
-    let uploadedImage = null;
+  <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
 
-    /* 이미지 미리보기 */
-    document.getElementById("photoInput").addEventListener("change", function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (ev) {
-          uploadedImage = ev.target.result;
-          const preview = document.getElementById("preview");
-          preview.src = uploadedImage;
-          preview.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      }
-    });
+</div>
 
-    /* 버튼 선택 */
-    function toggleSelect(btn, type) {
-      const group = btn.parentNode.querySelectorAll(".select-btn");
-      group.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+<script>
+let uploadedImage = null;
+let selectedGender = null;
+let selectedHair = null;
 
-      if (type === "gender") selectedGender = btn.dataset.value;
-      if (type === "hair") selectedHair = btn.dataset.value;
+document.getElementById("photoInput").addEventListener("change", (e)=>{
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    uploadedImage = ev.target.result;
+    const img = document.getElementById("preview");
+    img.src = uploadedImage;
+    img.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+});
+
+function toggleSelect(btn, type){
+  const group = btn.parentNode.querySelectorAll(".select-btn");
+  group.forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+
+  if(type==="gender") selectedGender = btn.dataset.value;
+  if(type==="hair") selectedHair = btn.dataset.value;
+}
+
+function goNext(){
+  if(!uploadedImage){ alert("사진을 업로드해주세요."); return; }
+  if(!selectedGender){ alert("성별을 선택해주세요."); return; }
+  if(!selectedHair){ alert("머리 길이를 선택해주세요."); return; }
+
+  sessionStorage.setItem("basePhoto", uploadedImage);
+
+  document.getElementById("loadingOverlay").style.display = "flex";
+
+  fetch("/api/hair-preview", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      image_base64: uploadedImage,
+      gender: selectedGender,
+      base_style: selectedHair
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.success){
+      sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
+      window.location.href="/result.html";
+    } else {
+      alert("AI 분석 실패");
+      document.getElementById("loadingOverlay").style.display="none";
     }
-
-    /* AI 호출 */
-    function goNext() {
-      if (!uploadedImage) {
-        alert("사진을 업로드해주세요.");
-        return;
-      }
-      if (!selectedGender) {
-        alert("성별을 선택해주세요.");
-        return;
-      }
-      if (!selectedHair) {
-        alert("머리 길이를 선택해주세요.");
-        return;
-      }
-
-      sessionStorage.setItem("basePhoto", uploadedImage);
-
-      // 🔥 로딩 오버레이 켜기
-      document.getElementById("loadingOverlay").style.display = "flex";
-
-      fetch("/api/hair-preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          image_base64: uploadedImage,
-          gender: selectedGender,
-          base_style: selectedHair
-        })
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
-            window.location.href = "/result.html";
-          } else {
-            alert("AI 분석 실패!");
-            document.getElementById("loadingOverlay").style.display = "none";
-          }
-        })
-        .catch(() => {
-          alert("서버 연결 오류!");
-          document.getElementById("loadingOverlay").style.display = "none";
-        });
-    }
-  </script>
+  })
+  .catch(()=>{
+    alert("서버 연결 오류");
+    document.getElementById("loadingOverlay").style.display="none";
+  });
+}
+</script>
 
 </body>
 </html>
