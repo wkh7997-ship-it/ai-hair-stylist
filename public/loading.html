@@ -192,7 +192,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             image_base64: base64,
-            gender: "여성",       // 나중에 옵션 생기면 여기서 바꾸면 됨
+            gender: "여성",
             base_style: "중간 길이",
           }),
         });
@@ -203,18 +203,35 @@
         try {
           json = JSON.parse(text);
         } catch (e) {
-          // JSON 파싱 실패해도 그대로 둔다 (text 그대로 에러 메시지로 쓸 수 있게)
+          // JSON 파싱 실패해도 그대로 둔다
         }
 
         if (!res.ok) {
-          const msg =
-            (json && (json.message || json.error)) ||
-            text ||
-            ("서버 오류 코드: " + res.status);
-          throw new Error(msg);
+          // ⚠ 에러 우선순위: error → message → 원시 text → status 코드
+          let parts = [];
+
+          if (json) {
+            if (json.error) {
+              if (typeof json.error === "string") {
+                parts.push(json.error);
+              } else {
+                parts.push(JSON.stringify(json.error));
+              }
+            }
+            if (json.message) {
+              parts.push(json.message);
+            }
+          }
+
+          if (!json || parts.length === 0) {
+            if (text) parts.push(text);
+            else parts.push("서버 오류 코드: " + res.status);
+          }
+
+          throw new Error(parts.join("\n"));
         }
 
-        // 200인데 json이 없으면 방어적으로 비워둠
+        // 200인데 json이 없으면 방어적으로 빈 객체
         if (!json) {
           json = {};
         }
@@ -229,7 +246,7 @@
       } catch (err) {
         console.error(err);
         showError(
-          "AI 스타일 생성 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.\n\n" +
+          "AI 스타일 생성 중 오류가 발생했습니다.\n\n" +
           String(err.message || err)
         );
       }
