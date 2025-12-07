@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 스타일 분석 중...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #b388ff, #7c4dff, #5e35b1);
+      font-family: Pretendard, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .spinner {
+      width: 70px;
+      height: 70px;
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1.1s linear infinite;
+      margin: 0 auto 18px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .text {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 10px;
+    }
+  </style>
+
+  <script>
+    // 2~3초 후 자동 결과 페이지 이동
+    setTimeout(() => {
+      window.location.href = "result.html";
+    }, 2200);
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="spinner"></div>
+    <div class="text">AI가 나에게 어울리는 헤어스타일을 분석하고 있어요...</div>
+  </div>
+</body>
+</html>
