@@ -88,6 +88,7 @@
       border-radius: 14px;
       border: 1px solid rgba(148,163,255,0.7);
       display: none;
+      object-fit: contain;
     }
 
     #photoInput {
@@ -191,7 +192,7 @@
       </div>
     </div>
 
-    <!-- 결과 보기 버튼 -->
+    <!-- AI 분석 버튼 -->
     <button class="go-btn" onclick="goNext()">AI 스타일 3가지 보기</button>
 
   </div>
@@ -216,7 +217,7 @@
       }
     });
 
-    /* 선택 버튼 토글 */
+    /* 선택 버튼 */
     function toggleSelect(btn, type) {
       const group = btn.parentNode.querySelectorAll(".select-btn");
       group.forEach(b => b.classList.remove("active"));
@@ -226,7 +227,7 @@
       if (type === "hair") selectedHair = btn.dataset.value;
     }
 
-    /* 🔥 중요한 goNext 함수 */
+    /* AI 호출 */
     function goNext() {
       if (!uploadedImage) {
         alert("사진을 업로드해주세요.");
