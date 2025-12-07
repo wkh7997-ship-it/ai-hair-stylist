@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 헤어코치 - 추천 헤어케어 & 스타일링템</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #9b8bff;
+      --primary-strong: #5c6bff;
+      --bg-deep: #050616;
+      --bg-top: #11152b;
+      --glass: rgba(10, 14, 32, 0.96);
+      --text-main: #f9fafb;
+      --text-sub: #cbd5f5;
+      --border-soft: rgba(148, 163, 255, 0.35);
+      --tag-bg: rgba(15, 23, 42, 0.9);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background: radial-gradient(circle at top, #1d2545, #050616 60%);
+      color: var(--text-main);
+      padding: 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 520px;
+      background: var(--glass);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      padding: 20px 18px 28px;
+    }
+
+    .header {
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 255, 0.15);
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      color: var(--text-sub);
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    .back-btn {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-sub);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .back-btn span {
+      font-size: 14px;
+    }
+
+    .section-title {
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .section-caption {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .product-card {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, rgba(148, 163, 255, 0.08), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 255, 0.35);
+    }
+
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #020617;
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .product-name {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .product-desc {
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 2px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      color: var(--text-sub);
+    }
+
+    .product-btn {
+      margin-top: 4px;
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: fit-content;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.7);
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 10px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="title">
+        헤어케어 & 스타일링 추천템
+        <span class="title-badge">쿠팡 파트너스</span>
+      </div>
+      <p class="subtitle">
+        AI가 추천해 준 스타일을 더 예쁘게 유지하려면<br />
+        집에서 쓰는 케어/스타일링 제품이 중요해요.
+      </p>
+      <div class="back-btn" onclick="window.location.href='/'">
+        <span>←</span> 스타일 미리보기로 돌아가기
+      </div>
+    </div>
+
+    <!-- 섹션 1: 펌/염색 후 손상모 케어 -->
+    <div>
+      <div class="section-title">1. 펌·염색 후 손상모 케어</div>
+      <div class="section-caption">탄력 잃은 모발, 먼저 살려놓고 스타일링 해야 오래 가요.</div>
+      <div class="product-list">
+        <!-- 상품 1 -->
+        <div class="product-card">
+          <img
+            class="product-img"
+            src="여기에_상품_썸네일_URL_또는_임시이미지"
+            alt="손상모 전용 트리트먼트"
+          />
+          <div class="product-info">
+            <div>
+              <div class="product-name">손상모 전용 집중 트리트먼트</div>
+              <div class="product-desc">
+                미용실에서 펌·염색 후 “빗질이 안 된다”는 고객에게 추천하기 좋은 집에서 쓰는 집중 케어템.
+              </div>
+              <div class="product-tags">
+                <span class="tag">펌/염색 필수템</span>
+                <span class="tag">극손상 모발</span>
+              </div>
+            </div>
+            <a
+              class="product-btn"
+              href="여기에_쿠팡_파트너스_링크_붙이기"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              쿠팡에서 상품 보기
+            </a>
+          </div>
+        </div>
+
+        <!-- 상품 2 -->
+        <div class="product-card">
+          <img
+            class="product-img"
+            src="여기에_상품_썸네일_URL_또는_임시이미지"
+            alt="리브인 헤어 에센스"
+          />
+          <div class="product-info">
+            <div>
+              <div class="product-name">리브인 타입 헤어 에센스</div>
+              <div class="product-desc">
+                드라이 전에 바르면 열 손상을 줄여주고, 끝부분 푸석함을 잡아줘서 레이어드·단발 스타일에 잘 어울려요.
+              </div>
+              <div class="product-tags">
+                <span class="tag">열 보호</span>
+                <span class="tag">윤기/광택</span>
+              </div>
+            </div>
+            <a
+              class="product-btn"
+              href="여기에_쿠팡_파트너스_링크_붙이기"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              쿠팡에서 상품 보기
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 2: 여성 스타일링 -->
+    <div>
+      <div class="section-title">2. 여성 스타일링 · 볼륨 & 웨이브</div>
+      <div class="section-caption">레이어드 C컬, 히피펌, 단발 C컬 고객에게 바로 보여주기 좋은 제품들.</div>
+      <div class="product-list">
+        <!-- 상품 3 -->
+        <div class="product-card">
+          <img
+            class="product-img"
+            src="여기에_상품_썸네일_URL_또는_임시이미지"
+            alt="뿌리 볼륨 스프레이"
+          />
+          <div class="product-info">
+            <div>
+              <div class="product-name">뿌리 볼륨 스프레이</div>
+              <div class="product-desc">
+                정수리 볼륨이 쉽게 죽는 얇은 모발 고객에게 추천. 드라이 전에 뿌리 쪽에만 가볍게 사용.
+              </div>
+              <div class="product-tags">
+                <span class="tag">얇은 모발</span>
+                <span class="tag">정수리 볼륨</span>
+              </div>
+            </div>
+            <a
+              class="product-btn"
+              href="여기에_쿠팡_파트너스_링크_붙이기"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              쿠팡에서 상품 보기
+            </a>
+          </div>
+        </div>
+
+        <!-- 상품 4 -->
+        <div class="product-card">
+          <img
+            class="product-img"
+            src="여기에_상품_썸네일_URL_또는_임시이미지"
+            alt="컬 크림/무스"
+          />
+          <div class="product-info">
+            <div>
+              <div class="product-name">컬 유지 크림 / 무스</div>
+              <div class="product-desc">
+                히피펌, S컬, 젖은 머리 느낌을 좋아하는 고객에게 추천하기 좋은 컬 유지 스타일링 제품.
+              </div>
+              <div class="product-tags">
+                <span class="tag">히피펌</span>
+                <span class="tag">S컬</span>
+              </div>
+            </div>
+            <a
+              class="product-btn"
+              href="여기에_쿠팡_파트너스_링크_붙이기"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              쿠팡에서 상품 보기
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 섹션 3: 남성 스타일링 -->
+    <div>
+      <div class="section-title">3. 남성 스타일링 · 왁스 & 포마드</div>
+      <div class="section-caption">투블럭, 리젠트, 가일 컷 고객에게 바로 추천하기 좋은 제품.</div>
+      <div class="product-list">
+        <!-- 상품 5 -->
+        <div class="product-card">
+          <img
+            class="product-img"
+            src="여기에_상품_썸네일_URL_또는_임시이미지"
+            alt="하드 왁스"
+          />
+          <div class="product-info">
+            <div>
+              <div class="product-name">하드 타입 왁스</div>
+              <div class="product-desc">
+                짧은 숏컷, 리젠트 스타일에 쓰기 좋은 세팅력 강한 왁스. 남성 고객용 베이직 추천템.
+              </div>
+              <div class="product-tags">
+                <span class="tag">숏컷</span>
+                <span class="tag">리젠트</span>
+              </div>
+            </div>
+            <a
+              class="product-btn"
+              href="여기에_쿠팡_파트너스_링크_붙이기"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              쿠팡에서 상품 보기
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">
+      ※ 위 링크는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받을 수 있습니다.<br />
+      ※ 실제 상품 구성과 가격은 쿠팡 페이지에서 다시 한 번 확인해 주세요.
+    </p>
+  </div>
+</body>
+</html>

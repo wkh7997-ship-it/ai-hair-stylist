@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 헤어스타일 미리보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #9b8bff;
+      --primary-strong: #5c6bff;
+      --bg-deep: #050616;
+      --bg-top: #11152b;
+      --glass: rgba(10, 14, 32, 0.96);
+      --text-main: #f9fafb;
+      --text-sub: #cbd5f5;
+      --border-soft: rgba(148, 163, 255, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #1d2545, #050616 60%);
+      color: var(--text-main);
+      padding: 16px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      background: var(--glass);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      padding: 20px 18px 24px;
+    }
+
+    .header {
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 255, 0.15);
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      color: var(--text-sub);
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .section-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .card {
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      background: radial-gradient(circle at top, rgba(148, 163, 255, 0.08), rgba(15, 23, 42, 0.98));
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    .upload-area {
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 255, 0.6);
+      background: rgba(15, 23, 42, 0.8);
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .upload-area:hover {
+      background: rgba(30, 64, 175, 0.5);
+      border-color: var(--primary-strong);
+    }
+
+    .upload-icon {
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
+
+    .upload-main {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .upload-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    #photoInput {
+      display: none;
+    }
+
+    .preview-wrapper {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #originalPreview {
+      max-width: 150px;
+      max-height: 150px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      object-fit: cover;
+    }
+
+    .options-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      color: var(--text-sub);
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .chip.active {
+      background: var(--primary-strong);
+      color: #fff;
+      border-color: var(--primary-strong);
+    }
+
+    .main-button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.8);
+    }
+
+    .main-button:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .result-card {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .result-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .result-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+    }
+
+    .status-text {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+      min-height: 14px;
+    }
+
+    .link-button {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-sub);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="title">
+        AI 헤어스타일 미리보기
+        <span class="title-badge">살롱 전용 베타</span>
+      </div>
+      <p class="subtitle">고객 사진 한 장으로, 세 가지 스타일을 바로 보여주세요.</p>
+    </div>
+
+    <!-- 1. 사진 업로드 -->
+    <div class="card">
+      <p class="section-label">1단계 · 고객 사진 찍기</p>
+      <div id="uploadArea" class="upload-area">
+        <div class="upload-icon">📸</div>
+        <div class="upload-main">사진 선택 또는 촬영한 사진 업로드</div>
+        <div class="upload-sub">정면, 머리 전체가 보이게 찍으면 더 정확해요.</div>
+      </div>
+      <input type="file" id="photoInput" accept="image/*" />
+
+      <div class="preview-wrapper" id="previewWrapper" style="display:none;">
+        <img id="originalPreview" alt="고객 사진 미리보기" />
+      </div>
+    </div>
+
+    <!-- 2. 옵션 선택 -->
+    <div class="card">
+      <p class="section-label">2단계 · 기본 정보 선택</p>
+      <div class="options-row">
+        <div class="chip active" data-gender="female">여성</div>
+        <div class="chip" data-gender="male">남성</div>
+      </div>
+      <div class="options-row">
+        <div class="chip active" data-style="medium">중단발 기준</div>
+        <div class="chip" data-style="short">단발/숏컷</div>
+        <div class="chip" data-style="long">장발</div>
+      </div>
+    </div>
+
+    <!-- 3. 결과 -->
+    <button id="generateBtn" class="main-button" disabled>
+      <span id="btnLabel">AI로 헤어스타일 3개 보기 (테스트)</span>
+    </button>
+    <p class="status-text" id="statusText"></p>
+
+    <div class="card" id="resultCard" style="display:none;">
+      <p class="section-label">3단계 · 스타일 미리보기</p>
+      <div class="result-grid" id="resultGrid"></div>
+    </div>
+
+    <!-- 쿠팡 상품 페이지로 이동 -->
+    <button class="link-button" onclick="window.location.href='/products.html'">
+      💄 헤어케어/스타일링 추천 상품 보러가기
+    </button>
+  </div>
+
+  <script>
+    const uploadArea = document.getElementById("uploadArea");
+    const photoInput = document.getElementById("photoInput");
+    const previewWrapper = document.getElementById("previewWrapper");
+    const originalPreview = document.getElementById("originalPreview");
+    const generateBtn = document.getElementById("generateBtn");
+    const btnLabel = document.getElementById("btnLabel");
+    const statusText = document.getElementById("statusText");
+    const resultCard = document.getElementById("resultCard");
+    const resultGrid = document.getElementById("resultGrid");
+
+    let selectedImageBase64 = null;
+    let selectedGender = "female";
+    let selectedBaseStyle = "medium";
+
+    uploadArea.addEventListener("click", () => {
+      photoInput.click();
+    });
+
+    // 파일 선택 → 미리보기 + base64 저장
+    photoInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target.result; // data:image/...;base64,~~
+        selectedImageBase64 = dataUrl;
+        originalPreview.src = dataUrl;
+        previewWrapper.style.display = "flex";
+        generateBtn.disabled = false;
+        statusText.textContent = "사진이 준비되었습니다. AI 분석을 실행해 보세요.";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // 성별 옵션
+    document.querySelectorAll(".chip[data-gender]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip[data-gender]").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        selectedGender = chip.getAttribute("data-gender");
+      });
+    });
+
+    // 스타일 옵션
+    document.querySelectorAll(".chip[data-style]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip[data-style]").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        selectedBaseStyle = chip.getAttribute("data-style");
+      });
+    });
+
+    // AI 스타일 생성 버튼
+    generateBtn.addEventListener("click", async () => {
+      if (!selectedImageBase64) {
+        alert("먼저 고객 사진을 업로드해 주세요.");
+        return;
+      }
+
+      generateBtn.disabled = true;
+      btnLabel.textContent = "AI가 스타일 만드는 중...";
+      statusText.textContent = "잠시만 기다려 주세요.";
+
+      try {
+        const res = await fetch("/api/hair-preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image_base64: selectedImageBase64,
+            gender: selectedGender,
+            base_style: selectedBaseStyle
+          })
+        });
+
+        if (!res.ok) throw new Error("서버 응답 오류");
+
+        const data = await res.json();
+        if (!data.success || !data.styles) throw new Error("AI 결과가 올바르지 않습니다.");
+
+        resultGrid.innerHTML = "";
+        data.styles.forEach((item, idx) => {
+          const div = document.createElement("div");
+          div.className = "result-card";
+          div.innerHTML = `
+            <img class="result-img" src="${item.image}" alt="스타일 ${idx + 1}" />
+            <div class="result-label">${item.name}</div>
+          `;
+          resultGrid.appendChild(div);
+        });
+
+        resultCard.style.display = "block";
+        statusText.textContent = "스타일 3개가 준비되었습니다. (현재는 테스트용으로 같은 사진이 3번 나오는 상태입니다.)";
+      } catch (err) {
+        console.error(err);
+        statusText.textContent = "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+        alert("AI 스타일 생성 중 오류가 발생했습니다.");
+      } finally {
+        generateBtn.disabled = false;
+        btnLabel.textContent = "AI로 헤어스타일 3개 보기 (테스트)";
+      }
+    });
+  </script>
+</body>
+</html>
