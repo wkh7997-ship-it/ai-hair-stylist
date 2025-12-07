@@ -7,17 +7,19 @@
   <style>
     :root {
       --bg: #020617;
-      --card: #0b1220;
+      --card: rgba(11, 18, 32, 0.92);
       --accent: #f97316;
       --accent-soft: rgba(249, 115, 22, 0.12);
       --accent-strong: #ea580c;
-      --border: #1e293b;
+      --border: rgba(30, 41, 59, 0.9);
       --text-main: #f9fafb;
       --text-sub: #9ca3af;
       --chip-bg: #020617;
       --danger: #ef4444;
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       background: radial-gradient(circle at top, #020617, #020617 55%, #000);
@@ -27,17 +29,21 @@
       justify-content: center;
       padding: 16px 10px;
     }
+
+    /* 폰 화면 느낌 */
     .app {
       width: 100%;
       max-width: 480px;
-      background: #020617;
+      background: rgba(2, 6, 23, 0.96);
       border-radius: 28px;
-      border: 1px solid #1e293b;
+      border: 1px solid rgba(30, 64, 175, 0.55);
       box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
       display: flex;
       flex-direction: column;
-      padding: 14px 14px 10px;
+      padding: 14px 14px 12px;
+      backdrop-filter: blur(22px);
     }
+
     header {
       display: flex;
       align-items: center;
@@ -46,17 +52,36 @@
       border-bottom: 1px solid rgba(15, 23, 42, 0.9);
       margin-bottom: 10px;
     }
+
     .logo-circle {
-      width: 34px; height: 34px;
+      width: 34px;
+      height: 34px;
       border-radius: 12px;
       background: radial-gradient(circle at 30% 0, #f97316, #ec4899 55%, #6366f1);
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 18px;
       box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
     }
-    .title-wrap { display: flex; flex-direction: column; gap: 2px; }
-    .app-title { font-size: 17px; font-weight: 700; letter-spacing: 0.01em; }
-    .app-sub { font-size: 11px; color: var(--text-sub); }
+
+    .title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .app-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .app-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
     .tag-pill {
       margin-left: auto;
       font-size: 10px;
@@ -65,19 +90,42 @@
       border: 1px solid rgba(148, 163, 255, 0.5);
       color: var(--text-sub);
     }
-    main { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
     .card {
       background: var(--card);
-      border-radius: 20px;
+      border-radius: 22px;
       border: 1px solid var(--border);
       padding: 12px 11px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.65);
     }
+
     .card-header {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 8px;
     }
-    .card-title { font-size: 14px; font-weight: 600; }
-    .card-caption { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card-caption {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
     .step-pill {
       font-size: 10px;
       border-radius: 999px;
@@ -85,68 +133,150 @@
       border: 1px solid var(--border);
       color: var(--text-sub);
     }
+
+    /* 업로드 영역 크게 */
     .upload-box {
-      border-radius: 16px;
-      border: 1px dashed rgba(148, 163, 255, 0.7);
-      background: #020617;
-      padding: 14px 10px;
+      border-radius: 18px;
+      border: 1.5px dashed rgba(148, 163, 255, 0.8);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.95), #020617);
+      padding: 18px 10px;
       text-align: center;
       cursor: pointer;
-      margin-bottom: 10px;
-      transition: background 0.12s, border-color 0.12s;
-    }
-    .upload-box:hover { border-color: var(--accent); }
-    .upload-icon { font-size: 26px; margin-bottom: 4px; }
-    .upload-main { font-size: 13px; font-weight: 600; }
-    .upload-sub { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
-    #photoInput { display:none; }
-    .preview-block {
-      border-radius: 14px;
-      border: 1px solid #1e293b;
-      padding: 7px;
+      margin-bottom: 12px;
+      transition: background 0.12s, border-color 0.12s, transform 0.05s;
+      min-height: 140px;
       display: flex;
-      gap: 8px;
-      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
     }
-    .preview-label { font-size: 11px; color: var(--text-sub); min-width: 64px; }
+
+    .upload-box:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .upload-icon {
+      font-size: 26px;
+      margin-bottom: 2px;
+    }
+
+    .upload-main {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .upload-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    #photoInput { display: none; }
+
+    .preview-block {
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      padding: 8px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.18), rgba(15, 23, 42, 0.95));
+    }
+
+    .preview-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      min-width: 56px;
+    }
+
     #originalPreview {
-      width: 120px; height: 160px;
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 255, 0.8);
+      width: 150px;
+      height: 190px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 255, 0.9);
       object-fit: cover;
       display: none;
     }
-    #noPreviewText { font-size: 11px; color: var(--text-sub); }
-    .section-title { font-size: 12px; margin-top: 10px; margin-bottom: 4px; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    #noPreviewText {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .section-title {
+      font-size: 12px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* 넓게 꽉 차게 배치 */
+    .chip-row.equal-2 .chip {
+      flex: 1;
+      text-align: center;
+    }
+
+    .chip-row.equal-3 .chip {
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+    }
+
     .chip {
       font-size: 11px;
-      padding: 6px 11px;
+      padding: 7px 10px;
       border-radius: 999px;
       border: 1px solid #1e293b;
       background: var(--chip-bg);
       color: var(--text-sub);
       cursor: pointer;
+      white-space: nowrap;
     }
+
     .chip.active {
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
       border-color: var(--accent-strong);
       color: #fff;
+      box-shadow: 0 8px 20px rgba(248, 113, 22, 0.55);
     }
-    .hint-row { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+
+    .hint-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
     .hint-pill {
       font-size: 10px;
       padding: 4px 8px;
       border-radius: 999px;
       border: 1px solid #1f2937;
       color: var(--text-sub);
+      background: rgba(15, 23, 42, 0.96);
     }
+
     .status-line {
       font-size: 11px;
       color: var(--text-sub);
       margin-top: 6px;
       min-height: 14px;
     }
+
+    /* 결과 버튼을 하단 고정 느낌으로 */
+    .bottom-card {
+      margin-top: 10px;
+      position: sticky;
+      bottom: 8px;
+      z-index: 5;
+    }
+
     .main-btn {
       width: 100%;
       margin-top: 8px;
@@ -160,29 +290,49 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       box-shadow: 0 12px 28px rgba(248, 113, 22, 0.45);
       cursor: pointer;
       transition: transform 0.08s, box-shadow 0.08s, opacity 0.1s;
     }
+
     .main-btn:active {
       transform: translateY(1px);
       box-shadow: 0 6px 16px rgba(248, 113, 22, 0.35);
     }
+
     .main-btn:disabled {
-      opacity: 0.4;
+      opacity: 0.45;
       cursor: default;
       box-shadow: none;
       transform: none;
     }
+
     .ai-chip {
       font-size: 10px;
       padding: 3px 7px;
       border-radius: 999px;
       border: 1px solid #1e293b;
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.98);
       color: var(--text-sub);
     }
+
+    /* 로딩 스피너 */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -197,6 +347,7 @@
     </header>
 
     <main>
+      <!-- 상단: 사진 + 옵션 -->
       <section class="card">
         <div class="card-header">
           <div>
@@ -220,13 +371,13 @@
         </div>
 
         <div class="section-title">성별</div>
-        <div class="chip-row">
+        <div class="chip-row equal-2">
           <div class="chip active" data-gender="female">여성 고객</div>
           <div class="chip" data-gender="male">남성 고객</div>
         </div>
 
         <div class="section-title">현재 기장</div>
-        <div class="chip-row">
+        <div class="chip-row equal-3">
           <div class="chip active" data-style="medium">중단발 / 기본</div>
           <div class="chip" data-style="short">단발 · 숏컷</div>
           <div class="chip" data-style="long">긴 머리</div>
@@ -238,7 +389,8 @@
         </div>
       </section>
 
-      <section class="card">
+      <!-- 하단: 결과 버튼 (sticky) -->
+      <section class="card bottom-card">
         <div class="card-header">
           <div>
             <div class="card-title">AI 스타일 미리보기</div>
@@ -248,7 +400,9 @@
         </div>
 
         <button id="generateBtn" class="main-btn" disabled>
-          <span>✨</span> <span id="btnLabel">AI로 스타일 3가지 보기</span>
+          <span id="loadingSpinner" class="spinner" style="display:none;"></span>
+          <span id="btnIcon">✨</span>
+          <span id="btnLabel">AI로 스타일 3가지 보기</span>
         </button>
         <p id="statusText" class="status-line"></p>
       </section>
@@ -262,7 +416,9 @@
     const noPreviewText = document.getElementById("noPreviewText");
     const generateBtn = document.getElementById("generateBtn");
     const btnLabel = document.getElementById("btnLabel");
+    const btnIcon = document.getElementById("btnIcon");
     const statusText = document.getElementById("statusText");
+    const loadingSpinner = document.getElementById("loadingSpinner");
 
     let selectedImageBase64 = null;
     let selectedGender = "female";
@@ -312,8 +468,10 @@
       }
 
       generateBtn.disabled = true;
-      btnLabel.textContent = "AI가 스타일을 만드는 중입니다...";
-      statusText.textContent = "잠시만 기다려 주세요.";
+      btnLabel.textContent = "AI가 스타일을 분석 중입니다...";
+      btnIcon.style.display = "none";
+      loadingSpinner.style.display = "inline-block";
+      statusText.textContent = "헤어스타일 3가지를 만드는 중입니다. 잠시만 기다려 주세요.";
 
       try {
         const res = await fetch("/api/hair-preview", {
@@ -331,7 +489,7 @@
         const data = await res.json();
         if (!data.success || !data.styles) throw new Error("AI 결과가 올바르지 않습니다.");
 
-        // 👉 결과를 sessionStorage에 저장하고 다음 페이지로 이동
+        // 결과를 sessionStorage에 저장하고 다음 페이지로 이동
         sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
         sessionStorage.setItem("basePhoto", selectedImageBase64);
         window.location.href = "/result.html";
@@ -341,6 +499,8 @@
         alert("AI 스타일 생성 중 오류가 발생했습니다.");
         generateBtn.disabled = false;
         btnLabel.textContent = "AI로 스타일 3가지 보기";
+        btnIcon.style.display = "inline-block";
+        loadingSpinner.style.display = "none";
       }
     });
   </script>
