@@ -196,95 +196,64 @@
   </div>
 
   <script>
-    // 🔗 Render 서버 주소
-    const API_BASE = "https://ai-hair-stylist.onrender.com";
+  let uploadedImage = null;
+  let selectedGender = null;
+  let selectedHair = null;
 
-    let uploadedImage = null;
-    let selectedGender = null;
-    let selectedHair = null;
+  const API_BASE = "https://ai-hair-stylist.onrender.com"; // 나중에 진짜 AI 붙일 때 다시 사용
 
-    console.log("index.js 로드됨");
+  document.getElementById("photoInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-    document.getElementById("photoInput").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      uploadedImage = ev.target.result;
+      const img = document.getElementById("preview");
+      img.src = uploadedImage;
+      img.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+  });
 
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        uploadedImage = ev.target.result;
-        const img = document.getElementById("preview");
-        img.src = uploadedImage;
-        img.style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    });
+  function toggleSelect(btn, type) {
+    const group = btn.parentNode.querySelectorAll(".select-btn");
+    group.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
 
-    function toggleSelect(btn, type) {
-      const group = btn.parentNode.querySelectorAll(".select-btn");
-      group.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
+    if (type === "gender") selectedGender = btn.dataset.value;
+    if (type === "hair") selectedHair = btn.dataset.value;
+  }
 
-      if (type === "gender") selectedGender = btn.dataset.value;
-      if (type === "hair") selectedHair = btn.dataset.value;
+  function goNext() {
+    // 👉 이 alert은 이제 빼도 됨. 남겨두고 싶으면 놔둬도 되고.
+    // alert("버튼 클릭 감지 (goNext 실행됨)");
+
+    if (!uploadedImage) {
+      alert("사진을 업로드해주세요.");
+      return;
+    }
+    if (!selectedGender) {
+      alert("성별을 선택해주세요.");
+      return;
+    }
+    if (!selectedHair) {
+      alert("머리 길이를 선택해주세요.");
+      return;
     }
 
-    function goNext() {
-      // 🔥 1단계: 버튼이 실제로 눌렸는지 확인
-      alert("버튼 클릭 감지 (goNext 실행됨)");
+    // 원본 사진 저장
+    sessionStorage.setItem("basePhoto", uploadedImage);
 
-      if (!uploadedImage) {
-        alert("사진을 업로드해주세요.");
-        return;
-      }
-      if (!selectedGender) {
-        alert("성별을 선택해주세요.");
-        return;
-      }
-      if (!selectedHair) {
-        alert("머리 길이를 선택해주세요.");
-        return;
-      }
+    // 🔥 서버 없이 테스트용: 같은 사진으로 스타일 3개 만들어서 저장
+    const dummyStyles = [
+      { name: "스타일 1 (테스트)", image: uploadedImage },
+      { name: "스타일 2 (테스트)", image: uploadedImage },
+      { name: "스타일 3 (테스트)", image: uploadedImage },
+    ];
+    sessionStorage.setItem("hairStyles", JSON.stringify(dummyStyles));
 
-      sessionStorage.setItem("basePhoto", uploadedImage);
-
-      document.getElementById("loadingOverlay").style.display = "flex";
-
-      // 🔥 디버그 로그
-      console.log("API 호출 시작:", API_BASE + "/api/hair-preview");
-
-      fetch(API_BASE + "/api/hair-preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          image_base64: uploadedImage,
-          gender: selectedGender,
-          base_style: selectedHair
-        })
-      })
-        .then((res) => {
-          console.log("서버 응답 코드:", res.status);
-          if (!res.ok) {
-            alert("서버 응답 코드: " + res.status);
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log("서버 응답 데이터:", data);
-          if (data && data.success) {
-            sessionStorage.setItem("hairStyles", JSON.stringify(data.styles));
-            window.location.href = "/result.html";
-          } else {
-            alert("AI 분석 실패 또는 success=false");
-            document.getElementById("loadingOverlay").style.display = "none";
-          }
-        })
-        .catch((err) => {
-          console.error("fetch 에러:", err);
-          alert("fetch 에러: " + err.message);
-          document.getElementById("loadingOverlay").style.display = "none";
-        });
-    }
-  </script>
-
-</body>
-</html>
+    // 결과 페이지로 이동
+    window.location.href = "/result.html";
+  }
+</script>
