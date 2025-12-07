@@ -25,7 +25,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2) 65%, #000);
+      background: radial-gradient(circle at top, var(--bg1), var(--bg2) 65%);
       color: var(--text);
       padding: 14px;
       display: flex;
@@ -152,7 +152,7 @@
 
     /* 🔥 로딩 오버레이 */
     #loadingOverlay {
-      display: none;
+      display: none;         /* ← 핵심 수정 완료 */
       position: fixed;
       z-index: 9999;
       top: 0;
@@ -161,7 +161,6 @@
       height: 100%;
       background: rgba(5, 10, 25, 0.7);
       backdrop-filter: blur(4px);
-      display: flex;
       justify-content: center;
       align-items: center;
     }
@@ -197,7 +196,7 @@
 </head>
 <body>
 
-  <!-- 🔥 AI 작업 로딩 오버레이 -->
+  <!-- 🔥 AI 로딩 스피너 -->
   <div id="loadingOverlay">
     <div class="loading-box">
       <div class="loader"></div>
@@ -218,8 +217,8 @@
       <div class="upload-text">얼굴이 잘 보이는 사진을 업로드해주세요</div>
 
       <img id="preview" class="img-preview" />
-
       <div class="upload-btn">사진 선택</div>
+
       <input type="file" id="photoInput" accept="image/*" />
     </div>
 
@@ -232,7 +231,7 @@
       </div>
     </div>
 
-    <!-- 머리길이 -->
+    <!-- 머리 길이 -->
     <div>
       <div class="section-title">현재 머리 길이</div>
       <div class="select-group">
@@ -267,7 +266,7 @@
       }
     });
 
-    /* 선택 버튼 */
+    /* 버튼 선택 */
     function toggleSelect(btn, type) {
       const group = btn.parentNode.querySelectorAll(".select-btn");
       group.forEach(b => b.classList.remove("active"));
@@ -294,7 +293,7 @@
 
       sessionStorage.setItem("basePhoto", uploadedImage);
 
-      // 🔥 로딩 표시 ON
+      // 🔥 로딩 오버레이 켜기
       document.getElementById("loadingOverlay").style.display = "flex";
 
       fetch("/api/hair-preview", {
