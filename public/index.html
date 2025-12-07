@@ -32,18 +32,18 @@
       padding: 16px;
       background:
         radial-gradient(circle at top, #1f2937 0, transparent 55%),
-        radial-gradient(circle at bottom, #111827 0, #020617 65%);
+        radial-gradient(circle at bottom, #020617 0, #020617 65%);
       color: var(--text-main);
     }
 
-    .shell {
+    .app {
       width: 100%;
       max-width: 520px;
       border-radius: 24px;
       border: 1px solid var(--border-soft);
       background:
-        radial-gradient(circle at top left, rgba(148, 163, 255, 0.14), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.06), transparent 65%),
+        radial-gradient(circle at top left, rgba(148, 163, 255, 0.16), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.08), transparent 65%),
         var(--glass);
       box-shadow:
         0 24px 60px rgba(15, 23, 42, 0.9),
@@ -89,7 +89,7 @@
       line-height: 1.5;
     }
 
-    .section-card {
+    .card {
       border-radius: 20px;
       border: 1px solid rgba(148, 163, 255, 0.35);
       background: radial-gradient(circle at top, rgba(148, 163, 255, 0.12), rgba(15, 23, 42, 0.98));
@@ -161,39 +161,6 @@
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.9);
     }
 
-    .field-label {
-      font-size: 12px;
-      color: var(--text-sub);
-      margin: 8px 0 4px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      min-width: 60px;
-      padding: 7px 14px;
-      font-size: 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.5);
-      background: rgba(15, 23, 42, 0.96);
-      color: var(--text-sub);
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.08s;
-    }
-
-    .chip.active {
-      background: radial-gradient(circle at top, var(--primary), var(--primary-strong));
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.75);
-      transform: translateY(-1px);
-    }
-
     .primary-btn {
       width: 100%;
       margin-top: 12px;
@@ -233,20 +200,67 @@
       min-height: 14px;
     }
 
+    .result-card {
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      background: radial-gradient(circle at top, rgba(23, 37, 84, 0.8), rgba(15, 23, 42, 0.98));
+      padding: 12px;
+      margin-top: 14px;
+    }
+
+    .result-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 420px) {
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .result-item {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      background: rgba(15, 23, 42, 0.95);
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .result-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .result-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+    }
+
     .note {
       margin-top: 10px;
       font-size: 10px;
       color: var(--text-sub);
       line-height: 1.5;
-    }
-
-    .note + .note {
-      margin-top: 2px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
-  <div class="shell">
+  <div class="app">
     <!-- 헤더 -->
     <div class="header">
       <div class="title-row">
@@ -254,17 +268,15 @@
         <div class="badge">베타</div>
       </div>
       <p class="subtitle">
-        셀카 한 장으로 3가지 헤어스타일을 미리 확인해 보세요.<br />
-        미용실에서 고객 상담용으로 사용하기 좋은 전용 화면입니다.
+        사진 한 장만 올리면, AI가 3가지 스타일로 미리 보여드립니다.
       </p>
     </div>
 
     <!-- 1. 사진 선택 -->
-    <div class="section-card">
-      <div class="section-title">1. 사진 선택</div>
+    <div class="card">
+      <div class="section-title">1. 사진 업로드</div>
       <p class="section-sub">
-        앞모습이 잘 나온 사진을 촬영하거나, 갤러리에서 불러오세요.  
-        얼굴 전체가 정면에 가깝게 나오면 더 자연스럽게 보입니다.
+        앞모습이 잘 나온 셀카를 촬영하거나, 갤러리에서 불러와 주세요.
       </p>
 
       <div id="uploadBox" class="upload-box">
@@ -275,38 +287,25 @@
       <input type="file" id="photoInput" accept="image/*" />
 
       <div class="thumb-wrap" id="thumbWrap" style="display:none;">
-        <img id="thumbPreview" alt="고객 사진 미리보기" />
+        <img id="thumbPreview" alt="사진 미리보기" />
       </div>
     </div>
 
-    <!-- 2. 기본 정보 -->
-    <div class="section-card">
-      <div class="section-title">2. 기본 정보</div>
-
-      <div class="field-label">성별</div>
-      <div class="chip-row" id="genderRow">
-        <div class="chip active" data-gender="여성">여성</div>
-        <div class="chip" data-gender="남성">남성</div>
-      </div>
-
-      <div class="field-label" style="margin-top:10px;">현재 머리 길이</div>
-      <div class="chip-row" id="lengthRow">
-        <div class="chip active" data-length="짧음">짧음</div>
-        <div class="chip" data-length="중간">중간</div>
-        <div class="chip" data-length="김">김</div>
-      </div>
-    </div>
-
-    <button id="nextBtn" class="primary-btn" disabled>
-      <span>결과 페이지로 이동</span>
+    <!-- 실행 버튼 -->
+    <button id="generateBtn" class="primary-btn" disabled>
+      <span id="btnLabel">AI 스타일 3가지 보기</span>
     </button>
     <div id="status" class="status"></div>
 
+    <!-- 결과 영역 -->
+    <div class="result-card" id="resultCard" style="display:none;">
+      <div class="result-title">2. 스타일 미리보기</div>
+      <div class="result-grid" id="resultGrid"></div>
+    </div>
+
     <p class="note">
-      * 지금은 테스트 단계로, 실제 스타일 변화 대신 같은 사진이 3가지 스타일 슬롯에 들어갑니다.
-    </p>
-    <p class="note">
-      * 나중에 AI 헤어 변환 모델이 연결되면, 스타일별로 머리 모양이 실제로 달라집니다.
+      * 현재는 테스트 단계로, 업로드한 사진을 그대로 3개 스타일 슬롯에 표시합니다.<br />
+      * 나중에 실제 AI 헤어 변환 모델이 연결되면, 각 스타일마다 머리 모양이 다르게 바뀝니다.
     </p>
   </div>
 
@@ -315,14 +314,15 @@
     const photoInput = document.getElementById("photoInput");
     const thumbWrap = document.getElementById("thumbWrap");
     const thumbPreview = document.getElementById("thumbPreview");
-    const nextBtn = document.getElementById("nextBtn");
+    const generateBtn = document.getElementById("generateBtn");
+    const btnLabel = document.getElementById("btnLabel");
     const status = document.getElementById("status");
+    const resultCard = document.getElementById("resultCard");
+    const resultGrid = document.getElementById("resultGrid");
 
     let imageBase64 = null;
-    let gender = "여성";
-    let length = "짧음";
 
-    // 사진 업로드 UI
+    // 사진 업로드
     uploadBox.addEventListener("click", () => {
       photoInput.click();
     });
@@ -336,45 +336,63 @@
         imageBase64 = event.target.result;
         thumbPreview.src = imageBase64;
         thumbWrap.style.display = "flex";
-        nextBtn.disabled = false;
-        status.textContent = "사진이 준비되었습니다. 결과 페이지로 이동할 수 있습니다.";
+        generateBtn.disabled = false;
+        status.textContent = "사진이 준비되었습니다. AI 스타일을 생성해 보세요.";
       };
       reader.readAsDataURL(file);
     });
 
-    // 성별 선택
-    document.querySelectorAll("#genderRow .chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        document.querySelectorAll("#genderRow .chip").forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        gender = chip.dataset.gender;
-      });
-    });
-
-    // 길이 선택
-    document.querySelectorAll("#lengthRow .chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        document.querySelectorAll("#lengthRow .chip").forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        length = chip.dataset.length;
-      });
-    });
-
-    // 결과 페이지로 이동
-    nextBtn.addEventListener("click", () => {
+    // AI 스타일 생성
+    generateBtn.addEventListener("click", async () => {
       if (!imageBase64) {
         alert("먼저 사진을 업로드해 주세요.");
         return;
       }
 
-      // 🔹 여기 localStorage 키 이름은 네가 쓰고 있는 result.html 규칙에 맞게
-      // 필요하면 바꿔도 됨.
-      localStorage.setItem("hair_image_base64", imageBase64);
-      localStorage.setItem("hair_gender", gender);
-      localStorage.setItem("hair_length", length);
+      generateBtn.disabled = true;
+      btnLabel.textContent = "AI가 스타일 생성 중...";
+      status.textContent = "잠시만 기다려 주세요.";
 
-      status.textContent = "결과 페이지로 이동합니다...";
-      window.location.href = "result.html";
+      try {
+        const res = await fetch("/api/hair-preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            image_base64: imageBase64,
+            gender: "auto",     // 기본 정보 안 받으므로 더미 값
+            base_style: "auto"  // 나중에 필요하면 서버에서 활용 가능
+          })
+        });
+
+        if (!res.ok) throw new Error("서버 응답 오류");
+
+        const data = await res.json();
+        if (!data.success || !data.styles) {
+          throw new Error("AI 결과 형식이 올바르지 않습니다.");
+        }
+
+        // 결과 렌더링
+        resultGrid.innerHTML = "";
+        data.styles.forEach((item, idx) => {
+          const div = document.createElement("div");
+          div.className = "result-item";
+          div.innerHTML = `
+            <img class="result-img" src="${item.image}" alt="스타일 ${idx + 1}" />
+            <div class="result-label">${item.name}</div>
+          `;
+          resultGrid.appendChild(div);
+        });
+
+        resultCard.style.display = "block";
+        status.textContent = "테스트 결과가 준비되었습니다. (현재는 같은 사진이 3번 표시됩니다.)";
+      } catch (err) {
+        console.error(err);
+        status.textContent = "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+        alert("AI 스타일 생성 중 오류가 발생했습니다.");
+      } finally {
+        generateBtn.disabled = false;
+        btnLabel.textContent = "AI 스타일 3가지 보기";
+      }
     });
   </script>
 </body>
