@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 스타일 결과 보기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --card: #0b1220;
+      --accent: #f97316;
+      --border: #1e293b;
+      --text-main: #f9fafb;
+      --text-sub: #9ca3af;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000);
+      color: var(--text-main);
+      min-height: 100vh;
+      display:flex;
+      justify-content:center;
+      padding:16px 10px;
+    }
+    .app {
+      width:100%;
+      max-width:480px;
+      background:#020617;
+      border-radius:28px;
+      border:1px solid #1e293b;
+      box-shadow:0 18px 40px rgba(15,23,42,0.9);
+      padding:14px 14px 10px;
+      display:flex;
+      flex-direction:column;
+    }
+    header {
+      display:flex; align-items:center; gap:10px;
+      padding:6px 4px 10px;
+      border-bottom:1px solid rgba(15,23,42,0.9);
+      margin-bottom:10px;
+    }
+    .back-btn {
+      font-size:20px;
+      width:28px; height:28px;
+      border-radius:999px;
+      border:1px solid #1f2937;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      margin-right:4px;
+    }
+    .title-wrap { display:flex; flex-direction:column; gap:2px; }
+    .title { font-size:16px; font-weight:600; }
+    .sub { font-size:11px; color:var(--text-sub); }
+    main { flex:1; display:flex; flex-direction:column; gap:10px; }
+    .card {
+      background:var(--card);
+      border-radius:20px;
+      border:1px solid var(--border);
+      padding:12px 11px;
+    }
+    .card-title { font-size:14px; font-weight:600; margin-bottom:6px; }
+    .card-caption { font-size:11px; color:var(--text-sub); margin-bottom:10px; }
+
+    .base-photo {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .base-photo img {
+      width:80px; height:110px;
+      border-radius:10px;
+      border:1px solid rgba(148,163,255,0.7);
+      object-fit:cover;
+    }
+    .base-photo-text { font-size:11px; color:var(--text-sub); }
+
+    .grid {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .style-card {
+      background:#020617;
+      border-radius:16px;
+      border:1px solid #1f2937;
+      padding:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .style-name {
+      font-size:12px;
+      font-weight:500;
+    }
+    .style-img {
+      width:100%;
+      max-height:340px;
+      border-radius:12px;
+      border:1px solid rgba(148,163,255,0.8);
+      object-fit:cover;
+    }
+
+    .btn-row {
+      display:flex;
+      gap:8px;
+      margin-top:10px;
+    }
+    .btn-primary, .btn-secondary {
+      flex:1;
+      padding:10px;
+      border-radius:999px;
+      border:none;
+      font-size:13px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg, var(--accent), #ea580c);
+      color:#fff;
+    }
+    .btn-secondary {
+      background:#020617;
+      color:var(--text-sub);
+      border:1px solid #1f2937;
+    }
+    .foot {
+      margin-top:4px;
+      font-size:10px;
+      color:var(--text-sub);
+      text-align:right;
+    }
+    .empty {
+      font-size:12px;
+      color:var(--text-sub);
+      text-align:center;
+      margin-top:40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="back-btn" onclick="goBack()">
+        ←
+      </div>
+      <div class="title-wrap">
+        <div class="title">AI 스타일 결과</div>
+        <div class="sub">손님께 화면만 보여주고 스타일을 골라보세요.</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" id="resultSection">
+        <div class="card-title">추천 스타일 3가지</div>
+        <p class="card-caption">현재는 테스트 단계라 같은 사진이 반복될 수 있습니다.</p>
+
+        <div class="base-photo" id="basePhotoBlock" style="display:none;">
+          <img id="basePhoto" alt="원본 사진" />
+          <div class="base-photo-text">
+            현재 고객 사진입니다.<br/>
+            이 사진을 기준으로 스타일을 가상 적용했습니다.
+          </div>
+        </div>
+
+        <div id="stylesGrid" class="grid"></div>
+
+        <div id="emptyState" class="empty" style="display:none;">
+          불러올 스타일 정보가 없습니다.<br />
+          처음 화면에서 다시 스타일을 생성해 주세요.
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="goBack()">
+            다시 촬영 / 다시 선택
+          </button>
+          <button class="btn-primary" onclick="goProducts()">
+            🛍 추천 상품 보기
+          </button>
+        </div>
+        <div class="foot">* 쿠팡 파트너스 링크가 포함될 수 있습니다.</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = "/";
+    }
+    function goProducts() {
+      window.location.href = "/products.html";
+    }
+
+    // sessionStorage에서 결과 가져오기
+    const stylesJson = sessionStorage.getItem("hairStyles");
+    const basePhoto = sessionStorage.getItem("basePhoto");
+    const stylesGrid = document.getElementById("stylesGrid");
+    const emptyState = document.getElementById("emptyState");
+    const basePhotoBlock = document.getElementById("basePhotoBlock");
+    const basePhotoImg = document.getElementById("basePhoto");
+
+    if (!stylesJson) {
+      emptyState.style.display = "block";
+    } else {
+      const styles = JSON.parse(stylesJson);
+      stylesGrid.innerHTML = "";
+      styles.forEach((style, idx) => {
+        const card = document.createElement("div");
+        card.className = "style-card";
+        card.innerHTML = `
+          <div class="style-name">${style.name || `스타일 ${idx + 1}`}</div>
+          <img class="style-img" src="${style.image}" alt="스타일 ${idx + 1}" />
+        `;
+        stylesGrid.appendChild(card);
+      });
+      if (basePhoto) {
+        basePhotoBlock.style.display = "flex";
+        basePhotoImg.src = basePhoto;
+      }
+    }
+  </script>
+</body>
+</html>
