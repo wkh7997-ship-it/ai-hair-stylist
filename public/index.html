@@ -7,107 +7,155 @@
 
   <style>
     :root {
-      --accent: #f97316;
-      --accent-strong: #ea580c;
-      --text: #f1f5f9;
-      --text-sub: #94a3b8;
+      --neon1: #c084fc;
+      --neon2: #60a5fa;
+      --neon3: #fa709a;
+      --glass: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.18);
+      --text: #f8fafc;
+      --text-sub: #cbd5e1;
+      --primary: #a855f7;
+      --primary-strong: #9333ea;
     }
-    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
+
+    * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, system-ui; }
 
     body {
-      background:#0f172a;
-      padding:16px;
-      display:flex;
-      justify-content:center;
-      color:var(--text);
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      padding: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      color: var(--text);
     }
 
     .app {
-      width:100%;
-      max-width:480px;
-      background:#1e293b;
-      border-radius:20px;
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
+      width: 100%;
+      max-width: 480px;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(16px);
+      padding: 18px;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
     }
 
-    header { text-align:center; }
-    header .title { font-size:20px; font-weight:600; }
-    header .sub { font-size:12px; color:var(--text-sub); margin-top:4px; }
+    header {
+      text-align: center;
+      padding-bottom: 10px;
+    }
 
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+
+    /* 업로드 박스 */
     .upload-box {
-      background:#16203b;
-      border:1px solid #334155;
-      border-radius:18px;
-      padding:16px;
-      text-align:center;
-      cursor:pointer;
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .upload-box:hover {
+      background: rgba(255,255,255,0.12);
     }
 
     .img-preview {
-      width:100%;
-      max-width:180px;
-      margin:10px auto 0;
-      border-radius:12px;
-      border:1px solid #64748b;
-      display:none;
-      object-fit:contain;
+      width: 100%;
+      max-width: 180px;
+      margin: 10px auto 0;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      display: none;
+      object-fit: contain;
     }
-    #photoInput { display:none; }
 
-    .section-title { font-size:14px; font-weight:600; margin-top:6px; }
-    .select-group { display:flex; flex-wrap:wrap; gap:10px; }
+    #photoInput { display: none; }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .select-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
     .select-btn {
-      padding:8px 14px;
-      border-radius:14px;
-      border:1px solid #475569;
-      background:#1e293b;
-      color:var(--text-sub);
-      cursor:pointer;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: 0.2s;
     }
 
     .select-btn.active {
-      background:linear-gradient(135deg, var(--accent), var(--accent-strong));
-      border:none;
-      color:#fff;
+      background: linear-gradient(135deg, var(--neon1), var(--neon2));
+      color: white;
+      border: none;
+      box-shadow: 0 4px 14px rgba(192,132,252,0.4);
     }
 
+    /* 버튼 */
     .go-btn {
-      padding:13px;
-      border-radius:16px;
-      border:none;
-      background:linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color:#fff;
-      font-size:15px;
-      cursor:pointer;
-      margin-top:4px;
+      padding: 14px;
+      border-radius: 18px;
+      font-size: 16px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--neon3), var(--neon2));
+      color: white;
+      box-shadow: 0 8px 24px rgba(250,112,154,0.35);
+      transition: 0.2s;
+    }
+
+    .go-btn:active {
+      transform: scale(0.97);
     }
 
     /* 로딩 오버레이 */
     #loadingOverlay {
-      display:none;
-      position:fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      background:rgba(0,0,0,0.55);
-      backdrop-filter:blur(4px);
-      z-index:9999;
-      justify-content:center;
-      align-items:center;
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backdrop-filter: blur(4px);
+      background: rgba(0,0,0,0.55);
+      justify-content: center;
+      align-items: center;
     }
 
     .loader {
-      width:40px; height:40px;
-      border:4px solid rgba(255,255,255,0.3);
-      border-top-color:var(--accent);
-      border-radius:50%;
-      animation:spin 1s linear infinite;
+      width: 46px;
+      height: 46px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top-color: var(--neon1);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
     }
 
-    @keyframes spin { to { transform:rotate(360deg); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
   </style>
 </head>
@@ -117,7 +165,7 @@
 <div id="loadingOverlay">
   <div>
     <div class="loader"></div>
-    <p style="margin-top:10px; font-size:13px;">AI가 스타일 생성 중...</p>
+    <p style="margin-top:10px; font-size:14px;">AI가 스타일 생성 중...</p>
   </div>
 </div>
 
@@ -125,15 +173,17 @@
 
   <header>
     <div class="title">AI 헤어 스타일러</div>
-    <div class="sub">셀카 한 장으로 어울리는 헤어스타일을 찾아보세요</div>
+    <div class="sub">네온 감성으로 더 새로워진 스타일 추천</div>
   </header>
 
+  <!-- 이미지 업로드 -->
   <div class="upload-box" onclick="document.getElementById('photoInput').click()">
-    <div>📷 사진 업로드</div>
+    <div style="font-size:15px;">📷 사진 업로드</div>
     <img id="preview" class="img-preview" />
     <input type="file" id="photoInput" accept="image/*" />
   </div>
 
+  <!-- 성별 -->
   <div>
     <div class="section-title">성별</div>
     <div class="select-group">
@@ -142,6 +192,7 @@
     </div>
   </div>
 
+  <!-- 머리 길이 -->
   <div>
     <div class="section-title">현재 머리 길이</div>
     <div class="select-group">
@@ -160,6 +211,7 @@ let uploadedImage = null;
 let selectedGender = null;
 let selectedHair = null;
 
+/* 이미지 미리보기 */
 document.getElementById("photoInput").addEventListener("change", (e)=>{
   const file = e.target.files[0];
   if (!file) return;
@@ -174,6 +226,7 @@ document.getElementById("photoInput").addEventListener("change", (e)=>{
   reader.readAsDataURL(file);
 });
 
+/* 선택 버튼 */
 function toggleSelect(btn, type){
   const group = btn.parentNode.querySelectorAll(".select-btn");
   group.forEach(b=>b.classList.remove("active"));
@@ -183,6 +236,7 @@ function toggleSelect(btn, type){
   if(type==="hair") selectedHair = btn.dataset.value;
 }
 
+/* AI 호출 */
 function goNext(){
   if(!uploadedImage){ alert("사진을 업로드해주세요."); return; }
   if(!selectedGender){ alert("성별을 선택해주세요."); return; }
@@ -192,7 +246,10 @@ function goNext(){
 
   document.getElementById("loadingOverlay").style.display = "flex";
 
-  fetch("/api/hair-preview", {
+  /* ⚠️ 중요: 모바일에서 반응 없음 현상 해결하려면 API URL 바꿔야 함 */
+  const API = ""; // ← Render URL 넣으면 모바일 즉시 작동
+
+  fetch(API + "/api/hair-preview", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({
