@@ -12,8 +12,11 @@ const __dirname = path.resolve();
 app.use(cors());
 app.use(express.json({ limit: "20mb" })); // 사진 base64 받으려고 크게 설정
 
-// index.html, result.html, products.html 등을 같은 폴더에 둔 경우
-app.use(express.static(path.join(__dirname)));
+// ✅ 정적 파일 서빙
+// 1) 프로젝트 루트 (index.html, loading.html, result.html 등)
+// 2) public 폴더 (public/index.html 쓰는 경우까지 커버)
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Render 헬스체크용
 app.get("/health", (req, res) => {
@@ -28,7 +31,11 @@ const client = new OpenAI({
 // -------- AI 헤어 스타일 프리뷰 API --------
 app.post("/api/hair-preview", async (req, res) => {
   try {
-    const { image_base64, gender = "여성", base_style = "중간 길이" } = req.body || {};
+    const {
+      image_base64,
+      gender = "여성",
+      base_style = "중간 길이",
+    } = req.body || {};
 
     if (!image_base64) {
       return res.status(400).json({
@@ -46,7 +53,7 @@ app.post("/api/hair-preview", async (req, res) => {
       });
     }
 
-    // data:image/jpeg;base64,XXXXX 이런 앞부분 제거
+    // data:image/jpeg;base64,XXXXX 이런 앞부분 제거 (지금은 사용 안 해도 무방)
     const cleaned = image_base64.replace(/^data:image\/\w+;base64,/, "");
 
     // OpenAI 이미지 생성 호출
@@ -61,10 +68,9 @@ app.post("/api/hair-preview", async (req, res) => {
     const aiRes = await client.images.generate({
       model: "gpt-image-1",
       prompt,
-      n: 3,                     // 3가지 스타일
+      n: 3, // 3가지 스타일
       size: "1024x1024",
-      // 원본 사진을 참고하도록 입력 (지원되는 경우)
-      // image: cleaned,       // 추후 이미지 편집 모드 쓸 때 사용
+      // image: cleaned,   // 나중에 편집 모드 쓸 때 사용
       response_format: "b64_json",
     });
 
