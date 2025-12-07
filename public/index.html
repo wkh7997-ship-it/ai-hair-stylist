@@ -39,7 +39,7 @@
       background: rgba(15, 23, 42, 0.92);
       border: 1px solid rgba(51, 65, 85, 0.8);
       backdrop-filter: blur(18px);
-      padding: 16px; /* 조금 줄임 */
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -66,12 +66,12 @@
       background: var(--card);
       border: 1.2px solid var(--border);
       border-radius: 20px;
-      padding: 16px 14px; /* 🔥 줄임 */
+      padding: 16px 14px;
       text-align: center;
     }
 
     .upload-icon {
-      font-size: 34px; /* 조금 줄임 */
+      font-size: 34px;
       margin-bottom: 8px;
       color: var(--accent);
     }
@@ -83,7 +83,7 @@
 
     .img-preview {
       width: 100%;
-      max-width: 180px; /* 🔥 사진 크기 줄임 */
+      max-width: 180px;
       margin: 8px auto;
       border-radius: 14px;
       border: 1px solid rgba(148,163,255,0.7);
@@ -126,12 +126,14 @@
       font-size: 13px;
       color: var(--text-sub);
       cursor: pointer;
+      transition: 0.15s;
     }
 
     .select-btn.active {
       background: linear-gradient(135deg, var(--accent), var(--accent-strong));
       color: #fff;
       border-color: transparent;
+      transform: scale(1.02);
     }
 
     /* 결과 보기 버튼 */
@@ -146,7 +148,7 @@
       box-shadow: 0 10px 24px rgba(248,113,22,0.45);
       cursor: pointer;
       font-weight: 600;
-      margin-top: 10px; /* 🔥 더 위로 */
+      margin-top: 10px;
     }
 
   </style>
@@ -199,7 +201,7 @@
     let selectedHair = null;
     let uploadedImage = null;
 
-    // 이미지 미리보기
+    /* 이미지 미리보기 */
     document.getElementById("photoInput").addEventListener("change", function (e) {
       const file = e.target.files[0];
       if (file) {
@@ -214,6 +216,7 @@
       }
     });
 
+    /* 선택 버튼 토글 */
     function toggleSelect(btn, type) {
       const group = btn.parentNode.querySelectorAll(".select-btn");
       group.forEach(b => b.classList.remove("active"));
@@ -223,13 +226,18 @@
       if (type === "hair") selectedHair = btn.dataset.value;
     }
 
+    /* 🔥 중요한 goNext 함수 */
     function goNext() {
       if (!uploadedImage) {
         alert("사진을 업로드해주세요.");
         return;
       }
-      if (!selectedGender || !selectedHair) {
-        alert("성별과 머리 길이를 선택해주세요.");
+      if (!selectedGender) {
+        alert("성별을 선택해주세요.");
+        return;
+      }
+      if (!selectedHair) {
+        alert("머리 길이를 선택해주세요.");
         return;
       }
 
@@ -253,8 +261,11 @@
             alert("AI 분석에 실패했습니다.");
           }
         })
-        .catch(() => alert("서버 연결 오류"));
+        .catch(() => {
+          alert("서버 연결 오류가 발생했습니다.");
+        });
     }
   </script>
+
 </body>
 </html>
