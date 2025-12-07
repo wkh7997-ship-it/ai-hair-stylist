@@ -2,450 +2,427 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>AI 헤어 스타일 결과</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 헤어스타일 코치 - 결과</title>
   <style>
     :root {
-      --purple-top: #a855f7;
-      --purple-bottom: #ec4899;
-      --phone-bg: #f5f5f7;
-      --text-main: #0f172a;
-      --text-sub: #6b7280;
-      --accent: #6366f1;
-      --dark-bg: #020617;
+      --primary: #9b8bff;
+      --primary-strong: #6366f1;
+      --bg-deep: #050616;
+      --bg-top: #11152b;
+      --glass: rgba(10, 14, 32, 0.96);
+      --text-main: #f9fafb;
+      --text-sub: #cbd5f5;
+      --border-soft: rgba(148, 163, 255, 0.35);
+      --accent: #f97316;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 55%, #000 100%);
+      color: var(--text-main);
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       padding: 16px;
-      background: linear-gradient(180deg, var(--purple-top), var(--purple-bottom));
-      color: #ffffff;
-      font-size: 17px;          /* 전체 기본 글자 크기 ↑ */
-      line-height: 1.6;
-      letter-spacing: -0.02em;
     }
 
-    .frame {
+    .shell {
       width: 100%;
-      max-width: 520px;
-      border-radius: 28px;
-      background: rgba(15, 23, 42, 0.26);
+      max-width: 720px;
+      background: linear-gradient(145deg, #050816, #020617);
+      border-radius: 24px;
+      border: 1px solid var(--border-soft);
       box-shadow:
-        0 20px 60px rgba(15, 23, 42, 0.7),
-        0 0 0 1px rgba(148, 163, 255, 0.35);
-      padding: 20px 18px 22px;
-    }
-
-    .header-text {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .header-text h1 {
-      font-size: 1.7rem;   /* 약 27px */
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 6px;
-    }
-
-    .header-text p {
-      font-size: 0.98rem;  /* 약 16px */
-      opacity: 0.9;
-    }
-
-    /* “폰” 카드 */
-    .phone-wrap {
-      margin: 12px auto 16px;
-      max-width: 360px;
-      border-radius: 34px;
-      padding: 10px 10px 14px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(209,213,219,0.96));
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
-    }
-
-    .phone-inner {
-      border-radius: 26px;
-      background: var(--phone-bg);
-      padding: 10px 10px 14px;
+        0 24px 80px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(148, 163, 255, 0.12);
+      padding: 22px 20px 20px;
       position: relative;
       overflow: hidden;
     }
 
-    .phone-top-bar {
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.16), transparent 55%),
+        radial-gradient(circle at 100% 0%, rgba(192, 132, 252, 0.2), transparent 55%);
+      opacity: 0.9;
+      z-index: -1;
+    }
+
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      padding: 0 4px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    .phone-back {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      cursor: pointer;
-      background: #ffffff;
-      color: var(--text-sub);
-    }
-
-    .phone-chip {
-      padding: 5px 14px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      font-size: 0.8rem; /* 약 13px */
-      background: #ffffff;
-      color: var(--text-sub);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 600;
-    }
-
-    .phone-main-img-wrap {
-      border-radius: 22px;
-      overflow: hidden;
-      background: #e5e7eb;
-      aspect-ratio: 3 / 4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    #mainImage {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .phone-caption {
-      margin-top: 10px;
-      text-align: center;
-      color: var(--text-main);
-    }
-
-    .phone-caption-title {
-      font-size: 1.05rem;  /* 약 17px */
+    .title-main {
+      font-size: 20px;
       font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .phone-caption-sub {
-      font-size: 0.88rem;  /* 약 14px */
+    .chip-ai {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      background: radial-gradient(circle at 0 0, rgba(129, 140, 248, 0.35), transparent 55%);
+      color: #e5e7eb;
+    }
+
+    .subtitle {
+      font-size: 13px;
       color: var(--text-sub);
       margin-top: 2px;
     }
 
-    /* 썸네일 리스트 */
-    .thumb-strip {
-      max-width: 420px;
-      margin: 8px auto 0;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-
-    .thumb-item {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 2px solid transparent;
-      cursor: pointer;
-      background: rgba(15, 23, 42, 0.1);
-      display: flex;
+    .badge-user {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      background: radial-gradient(circle at 20% 0, rgba(129, 140, 248, 0.35), rgba(15, 23, 42, 0.9));
+      color: #e5e7eb;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
     }
 
-    .thumb-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
     }
 
-    .thumb-item.active {
-      border-color: #f97316;
-      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.5);
-    }
-
-    /* 인덱스/네비게이션 */
-    .index-row {
+    /* 로딩 영역 */
+    .loading-box {
       margin-top: 12px;
+      padding: 18px 14px;
+      border-radius: 18px;
+      border: 1px dashed rgba(148, 163, 255, 0.6);
+      background: rgba(15, 23, 42, 0.85);
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 14px;
-      font-size: 0.85rem;
-    }
-
-    .nav-btn {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.7);
-      padding: 7px 13px;
-      font-size: 0.85rem;
-      background: rgba(15, 23, 42, 0.35);
-      color: #e5e7eb;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
-
-    .index-dot-wrap {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(249, 250, 251, 0.3);
-    }
-
-    .dot.active {
-      width: 16px;
-      background: #ffffff;
-    }
-
-    .index-text {
-      font-size: 0.85rem;
-      opacity: 0.9;
-    }
-
-    /* 하단 버튼들 */
-    .bottom-buttons {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .btn-wide {
-      width: 100%;
-      border-radius: 999px;
-      padding: 12px;
-      font-size: 1rem;    /* 약 16px */
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      letter-spacing: -0.02em;
-    }
-
-    .btn-primary {
-      background: rgba(15, 23, 42, 0.93);
-      color: #e5e7eb;
-      border: 1px solid rgba(15, 23, 42, 1);
-    }
-
-    .btn-secondary {
-      background: rgba(15, 23, 42, 0.18);
-      color: #f9fafb;
-      border: 1px solid rgba(248, 250, 252, 0.45);
-    }
-
-    .helper-text {
-      margin-top: 10px;
-      font-size: 0.8rem;   /* 약 12.5px */
-      opacity: 0.86;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    /* 로딩 오버레이 */
-    .loading-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.7);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      color: var(--text-sub);
     }
 
     .spinner {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
-      border: 2px solid #e5e7eb;
-      border-top-color: var(--accent);
-      animation: spin 0.8s linear infinite;
+      border: 3px solid rgba(148, 163, 255, 0.25);
+      border-top-color: var(--primary-strong);
+      animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 400px) {
-      .frame {
-        padding: 18px 14px 20px;
-      }
+    .loading-text-main {
+      font-size: 14px;
+      font-weight: 600;
+    }
 
-      .phone-wrap {
-        max-width: 340px;
-      }
+    .loading-text-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
 
-      .header-text h1 {
-        font-size: 1.5rem;
+    /* 결과 영역 */
+    .result-wrapper {
+      margin-top: 14px;
+      display: none; /* 처음엔 숨김, JS에서 보여줌 */
+      gap: 12px;
+      display: grid;
+    }
+
+    .card {
+      border-radius: 20px;
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 255, 0.12), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      padding: 14px 12px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      color: var(--text-sub);
+    }
+
+    .summary {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-sub);
+      white-space: pre-line;
+    }
+
+    .list {
+      list-style: none;
+      margin-top: 6px;
+    }
+
+    .list li {
+      font-size: 13px;
+      color: var(--text-sub);
+      display: flex;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .list-bullet {
+      margin-top: 4px;
+      font-size: 10px;
+      color: rgba(129, 140, 248, 0.9);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .product-card {
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      padding: 8px 9px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .product-main {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .product-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .product-link {
+      font-size: 11px;
+      margin-top: 4px;
+      color: #a5b4fc;
+      text-decoration: underline;
+    }
+
+    .product-tag {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.12);
+      color: #e5e7eb;
+      align-self: flex-start;
+      white-space: nowrap;
+    }
+
+    .footer-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary-strong), #a855f7);
+      color: #f9fafb;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.55);
+    }
+
+    .btn-ghost {
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.4);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-sub);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .error-box {
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(239, 68, 68, 0.6);
+      background: rgba(127, 29, 29, 0.8);
+      padding: 10px 12px;
+      font-size: 12px;
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .result-wrapper {
+        grid-template-columns: 1.1fr 0.9fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="header-text">
-      <h1>AI 스타일 결과</h1>
-      <p>당신의 얼굴에 어울리는 3가지 스타일을 한 번에 확인해 보세요.</p>
-    </div>
+  <main class="shell">
+    <header>
+      <div>
+        <div class="title-main">
+          AI 헤어스타일 코치
+          <span class="chip-ai">hair preview</span>
+        </div>
+        <p class="subtitle">내 얼굴형·스타일에 맞춘 맞춤 헤어 추천</p>
+      </div>
 
-    <!-- “폰” 카드 -->
-    <div class="phone-wrap">
-      <div class="phone-inner">
-        <div class="phone-top-bar">
-          <div class="phone-back" id="backFromPhone">‹</div>
-          <div class="phone-chip">
-            <span>AI 스타일 미리보기</span>
-          </div>
-        </div>
-        <div class="phone-main-img-wrap">
-          <img id="mainImage" alt="헤어 스타일 미리보기" />
-          <div id="loadingOverlay" class="loading-overlay">
-            <div class="spinner"></div>
-            <div>AI가 스타일을 준비 중입니다...</div>
-          </div>
-        </div>
-        <div class="phone-caption">
-          <div id="styleTitle" class="phone-caption-title">스타일 1 (테스트용)</div>
-          <div id="styleSub" class="phone-caption-sub">1 / 3</div>
+      <div class="badge-user">
+        <span class="badge-dot"></span>
+        <span id="userSummary">내 설정 불러오는 중…</span>
+      </div>
+    </header>
+
+    <!-- ⏳ 로딩 박스 -->
+    <section id="loadingBox" class="loading-box">
+      <div class="spinner"></div>
+      <div>
+        <div class="loading-text-main">AI가 내 헤어 스타일을 분석 중이에요…</div>
+        <div class="loading-text-sub">
+          보통 3~7초 정도 걸려요. 잠시만 기다려주세요 ✨
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 썸네일 3개 -->
-    <div id="thumbStrip" class="thumb-strip"></div>
+    <!-- ⚠ 에러 박스 -->
+    <div id="errorBox" class="error-box"></div>
 
-    <!-- 인덱스 & 이전/다음 -->
-    <div class="index-row">
-      <button id="prevBtn" class="nav-btn">← 이전 스타일</button>
-      <div class="index-dot-wrap">
-        <div id="dot0" class="dot active"></div>
-        <div id="dot1" class="dot"></div>
-        <div id="dot2" class="dot"></div>
-      </div>
-      <button id="nextBtn" class="nav-btn">다음 스타일 →</button>
-    </div>
+    <!-- ✅ 결과 영역 -->
+    <section id="resultWrapper" class="result-wrapper">
+      <!-- 왼쪽: 요약 + 분석 -->
+      <article class="card">
+        <div class="card-title">
+          최종 추천 스타일
+          <span class="pill" id="styleTag">로딩 중…</span>
+        </div>
+        <p class="summary" id="summaryText">
+          잠시 후 AI가 어울리는 스타일과 이유를 설명해 줄 거예요.
+        </p>
 
-    <!-- 하단 버튼 -->
-    <div class="bottom-buttons">
-      <button class="btn-wide btn-primary" id="toProducts">
-        💄 헤어케어 · 스타일링 추천 상품 보러가기
+        <ul class="list" id="prosList"></ul>
+        <ul class="list" id="consList"></ul>
+      </article>
+
+      <!-- 오른쪽: 케어 팁 + 제품 -->
+      <article class="card">
+        <div class="card-title">
+          관리 팁 & 추천 제품
+          <span class="pill">쿠팡 파트너스</span>
+        </div>
+
+        <p class="summary" id="careText">
+          손질 난이도, 손상도, 스타일 유지 팁 등을 AI가 함께 안내해 줄 거예요.
+        </p>
+
+        <div class="products-grid" id="productsGrid"></div>
+      </article>
+    </section>
+
+    <footer class="footer-actions">
+      <button class="btn-ghost" type="button" id="btnBack">
+        ← 다른 옵션으로 다시 선택
       </button>
-      <button class="btn-wide btn-secondary" id="toHome">
-        처음으로 돌아가기
+      <button class="btn-primary" type="button" id="btnRetry">
+        스타일 다시 분석하기
       </button>
-    </div>
-
-    <div class="helper-text">
-      * 현재는 테스트 단계로, 같은 사진이 3가지 스타일로 표시됩니다.<br />
-      * 나중에 실제 AI 헤어 변환 모델이 연결되면, 스타일별로 머리 모양과 컬러가 달라집니다.
-    </div>
-  </div>
+    </footer>
+  </main>
 
   <script>
-    const mainImage = document.getElementById("mainImage");
-    const styleTitle = document.getElementById("styleTitle");
-    const styleSub = document.getElementById("styleSub");
-    const loadingOverlay = document.getElementById("loadingOverlay");
-    const thumbStrip = document.getElementById("thumbStrip");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const toHome = document.getElementById("toHome");
-    const toProducts = document.getElementById("toProducts");
-    const backFromPhone = document.getElementById("backFromPhone");
-
-    let stylesData = [];
-    let currentIndex = 0;
-
-    function updateView(index) {
-      if (!stylesData.length) return;
-      const style = stylesData[index];
-      mainImage.src = style.image;
-      styleTitle.textContent = style.name || `스타일 ${index + 1}`;
-      styleSub.textContent = `${index + 1} / ${stylesData.length}`;
-
-      for (let i = 0; i < stylesData.length; i++) {
-        const dot = document.getElementById("dot" + i);
-        if (dot) dot.classList.toggle("active", i === index);
+    // ✅ 1) index.html에서 저장해둔 폼 정보 가져오기
+    // index.html 쪽에서 localStorage.setItem("hairFormData", JSON.stringify({...})) 했다고 가정
+    function loadFormData() {
+      try {
+        const raw = localStorage.getItem("hairFormData");
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) {
+        return null;
       }
-
-      document.querySelectorAll(".thumb-item").forEach((el, i) => {
-        el.classList.toggle("active", i === index);
-      });
-
-      prevBtn.disabled = index === 0;
-      nextBtn.disabled = index === stylesData.length - 1;
     }
 
-    function renderThumbs() {
-      thumbStrip.innerHTML = "";
-      stylesData.forEach((s, i) => {
-        const div = document.createElement("div");
-        div.className = "thumb-item" + (i === 0 ? " active" : "");
-        div.innerHTML = `<img src="${s.image}" alt="스타일 ${i + 1}" />`;
-        div.addEventListener("click", () => {
-          currentIndex = i;
-          updateView(currentIndex);
-        });
-        thumbStrip.appendChild(div);
-      });
+    // ✅ 2) 상단 "내 설정" 표시용 텍스트 만들기
+    function buildUserSummary(data) {
+      if (!data) return "설정을 불러올 수 없어요";
+      const parts = [];
+
+      if (data.gender) parts.push(data.gender === "female" ? "여성" : "남성");
+      if (data.ageRange) parts.push(data.ageRange);
+      if (data.faceShape) parts.push(data.faceShape + " 얼굴형");
+      if (data.hairLength) parts.push(data.hairLength + " 헤어");
+
+      return parts.length ? parts.join(" · ") : "내 설정";
     }
 
-    async function loadStyles() {
-      // 인덱스 페이지에서 저장해 둔 값 읽어오기 (두 가지 케이스 모두 지원)
-      const baseImage =
-        localStorage.getItem("hair_image_base64") ||
-        localStorage.getItem("image_base64");
+    // ✅ 3) /api/hair-preview 호출
+    async function callHairPreview() {
+      const data = loadFormData();
+      const loadingBox = document.getElementById("loadingBox");
+      const resultWrapper = document.getElementById("resultWrapper");
+      const errorBox = document.getElementById("errorBox");
 
-      const gender =
-        localStorage.getItem("hair_gender") ||
-        localStorage.getItem("gender") ||
-        "여성";
+      // 초기 상태
+      loadingBox.style.display = "flex";
+      resultWrapper.style.display = "none";
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
 
-      const baseStyle =
-        localStorage.getItem("hair_length") ||
-        localStorage.getItem("base_style") ||
-        "짧음";
-
-      if (!baseImage) {
-        alert("먼저 사진을 업로드해 주세요.");
-        window.location.href = "index.html";
+      if (!data) {
+        loadingBox.style.display = "none";
+        errorBox.style.display = "block";
+        errorBox.textContent =
+          "이전 페이지에서 입력한 정보가 없습니다. 처음 화면으로 돌아가 다시 시도해 주세요.";
         return;
       }
 
@@ -453,61 +430,154 @@
         const res = await fetch("/api/hair-preview", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            image_base64: baseImage,
-            gender,
-            base_style: baseStyle
-          })
+          body: JSON.stringify(data),
         });
 
-        if (!res.ok) throw new Error("서버 응답 오류");
-
-        const data = await res.json();
-        if (!data.success || !data.styles) {
-          throw new Error("AI 결과가 올바르지 않습니다.");
+        if (!res.ok) {
+          throw new Error("서버 응답 오류: " + res.status);
         }
 
-        stylesData = data.styles;
-        loadingOverlay.style.display = "none";
-        renderThumbs();
-        updateView(0);
+        const json = await res.json();
+        renderResult(json);
+        loadingBox.style.display = "none";
+        resultWrapper.style.display = "grid";
       } catch (err) {
         console.error(err);
-        loadingOverlay.innerHTML = `
-          <div>오류가 발생했습니다.</div>
-          <div style="font-size:11px; margin-top:4px;">잠시 후 다시 시도해 주세요.</div>
-        `;
+        loadingBox.style.display = "none";
+        errorBox.style.display = "block";
+        errorBox.textContent =
+          "AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요. (" +
+          err.message +
+          ")";
       }
     }
 
-    // 네비게이션
-    prevBtn.addEventListener("click", () => {
-      if (currentIndex > 0) {
-        currentIndex -= 1;
-        updateView(currentIndex);
-      }
-    });
+    // ✅ 4) 응답 JSON을 화면에 뿌려주는 함수
+    // 서버에서 이런 형태로 보내준다고 가정:
+    // {
+    //   styleLabel: "여성 · 긴 머리 · 레이어드 C컬 펌",
+    //   summary: "~~~~",
+    //   pros: ["장점1", "장점2"],
+    //   cons: ["주의점1"],
+    //   careTips: "매일 드라이할 때는...",
+    //   products: [
+    //     {
+    //       name: "OOO 헤어 에센스",
+    //       description: "상한 모발에 좋은...",
+    //       tag: "모발손상 케어",
+    //       link: "https://link-to-coupang..."
+    //     },
+    //     ...
+    //   ]
+    // }
+    function renderResult(json) {
+      const styleTag = document.getElementById("styleTag");
+      const summaryText = document.getElementById("summaryText");
+      const careText = document.getElementById("careText");
+      const prosList = document.getElementById("prosList");
+      const consList = document.getElementById("consList");
+      const productsGrid = document.getElementById("productsGrid");
 
-    nextBtn.addEventListener("click", () => {
-      if (currentIndex < stylesData.length - 1) {
-        currentIndex += 1;
-        updateView(currentIndex);
-      }
-    });
+      styleTag.textContent = json.styleLabel || "맞춤 스타일";
 
-    toHome.addEventListener("click", () => {
+      summaryText.textContent =
+        json.summary ||
+        "내 얼굴형과 현재 모발 상태, 원하는 분위기를 기반으로 스타일을 추천했어요.";
+
+      // 장점/주의점 리스트 렌더링
+      prosList.innerHTML = "";
+      consList.innerHTML = "";
+
+      if (Array.isArray(json.pros) && json.pros.length) {
+        json.pros.forEach((item) => {
+          const li = document.createElement("li");
+          li.innerHTML =
+            '<span class="list-bullet">●</span><span>' +
+            escapeHtml(item) +
+            "</span>";
+          prosList.appendChild(li);
+        });
+      }
+
+      if (Array.isArray(json.cons) && json.cons.length) {
+        json.cons.forEach((item) => {
+          const li = document.createElement("li");
+          li.innerHTML =
+            '<span class="list-bullet">‼</span><span>' +
+            escapeHtml(item) +
+            "</span>";
+          consList.appendChild(li);
+        });
+      }
+
+      careText.textContent =
+        json.careTips ||
+        "손질 난이도, 펌 유지 기간, 집에서 관리하는 팁을 참고해서 스타일을 선택해 보세요.";
+
+      // 제품 카드 렌더링
+      productsGrid.innerHTML = "";
+
+      if (Array.isArray(json.products) && json.products.length) {
+        json.products.forEach((p) => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+
+          card.innerHTML =
+            '<div>' +
+            '<div class="product-main">' +
+            escapeHtml(p.name || "추천 제품") +
+            "</div>" +
+            '<div class="product-sub">' +
+            escapeHtml(p.description || "") +
+            "</div>" +
+            (p.link
+              ? '<a class="product-link" href="' +
+                encodeURI(p.link) +
+                '" target="_blank" rel="noopener noreferrer">쿠팡에서 보기 →</a>'
+              : "") +
+            "</div>" +
+            '<div class="product-tag">' +
+            escapeHtml(p.tag || "스타일 케어") +
+            "</div>";
+
+          productsGrid.appendChild(card);
+        });
+      } else {
+        const empty = document.createElement("div");
+        empty.className = "product-sub";
+        empty.textContent =
+          "현재 스타일에 맞는 제품을 찾는 중입니다. 잠시 후 다시 시도해 주세요.";
+        productsGrid.appendChild(empty);
+      }
+    }
+
+    // HTML escape 유틸
+    function escapeHtml(str) {
+      if (typeof str !== "string") return "";
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // ✅ 버튼 액션
+    document.getElementById("btnBack").addEventListener("click", () => {
+      // 처음 화면(옵션 선택 화면) 파일 이름에 맞춰서 수정
       window.location.href = "index.html";
     });
 
-    backFromPhone.addEventListener("click", () => {
-      window.location.href = "index.html";
+    document.getElementById("btnRetry").addEventListener("click", () => {
+      callHairPreview();
     });
 
-    toProducts.addEventListener("click", () => {
-      window.location.href = "products.html";
+    // ✅ 페이지 로드시 실행
+    document.addEventListener("DOMContentLoaded", () => {
+      const data = loadFormData();
+      document.getElementById("userSummary").textContent = buildUserSummary(data);
+      callHairPreview();
     });
-
-    loadStyles();
   </script>
 </body>
 </html>
