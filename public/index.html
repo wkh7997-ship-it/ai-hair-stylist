@@ -8,15 +8,20 @@
     :root {
       --primary: #9b8bff;
       --primary-strong: #5c6bff;
+      --accent-pink: #ff7ac3;
       --bg-deep: #050616;
       --bg-top: #11152b;
       --glass: rgba(10, 14, 32, 0.96);
       --text-main: #f9fafb;
       --text-sub: #cbd5f5;
-      --border-soft: rgba(148, 163, 255, 0.35);
+      --border-soft: rgba(148, 163, 255, 0.4);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
@@ -24,54 +29,72 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at top, #1d2545, #050616 60%);
-      color: var(--text-main);
       padding: 16px;
+      background:
+        radial-gradient(circle at top, #1f2937 0, transparent 55%),
+        radial-gradient(circle at bottom, #111827 0, #020617 65%);
+      color: var(--text-main);
     }
 
-    .app {
+    .shell {
       width: 100%;
       max-width: 520px;
-      background: var(--glass);
       border-radius: 24px;
       border: 1px solid var(--border-soft);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      background:
+        radial-gradient(circle at top left, rgba(148, 163, 255, 0.14), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(94, 234, 212, 0.06), transparent 65%),
+        var(--glass);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
       padding: 20px 18px 24px;
     }
 
     .header {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .title-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .title-main {
       font-size: 20px;
       font-weight: 700;
+      letter-spacing: -0.03em;
     }
 
     .title-main span {
-      color: #a5b4ff;
+      color: var(--primary);
     }
 
     .badge {
-      font-size: 11px;
       padding: 4px 10px;
+      font-size: 11px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 255, 0.5);
       background: rgba(15, 23, 42, 0.9);
       color: var(--text-sub);
+      white-space: nowrap;
     }
 
     .subtitle {
-      margin-top: 4px;
+      margin-top: 6px;
       font-size: 12px;
       color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .section-card {
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      background: radial-gradient(circle at top, rgba(148, 163, 255, 0.12), rgba(15, 23, 42, 0.98));
+      padding: 14px 14px 16px;
+      margin-bottom: 14px;
     }
 
     .section-title {
@@ -80,37 +103,31 @@
       margin-bottom: 6px;
     }
 
-    .section-label {
+    .section-sub {
       font-size: 12px;
       color: var(--text-sub);
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      line-height: 1.5;
     }
 
-    .card {
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 255, 0.35);
-      background: radial-gradient(circle at top, rgba(148, 163, 255, 0.08), rgba(15, 23, 42, 0.98));
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-
-    .upload-area {
-      border-radius: 14px;
-      border: 1px dashed rgba(148, 163, 255, 0.6);
-      background: rgba(15, 23, 42, 0.8);
-      padding: 14px;
+    .upload-box {
+      border-radius: 16px;
+      border: 1px dashed rgba(148, 163, 255, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 16px 12px;
       text-align: center;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition: border-color 0.2s, background 0.2s, transform 0.08s;
     }
 
-    .upload-area:hover {
-      background: rgba(30, 64, 175, 0.5);
+    .upload-box:hover {
       border-color: var(--primary-strong);
+      background: rgba(15, 23, 42, 0.98);
+      transform: translateY(-1px);
     }
 
     .upload-icon {
-      font-size: 26px;
+      font-size: 30px;
       margin-bottom: 4px;
     }
 
@@ -122,148 +139,191 @@
     .upload-sub {
       font-size: 11px;
       color: var(--text-sub);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     #photoInput {
       display: none;
     }
 
-    .preview-wrapper {
+    .thumb-wrap {
       margin-top: 10px;
       display: flex;
       justify-content: center;
     }
 
-    #originalPreview {
-      max-width: 150px;
-      max-height: 150px;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 255, 0.4);
+    #thumbPreview {
+      max-width: 190px;
+      max-height: 190px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 255, 0.55);
       object-fit: cover;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.9);
     }
 
-    .chips-row {
+    .field-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin: 8px 0 4px;
+    }
+
+    .chip-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 8px;
     }
 
     .chip {
+      min-width: 60px;
+      padding: 7px 14px;
       font-size: 12px;
-      padding: 6px 12px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.4);
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.96);
       color: var(--text-sub);
+      text-align: center;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.9);
+      transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.08s;
     }
 
     .chip.active {
-      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      background: radial-gradient(circle at top, var(--primary), var(--primary-strong));
       color: #fff;
       border-color: transparent;
+      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.75);
+      transform: translateY(-1px);
     }
 
-    .main-button {
+    .primary-btn {
       width: 100%;
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 13px;
       border-radius: 999px;
       border: none;
-      background: linear-gradient(135deg, #ff7ac3, #8f7bff);
-      color: #fff;
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent-pink), var(--primary-strong));
+      box-shadow: 0 16px 40px rgba(79, 70, 229, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.8);
+      cursor: pointer;
+      transition: filter 0.12s, transform 0.08s, box-shadow 0.12s;
     }
 
-    .main-button:disabled {
+    .primary-btn:disabled {
       opacity: 0.5;
       cursor: default;
       box-shadow: none;
+      transform: none;
+    }
+
+    .primary-btn:not(:disabled):active {
+      transform: translateY(1px);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.6);
+      filter: brightness(0.96);
+    }
+
+    .status {
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+      min-height: 14px;
     }
 
     .note {
       margin-top: 10px;
       font-size: 10px;
       color: var(--text-sub);
-      line-height: 1.4;
-      text-align: center;
+      line-height: 1.5;
+    }
+
+    .note + .note {
+      margin-top: 2px;
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="shell">
+    <!-- 헤더 -->
     <div class="header">
       <div class="title-row">
         <div class="title-main">AI 헤어 <span>스타일 체험</span></div>
         <div class="badge">베타</div>
       </div>
-      <p class="subtitle">셀카 한 장으로 3가지 헤어스타일을 미리 확인해 보세요.</p>
+      <p class="subtitle">
+        셀카 한 장으로 3가지 헤어스타일을 미리 확인해 보세요.<br />
+        미용실에서 고객 상담용으로 사용하기 좋은 전용 화면입니다.
+      </p>
     </div>
 
-    <!-- 1. 사진 업로드 -->
-    <div class="card">
+    <!-- 1. 사진 선택 -->
+    <div class="section-card">
       <div class="section-title">1. 사진 선택</div>
-      <p class="section-label">앞모습이 잘 나온 사진을 촬영하거나, 갤러리에서 불러오세요.</p>
-      <div id="uploadArea" class="upload-area">
+      <p class="section-sub">
+        앞모습이 잘 나온 사진을 촬영하거나, 갤러리에서 불러오세요.  
+        얼굴 전체가 정면에 가깝게 나오면 더 자연스럽게 보입니다.
+      </p>
+
+      <div id="uploadBox" class="upload-box">
         <div class="upload-icon">📷</div>
         <div class="upload-main">사진 업로드 / 촬영하기</div>
-        <div class="upload-sub">얼굴 전체가 정면에 가깝게 나오면 더 자연스럽게 보입니다.</div>
+        <div class="upload-sub">눌러서 카메라 또는 갤러리를 열 수 있습니다.</div>
       </div>
       <input type="file" id="photoInput" accept="image/*" />
 
-      <div class="preview-wrapper" id="previewWrapper" style="display:none;">
-        <img id="originalPreview" alt="사진 미리보기" />
+      <div class="thumb-wrap" id="thumbWrap" style="display:none;">
+        <img id="thumbPreview" alt="고객 사진 미리보기" />
       </div>
     </div>
 
     <!-- 2. 기본 정보 -->
-    <div class="card">
+    <div class="section-card">
       <div class="section-title">2. 기본 정보</div>
-      <div class="section-label">성별</div>
-      <div class="chips-row">
-        <div class="chip active" data-gender="female">여성</div>
-        <div class="chip" data-gender="male">남성</div>
+
+      <div class="field-label">성별</div>
+      <div class="chip-row" id="genderRow">
+        <div class="chip active" data-gender="여성">여성</div>
+        <div class="chip" data-gender="남성">남성</div>
       </div>
 
-      <div class="section-label" style="margin-top:10px;">현재 머리 길이</div>
-      <div class="chips-row">
-        <div class="chip active" data-style="short">짧음</div>
-        <div class="chip" data-style="medium">중간</div>
-        <div class="chip" data-style="long">김</div>
+      <div class="field-label" style="margin-top:10px;">현재 머리 길이</div>
+      <div class="chip-row" id="lengthRow">
+        <div class="chip active" data-length="짧음">짧음</div>
+        <div class="chip" data-length="중간">중간</div>
+        <div class="chip" data-length="김">김</div>
       </div>
     </div>
 
-    <button id="nextBtn" class="main-button" disabled>
-      결과 페이지로 이동
+    <button id="nextBtn" class="primary-btn" disabled>
+      <span>결과 페이지로 이동</span>
     </button>
+    <div id="status" class="status"></div>
 
     <p class="note">
-      * 지금은 테스트 단계로, 실제 스타일 변화 대신 같은 사진이 3가지 스타일 슬롯에 들어갑니다.<br />
-      * 나중에 AI 헤어 변환 모델이 연결되면, 스타일별로 머리 모양이 달라집니다.
+      * 지금은 테스트 단계로, 실제 스타일 변화 대신 같은 사진이 3가지 스타일 슬롯에 들어갑니다.
+    </p>
+    <p class="note">
+      * 나중에 AI 헤어 변환 모델이 연결되면, 스타일별로 머리 모양이 실제로 달라집니다.
     </p>
   </div>
 
   <script>
-    const uploadArea = document.getElementById("uploadArea");
+    const uploadBox = document.getElementById("uploadBox");
     const photoInput = document.getElementById("photoInput");
-    const previewWrapper = document.getElementById("previewWrapper");
-    const originalPreview = document.getElementById("originalPreview");
+    const thumbWrap = document.getElementById("thumbWrap");
+    const thumbPreview = document.getElementById("thumbPreview");
     const nextBtn = document.getElementById("nextBtn");
+    const status = document.getElementById("status");
 
-    let selectedImageBase64 = null;
-    let selectedGender = "female";
-    let selectedBaseStyle = "short";
+    let imageBase64 = null;
+    let gender = "여성";
+    let length = "짧음";
 
-    uploadArea.addEventListener("click", () => {
+    // 사진 업로드 UI
+    uploadBox.addEventListener("click", () => {
       photoInput.click();
     });
 
@@ -273,48 +333,48 @@
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const dataUrl = event.target.result;
-        selectedImageBase64 = dataUrl;
-        originalPreview.src = dataUrl;
-        previewWrapper.style.display = "flex";
+        imageBase64 = event.target.result;
+        thumbPreview.src = imageBase64;
+        thumbWrap.style.display = "flex";
         nextBtn.disabled = false;
+        status.textContent = "사진이 준비되었습니다. 결과 페이지로 이동할 수 있습니다.";
       };
       reader.readAsDataURL(file);
     });
 
-    document.querySelectorAll(".chip[data-gender]").forEach((chip) => {
+    // 성별 선택
+    document.querySelectorAll("#genderRow .chip").forEach((chip) => {
       chip.addEventListener("click", () => {
-        document.querySelectorAll(".chip[data-gender]").forEach((c) =>
-          c.classList.remove("active")
-        );
+        document.querySelectorAll("#genderRow .chip").forEach(c => c.classList.remove("active"));
         chip.classList.add("active");
-        selectedGender = chip.getAttribute("data-gender");
+        gender = chip.dataset.gender;
       });
     });
 
-    document.querySelectorAll(".chip[data-style]").forEach((chip) => {
+    // 길이 선택
+    document.querySelectorAll("#lengthRow .chip").forEach((chip) => {
       chip.addEventListener("click", () => {
-        document.querySelectorAll(".chip[data-style]").forEach((c) =>
-          c.classList.remove("active")
-        );
+        document.querySelectorAll("#lengthRow .chip").forEach(c => c.classList.remove("active"));
         chip.classList.add("active");
-        selectedBaseStyle = chip.getAttribute("data-style");
+        length = chip.dataset.length;
       });
     });
 
+    // 결과 페이지로 이동
     nextBtn.addEventListener("click", () => {
-      if (!selectedImageBase64) {
-        alert("먼저 사진을 선택해주세요.");
+      if (!imageBase64) {
+        alert("먼저 사진을 업로드해 주세요.");
         return;
       }
 
-      // 결과 페이지에서 쓸 값 저장
-      localStorage.setItem("hair_image_base64", selectedImageBase64);
-      localStorage.setItem("hair_gender", selectedGender);
-      localStorage.setItem("hair_base_style", selectedBaseStyle);
+      // 🔹 여기 localStorage 키 이름은 네가 쓰고 있는 result.html 규칙에 맞게
+      // 필요하면 바꿔도 됨.
+      localStorage.setItem("hair_image_base64", imageBase64);
+      localStorage.setItem("hair_gender", gender);
+      localStorage.setItem("hair_length", length);
 
-      // 결과 페이지로 이동
-      window.location.href = "/result.html";
+      status.textContent = "결과 페이지로 이동합니다...";
+      window.location.href = "result.html";
     });
   </script>
 </body>
