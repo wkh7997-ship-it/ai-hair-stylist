@@ -22,7 +22,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -31,6 +31,10 @@
       background:
         radial-gradient(circle at top left, rgba(255,255,255,0.18), transparent 55%),
         linear-gradient(180deg, var(--purple-top), var(--purple-mid), var(--purple-bottom));
+      font-size: 17px;          /* 전체 기본 크기 ↑ */
+      line-height: 1.6;
+      letter-spacing: -0.02em;  /* 살짝 모인 느낌 */
+      color: #f9fafb;
     }
 
     .frame {
@@ -57,25 +61,25 @@
 
     .header-text {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .header-text h1 {
-      font-size: 20px;
+      font-size: 1.7rem;   /* 약 27px */
       font-weight: 800;
       letter-spacing: -0.04em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .header-text p {
-      font-size: 12px;
-      opacity: 0.9;
-      line-height: 1.4;
+      font-size: 0.98rem;  /* 약 16px */
+      opacity: 0.92;
+      line-height: 1.5;
     }
 
     /* “폰” 카드 */
     .phone-wrap {
-      margin: 10px auto 14px;
+      margin: 12px auto 16px;
       max-width: 360px;
       border-radius: 36px;
       padding: 10px 10px 12px;
@@ -98,23 +102,25 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       padding: 0 4px;
     }
 
     .phone-chip-left {
-      padding: 4px 14px;
+      padding: 5px 16px;
       border-radius: 999px;
       border: 1px solid #e5e7eb;
-      font-size: 11px;
+      font-size: 0.8rem; /* 약 13px */
       background: #ffffff;
       color: var(--text-sub);
       box-shadow: 0 4px 10px rgba(148,163,184,0.5);
+      font-weight: 600;
     }
 
     .phone-chip-right {
-      font-size: 11px;
+      font-size: 0.8rem;
       color: var(--text-sub);
+      font-weight: 500;
     }
 
     .phone-main-img-wrap {
@@ -134,22 +140,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       color: var(--text-sub);
-      font-size: 12px;
+      font-size: 0.9rem; /* 약 14px */
       text-align: center;
       padding: 0 16px;
     }
 
     .upload-circle {
-      width: 52px;
-      height: 52px;
+      width: 56px;
+      height: 56px;
       border-radius: 999px;
       border: 2px dashed #d4d4d8;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 26px;
       background: #f9fafb;
     }
 
@@ -161,20 +167,20 @@
     }
 
     .guide-text {
-      margin-top: 6px;
-      font-size: 11px;
+      margin-top: 8px;
+      font-size: 0.85rem;  /* 약 13~14px */
       color: rgba(209, 213, 219, 0.98);
       text-align: center;
     }
 
     .primary-btn {
       width: 100%;
-      margin-top: 16px;
-      padding: 13px;
+      margin-top: 18px;
+      padding: 14px;
       border-radius: 999px;
       border: none;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 1.02rem;   /* 약 17px */
+      font-weight: 700;
       color: #fff;
       background: linear-gradient(135deg, #fb923c, #f97316, #6366f1);
       box-shadow:
@@ -185,6 +191,7 @@
       gap: 6px;
       cursor: pointer;
       transition: filter 0.12s, transform 0.08s, box-shadow 0.12s;
+      letter-spacing: -0.02em;
     }
 
     .primary-btn:disabled {
@@ -201,10 +208,10 @@
     }
 
     .note {
-      margin-top: 10px;
-      font-size: 10px;
+      margin-top: 12px;
+      font-size: 0.8rem;  /* 약 12.5px */
       opacity: 0.9;
-      line-height: 1.4;
+      line-height: 1.5;
       text-align: center;
       color: #e5e7eb;
     }
@@ -224,6 +231,10 @@
 
       .phone-wrap {
         max-width: 340px;
+      }
+
+      .header-text h1 {
+        font-size: 1.5rem;
       }
     }
   </style>
