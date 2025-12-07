@@ -5,174 +5,177 @@
   <title>AI 헤어 스타일 결과</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --primary: #9b8bff;
-      --primary-strong: #5c6bff;
-      --bg-deep: #050616;
-      --bg-top: #11152b;
-      --glass: rgba(10, 14, 32, 0.96);
-      --text-main: #f9fafb;
-      --text-sub: #cbd5f5;
-      --border-soft: rgba(148, 163, 255, 0.35);
-    }
+  :root {
+    --primary: #9b8bff;
+    --primary-strong: #5c6bff;
+    --bg-deep: #050616;
+    --bg-top: #11152b;
+    --glass: rgba(10, 14, 32, 0.96);
+    --text-main: #f9fafb;
+    --text-sub: #cbd5f5;
+    --border-soft: rgba(148, 163, 255, 0.35);
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle at top, #1d2545, #050616 60%);
-      color: var(--text-main);
-      padding: 16px;
-    }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at top, #1d2545, #050616 60%);
+    color: var(--text-main);
+    padding: 16px;
+  }
 
-    .app {
-      width: 100%;
-      max-width: 520px;
-      background: var(--glass);
-      border-radius: 24px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
-      padding: 20px 18px 24px;
-      position: relative;
-      overflow: hidden;
-    }
+  .app {
+    width: 100%;
+    max-width: 540px;
+    background: var(--glass);
+    border-radius: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+    padding: 20px 18px 24px;
+    position: relative;
+    overflow: hidden;
+  }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
 
-    .title-main {
-      font-size: 18px;
-      font-weight: 700;
-    }
+  .title-main {
+    font-size: 18px;
+    font-weight: 700;
+  }
 
-    .title-sub {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
+  .title-sub {
+    font-size: 11px;
+    color: var(--text-sub);
+  }
 
-    .spinner-wrapper {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(6px);
-      background: rgba(15, 23, 42, 0.6);
-      z-index: 10;
-    }
+  .spinner-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+    background: rgba(15, 23, 42, 0.6);
+    z-index: 10;
+  }
 
-    .spinner-circle {
-      width: 60px;
-      height: 60px;
-      border-radius: 999px;
-      border: 2px solid rgba(148, 163, 255, 0.4);
-      border-top-color: var(--primary-strong);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: spin 1s linear infinite;
-      position: relative;
-    }
+  .spinner-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 999px;
+    border: 2px solid rgba(148, 163, 255, 0.4);
+    border-top-color: var(--primary-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 1s linear infinite;
+    position: relative;
+  }
 
-    .spinner-text {
-      position: absolute;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
+  .spinner-text {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
 
-    .spinner-label {
-      margin-top: 10px;
-      font-size: 11px;
-      color: var(--text-sub);
-      text-align: center;
-    }
+  .spinner-label {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-align: center;
+  }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
-    .image-wrapper {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-    }
+  .image-wrapper {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+  }
 
-    .result-img {
-      width: 70%;
-      max-width: 260px;
-      aspect-ratio: 3 / 4;
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 255, 0.5);
-      object-fit: cover;
-      background: #020617;
-    }
+  /* ✅ 여기만 크게 변경됨 */
+  .result-img {
+    width: 100%;              /* 카드 가로 꽉 채우기 */
+    max-width: 480px;         /* 태블릿에서도 넉넉하게 */
+    aspect-ratio: 3 / 4;
+    border-radius: 20px;
+    border: 1px solid rgba(148, 163, 255, 0.5);
+    object-fit: cover;
+    background: #020617;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+  }
 
-    .style-name {
-      margin-top: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: center;
-    }
+  .style-name {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+  }
 
-    .pager {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--text-sub);
-      text-align: center;
-    }
+  .pager {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-align: center;
+  }
 
-    .controls {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
+  .controls {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
 
-    .nav-btn {
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.5);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      font-size: 12px;
-      cursor: pointer;
-    }
+  .nav-btn {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 255, 0.5);
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--text-main);
+    font-size: 12px;
+    cursor: pointer;
+  }
 
-    .nav-btn:disabled {
-      opacity: 0.4;
-      cursor: default;
-    }
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 
-    .bottom-links {
-      margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+  .bottom-links {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
 
-    .link-button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.5);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-sub);
-      font-size: 12px;
-      cursor: pointer;
-      text-align: center;
-    }
-  </style>
+  .link-button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 255, 0.5);
+    background: rgba(15, 23, 42, 0.9);
+    color: var(--text-sub);
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+  }
+</style>
+
 </head>
 <body>
   <div class="app">
