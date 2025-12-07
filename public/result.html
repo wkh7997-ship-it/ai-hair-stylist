@@ -22,7 +22,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -30,44 +30,47 @@
       padding: 16px;
       background: linear-gradient(180deg, var(--purple-top), var(--purple-bottom));
       color: #ffffff;
+      font-size: 17px;          /* 전체 기본 글자 크기 ↑ */
+      line-height: 1.6;
+      letter-spacing: -0.02em;
     }
 
     .frame {
       width: 100%;
       max-width: 520px;
       border-radius: 28px;
-      background: rgba(15, 23, 42, 0.2);
+      background: rgba(15, 23, 42, 0.26);
       box-shadow:
         0 20px 60px rgba(15, 23, 42, 0.7),
-        0 0 0 1px rgba(148, 163, 255, 0.3);
-      padding: 18px 18px 20px;
+        0 0 0 1px rgba(148, 163, 255, 0.35);
+      padding: 20px 18px 22px;
     }
 
     .header-text {
       text-align: center;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .header-text h1 {
-      font-size: 20px;
+      font-size: 1.7rem;   /* 약 27px */
       font-weight: 800;
       letter-spacing: -0.04em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .header-text p {
-      font-size: 12px;
+      font-size: 0.98rem;  /* 약 16px */
       opacity: 0.9;
     }
 
     /* “폰” 카드 */
     .phone-wrap {
-      margin: 12px auto 14px;
+      margin: 12px auto 16px;
       max-width: 360px;
       border-radius: 34px;
-      padding: 10px 10px 12px;
-      background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(209,213,219,0.9));
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
+      padding: 10px 10px 14px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.94), rgba(209,213,219,0.96));
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
     }
 
     .phone-inner {
@@ -82,33 +85,35 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       padding: 0 4px;
     }
 
     .phone-back {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       border: 1px solid #e5e7eb;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
       background: #ffffff;
+      color: var(--text-sub);
     }
 
     .phone-chip {
-      padding: 4px 10px;
+      padding: 5px 14px;
       border-radius: 999px;
       border: 1px solid #e5e7eb;
-      font-size: 11px;
+      font-size: 0.8rem; /* 약 13px */
       background: #ffffff;
       color: var(--text-sub);
       display: flex;
       align-items: center;
       gap: 4px;
+      font-weight: 600;
     }
 
     .phone-main-img-wrap {
@@ -129,18 +134,18 @@
     }
 
     .phone-caption {
-      margin-top: 8px;
+      margin-top: 10px;
       text-align: center;
       color: var(--text-main);
     }
 
     .phone-caption-title {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 1.05rem;  /* 약 17px */
+      font-weight: 700;
     }
 
     .phone-caption-sub {
-      font-size: 11px;
+      font-size: 0.88rem;  /* 약 14px */
       color: var(--text-sub);
       margin-top: 2px;
     }
@@ -148,7 +153,7 @@
     /* 썸네일 리스트 */
     .thumb-strip {
       max-width: 420px;
-      margin: 6px auto 0;
+      margin: 8px auto 0;
       display: flex;
       justify-content: center;
       gap: 10px;
@@ -156,8 +161,8 @@
     }
 
     .thumb-item {
-      width: 70px;
-      height: 70px;
+      width: 72px;
+      height: 72px;
       border-radius: 18px;
       overflow: hidden;
       border: 2px solid transparent;
@@ -181,22 +186,23 @@
 
     /* 인덱스/네비게이션 */
     .index-row {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 12px;
-      font-size: 12px;
+      gap: 14px;
+      font-size: 0.85rem;
     }
 
     .nav-btn {
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.6);
-      padding: 6px 12px;
-      font-size: 11px;
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      padding: 7px 13px;
+      font-size: 0.85rem;
       background: rgba(15, 23, 42, 0.35);
       color: #e5e7eb;
       cursor: pointer;
+      font-weight: 500;
     }
 
     .nav-btn:disabled {
@@ -206,66 +212,67 @@
 
     .index-dot-wrap {
       display: flex;
-      gap: 4px;
+      gap: 5px;
       align-items: center;
     }
 
     .dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 999px;
       background: rgba(249, 250, 251, 0.3);
     }
 
     .dot.active {
-      width: 14px;
+      width: 16px;
       background: #ffffff;
     }
 
     .index-text {
-      font-size: 12px;
+      font-size: 0.85rem;
       opacity: 0.9;
     }
 
     /* 하단 버튼들 */
     .bottom-buttons {
-      margin-top: 14px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 9px;
     }
 
     .btn-wide {
       width: 100%;
       border-radius: 999px;
-      padding: 11px;
-      font-size: 13px;
-      font-weight: 600;
+      padding: 12px;
+      font-size: 1rem;    /* 약 16px */
+      font-weight: 700;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      letter-spacing: -0.02em;
     }
 
     .btn-primary {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.93);
       color: #e5e7eb;
       border: 1px solid rgba(15, 23, 42, 1);
     }
 
     .btn-secondary {
-      background: rgba(15, 23, 42, 0.15);
+      background: rgba(15, 23, 42, 0.18);
       color: #f9fafb;
-      border: 1px solid rgba(248, 250, 252, 0.4);
+      border: 1px solid rgba(248, 250, 252, 0.45);
     }
 
     .helper-text {
-      margin-top: 6px;
-      font-size: 10px;
-      opacity: 0.85;
-      line-height: 1.4;
+      margin-top: 10px;
+      font-size: 0.8rem;   /* 약 12.5px */
+      opacity: 0.86;
+      line-height: 1.5;
       text-align: center;
     }
 
@@ -279,13 +286,13 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 0.85rem;
       color: var(--text-sub);
     }
 
     .spinner {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       border: 2px solid #e5e7eb;
       border-top-color: var(--accent);
@@ -298,11 +305,15 @@
 
     @media (max-width: 400px) {
       .frame {
-        padding: 16px 14px 18px;
+        padding: 18px 14px 20px;
       }
 
       .phone-wrap {
         max-width: 340px;
+      }
+
+      .header-text h1 {
+        font-size: 1.5rem;
       }
     }
   </style>
