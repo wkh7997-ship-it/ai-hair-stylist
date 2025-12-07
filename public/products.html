@@ -20,7 +20,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
@@ -30,6 +30,10 @@
         radial-gradient(circle at top left, rgba(255,255,255,0.16), transparent 55%),
         linear-gradient(180deg, var(--purple-top), var(--purple-mid), var(--purple-bottom));
       color: #f9fafb;
+
+      font-size: 17px;       /* 전체 기본 글자 크기 ↑ */
+      line-height: 1.6;
+      letter-spacing: -0.02em;
     }
 
     .frame {
@@ -56,41 +60,37 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .title-wrap h1 {
-      font-size: 19px;
+      font-size: 1.6rem;  /* 약 25–26px */
       font-weight: 800;
       letter-spacing: -0.04em;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .title-wrap p {
-      font-size: 11px;
+      font-size: 0.98rem;  /* 약 16px */
       opacity: 0.9;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 255, 0.7);
-  font-size: 12px;
-  font-weight: 600;
-  background: rgba(15,23,42,0.9);
-  box-shadow: 0 4px 14px rgba(15,23,42,0.7);
-  text-align: center;
-  line-height: 1.1;
-
-  /* 중요!!! 줄바꿈 허용 */
-  white-space: normal !important;
-}
-
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.7);
+      font-size: 0.9rem;    /* 약 14–15px */
+      font-weight: 700;
+      background: rgba(15,23,42,0.9);
+      box-shadow: 0 4px 14px rgba(15,23,42,0.7);
+      text-align: center;
+      line-height: 1.1;
+      white-space: normal !important;  /* 줄바꿈 허용 (추천 / 상품) */
     }
 
     .product-list {
@@ -106,7 +106,7 @@
     .product-card {
       display: flex;
       gap: 10px;
-      padding: 10px;
+      padding: 11px;
       border-radius: 20px;
       background: radial-gradient(circle at top left,
         rgba(37, 99, 235, 0.98),
@@ -116,9 +116,9 @@
     }
 
     .thumb {
-      width: 74px;
-      min-width: 74px;
-      height: 74px;
+      width: 78px;
+      min-width: 78px;
+      height: 78px;
       border-radius: 18px;
       background: radial-gradient(circle at top,
         rgba(248,250,252,0.96),
@@ -126,7 +126,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 0.78rem;
       color: #111827;
       text-align: center;
       padding: 6px;
@@ -148,8 +148,8 @@
     }
 
     .product-title {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 1rem;      /* 약 16px */
+      font-weight: 700;
       line-height: 1.4;
     }
 
@@ -157,44 +157,44 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .tag {
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 999px;
-      font-size: 10px;
+      font-size: 0.78rem;   /* 약 12–13px */
       background: var(--chip-bg);
       border: 1px solid rgba(129,140,248,0.6);
       white-space: nowrap;
     }
 
     .product-desc {
-      font-size: 11px;
+      font-size: 0.9rem;    /* 약 14–15px */
       opacity: 0.9;
-      line-height: 1.4;
-      margin-top: 2px;
+      line-height: 1.5;
+      margin-top: 3px;
     }
 
     .bottom-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 6px;
+      margin-top: 8px;
       gap: 6px;
     }
 
     .price {
-      font-size: 11.5px;
+      font-size: 0.9rem;    /* 약 14–15px */
       font-weight: 600;
     }
 
     .btn-link {
-      padding: 7px 11px;
+      padding: 8px 13px;
       border-radius: 999px;
       border: none;
-      font-size: 11px;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       color: #0b1120;
       background: linear-gradient(135deg,#fde68a,#fb7185);
       cursor: pointer;
@@ -203,16 +203,17 @@
       gap: 4px;
       box-shadow: 0 8px 20px rgba(15,23,42,0.95);
       flex-shrink: 0;
+      letter-spacing: -0.01em;
     }
 
     .btn-link span {
-      font-size: 13px;
+      font-size: 1rem;
       line-height: 0;
     }
 
     .footer-note {
-      margin-top: 10px;
-      font-size: 10px;
+      margin-top: 12px;
+      font-size: 0.8rem;   /* 약 12.5px */
       opacity: 0.9;
       line-height: 1.6;
       text-align: center;
@@ -220,25 +221,26 @@
     }
 
     .nav-row {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
       gap: 8px;
     }
 
     .nav-btn {
       flex: 1;
-      padding: 10px;
+      padding: 11px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,255,0.6);
       background: rgba(15,23,42,0.9);
       color: #e5e7eb;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 0.95rem;  /* 약 15px */
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
+      letter-spacing: -0.02em;
     }
 
     .nav-btn.primary {
@@ -248,7 +250,7 @@
     }
 
     .nav-btn span {
-      font-size: 14px;
+      font-size: 1.1rem;
       line-height: 0;
     }
 
@@ -258,11 +260,10 @@
       .inner { padding: 16px 10px 12px; }
       .product-card { padding: 9px; }
       .thumb {
-        width: 70px;
-        min-width: 70px;
-        height: 70px;
+        width: 72px;
+        min-width: 72px;
+        height: 72px;
       }
-      .product-desc { font-size: 10.5px; }
     }
   </style>
 </head>
