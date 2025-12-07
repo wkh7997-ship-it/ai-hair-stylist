@@ -2,102 +2,249 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>AI 헤어스타일 미리보기</title>
+  <title>AI 헤어스타일 미리보기 | Salon Pro</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --primary: #9b8bff;
-      --primary-strong: #5c6bff;
-      --bg-deep: #050616;
-      --bg-top: #11152b;
-      --glass: rgba(10, 14, 32, 0.96);
+      --primary: #f97316;
+      --primary-soft: rgba(248, 113, 113, 0.25);
+      --primary-strong: #ec4899;
+      --bg-deep: #050816;
+      --bg-top: #111827;
+      --glass: rgba(15, 23, 42, 0.96);
+      --glass-soft: rgba(17, 24, 39, 0.9);
       --text-main: #f9fafb;
-      --text-sub: #cbd5f5;
+      --text-sub: #9ca3af;
       --border-soft: rgba(148, 163, 255, 0.35);
+      --accent: #a855f7;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(236, 72, 153, 0.22), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.25), transparent 55%),
+        linear-gradient(145deg, #020617, #020617 40%, #020617);
+      color: var(--text-main);
       display: flex;
       justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle at top, #1d2545, #050616 60%);
-      color: var(--text-main);
       padding: 16px;
     }
 
-    .app {
+    .shell {
       width: 100%;
-      max-width: 520px;
-      background: var(--glass);
-      border-radius: 24px;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
-      padding: 20px 18px 24px;
+      max-width: 1120px;
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 255, 0.35);
+      background:
+        radial-gradient(circle at top, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
+      box-shadow:
+        0 30px 80px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9) inset;
+      padding: 18px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      backdrop-filter: blur(24px);
     }
 
-    .header {
-      margin-bottom: 16px;
-    }
+    /* 상단 헤더 */
 
-    .title {
-      font-size: 20px;
-      font-weight: 700;
+    .top-bar {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(31, 41, 55, 0.9);
     }
 
-    .title-badge {
-      font-size: 11px;
-      padding: 2px 8px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 25% 0%, #f97316, #ec4899 55%, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+      font-size: 18px;
+    }
+
+    .brand-text-main {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .brand-pill {
+      font-size: 10px;
+      padding: 2px 7px;
       border-radius: 999px;
-      background: rgba(148, 163, 255, 0.15);
-      border: 1px solid rgba(148, 163, 255, 0.5);
+      border: 1px solid rgba(248, 250, 252, 0.35);
+      background: rgba(15, 23, 42, 0.8);
       color: var(--text-sub);
     }
 
-    .subtitle {
-      margin-top: 4px;
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .step-pill span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.06);
+      font-size: 10px;
+    }
+
+    /* 메인 영역: 좌/우 컬럼 */
+
+    .main-area {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .shell {
+        padding: 16px 12px 18px;
+      }
+      .main-area {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      border-radius: 22px;
+      border: 1px solid rgba(40, 51, 80, 0.95);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.99));
+      padding: 12px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(244, 114, 182, 0.12), transparent 55%);
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .panel-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .panel-title {
       font-size: 13px;
+      font-weight: 600;
+    }
+
+    .panel-caption {
+      font-size: 11px;
       color: var(--text-sub);
     }
 
-    .section-label {
-      font-size: 12px;
+    .badge-soft {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      background: rgba(15, 23, 42, 0.9);
       color: var(--text-sub);
-      margin-bottom: 6px;
     }
 
-    .card {
+    /* 업로드 카드 */
+
+    .upload-card {
       border-radius: 16px;
-      border: 1px solid rgba(148, 163, 255, 0.35);
-      background: radial-gradient(circle at top, rgba(148, 163, 255, 0.08), rgba(15, 23, 42, 0.98));
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
       padding: 10px;
-      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .upload-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     .upload-area {
       border-radius: 14px;
-      border: 1px dashed rgba(148, 163, 255, 0.6);
-      background: rgba(15, 23, 42, 0.8);
-      padding: 14px;
+      border: 1px dashed rgba(148, 163, 255, 0.7);
+      background: rgba(15, 23, 42, 0.92);
+      padding: 14px 10px;
       text-align: center;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition: background 0.18s, border-color 0.18s, transform 0.12s;
     }
 
     .upload-area:hover {
-      background: rgba(30, 64, 175, 0.5);
+      background: rgba(30, 64, 175, 0.62);
       border-color: var(--primary-strong);
+      transform: translateY(-1px);
     }
 
     .upload-icon {
       font-size: 26px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .upload-main {
@@ -115,50 +262,122 @@
       display: none;
     }
 
-    .preview-wrapper {
-      margin-top: 10px;
+    .preview-frame {
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+      padding: 6px;
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
       justify-content: center;
     }
 
+    .preview-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      width: 100%;
+      text-align: left;
+      padding-left: 2px;
+    }
+
     #originalPreview {
-      max-width: 150px;
-      max-height: 150px;
+      max-width: 100%;
+      max-height: 210px;
       border-radius: 12px;
-      border: 1px solid rgba(148, 163, 255, 0.4);
+      border: 1px solid rgba(148, 163, 255, 0.6);
       object-fit: cover;
+    }
+
+    /* 옵션 칩 */
+
+    .options-section {
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.98));
+      padding: 10px;
+      margin-top: 4px;
+    }
+
+    .options-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 4px;
     }
 
     .options-row {
       display: flex;
-      gap: 8px;
-      margin-top: 8px;
       flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
     }
 
     .chip {
       font-size: 11px;
       padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.4);
+      border: 1px solid rgba(148, 163, 255, 0.5);
       color: var(--text-sub);
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.96);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148, 163, 255, 0.6);
     }
 
     .chip.active {
-      background: var(--primary-strong);
-      color: #fff;
-      border-color: var(--primary-strong);
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      border-color: transparent;
+      color: #f9fafb;
+    }
+
+    .chip.active .chip-dot {
+      background: rgba(248, 250, 252, 0.9);
+    }
+
+    /* 오른쪽 패널: 결과 */
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .ai-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 255, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-sub);
+    }
+
+    .ai-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #f97316, #a855f7);
     }
 
     .main-button {
       width: 100%;
-      margin-top: 10px;
-      padding: 12px;
+      margin-top: 8px;
+      padding: 11px;
       border-radius: 999px;
       border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+      background: linear-gradient(135deg, #f97316, #ec4899);
       color: #fff;
       font-size: 14px;
       font-weight: 600;
@@ -167,44 +386,28 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.8);
+      box-shadow:
+        0 14px 32px rgba(248, 113, 113, 0.55),
+        0 0 0 1px rgba(248, 250, 252, 0.08);
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, opacity 0.12s;
+    }
+
+    .main-button span.icon {
+      font-size: 16px;
+    }
+
+    .main-button:active {
+      transform: translateY(1px);
+      box-shadow:
+        0 6px 16px rgba(248, 113, 113, 0.5),
+        0 0 0 1px rgba(15, 23, 42, 1);
     }
 
     .main-button:disabled {
       opacity: 0.5;
       cursor: default;
       box-shadow: none;
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .result-card {
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 255, 0.4);
-      background: rgba(15, 23, 42, 0.95);
-      padding: 4px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .result-img {
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    .result-label {
-      font-size: 11px;
-      color: var(--text-sub);
-      text-align: center;
+      transform: none;
     }
 
     .status-text {
@@ -214,13 +417,113 @@
       min-height: 14px;
     }
 
+    .result-wrapper {
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.98));
+      padding: 10px;
+      margin-top: 6px;
+    }
+
+    .result-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .result-caption {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    @media (max-width: 640px) {
+      .result-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .result-card {
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(248, 113, 113, 0.22), transparent 60%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .result-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 255, 0.6);
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+    }
+
+    .result-label {
+      font-size: 11px;
+      color: var(--text-sub);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tools-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      gap: 6px;
+    }
+
+    .tools-chip {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      color: var(--text-sub);
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .tools-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.35);
+    }
+
+    /* 상품 페이지 링크 버튼 */
+
     .link-button {
       width: 100%;
       margin-top: 6px;
-      padding: 10px;
+      padding: 9px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 255, 0.5);
-      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: rgba(15, 23, 42, 0.98);
       color: var(--text-sub);
       font-size: 12px;
       cursor: pointer;
@@ -228,63 +531,156 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
+      transition: background 0.14s, border-color 0.14s, color 0.14s;
+    }
+
+    .link-button:hover {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: rgba(148, 163, 255, 0.8);
+      color: #e5e7eb;
+    }
+
+    .foot-note {
+      font-size: 10px;
+      color: var(--text-sub);
+      margin-top: 2px;
+      text-align: right;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div class="title">
-        AI 헤어스타일 미리보기
-        <span class="title-badge">살롱 전용 베타</span>
+  <div class="shell">
+    <!-- 상단 바 -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">
+          💇
+        </div>
+        <div>
+          <div class="brand-text-main">
+            AI Hair Stylist
+            <span class="brand-pill">Salon Pro</span>
+          </div>
+          <div class="brand-sub">고객 앞에서 바로 보여주는 3가지 추천 스타일</div>
+        </div>
       </div>
-      <p class="subtitle">고객 사진 한 장으로, 세 가지 스타일을 바로 보여주세요.</p>
-    </div>
-
-    <!-- 1. 사진 업로드 -->
-    <div class="card">
-      <p class="section-label">1단계 · 고객 사진 찍기</p>
-      <div id="uploadArea" class="upload-area">
-        <div class="upload-icon">📸</div>
-        <div class="upload-main">사진 선택 또는 촬영한 사진 업로드</div>
-        <div class="upload-sub">정면, 머리 전체가 보이게 찍으면 더 정확해요.</div>
+      <div class="step-indicator">
+        <div class="step-pill"><span>1</span>사진 업로드</div>
+        <div class="step-pill"><span>2</span>성별·기장 선택</div>
+        <div class="step-pill"><span>3</span>AI 스타일 미리보기</div>
       </div>
-      <input type="file" id="photoInput" accept="image/*" />
+    </header>
 
-      <div class="preview-wrapper" id="previewWrapper" style="display:none;">
-        <img id="originalPreview" alt="고객 사진 미리보기" />
-      </div>
-    </div>
+    <!-- 메인 영역 -->
+    <main class="main-area">
+      <!-- 왼쪽: 입력 영역 -->
+      <section class="panel">
+        <div class="panel-content">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">고객 정보 · 사진 설정</div>
+              <div class="panel-caption">사진 1장과 기본 정보를 선택하면, 오른쪽에서 스타일 3가지를 확인할 수 있어요.</div>
+            </div>
+            <div class="badge-soft">STEP 1 · 2</div>
+          </div>
 
-    <!-- 2. 옵션 선택 -->
-    <div class="card">
-      <p class="section-label">2단계 · 기본 정보 선택</p>
-      <div class="options-row">
-        <div class="chip active" data-gender="female">여성</div>
-        <div class="chip" data-gender="male">남성</div>
-      </div>
-      <div class="options-row">
-        <div class="chip active" data-style="medium">중단발 기준</div>
-        <div class="chip" data-style="short">단발/숏컷</div>
-        <div class="chip" data-style="long">장발</div>
-      </div>
-    </div>
+          <div class="upload-card">
+            <!-- 업로드 영역 -->
+            <div>
+              <div id="uploadArea" class="upload-area">
+                <div class="upload-icon">📸</div>
+                <div class="upload-main">정면 사진 선택 또는 촬영본 업로드</div>
+                <div class="upload-sub">얼굴과 머리가 잘 나오도록, 밝은 곳에서 촬영해 주세요.</div>
+              </div>
+              <input type="file" id="photoInput" accept="image/*" />
+            </div>
 
-    <!-- 3. 결과 -->
-    <button id="generateBtn" class="main-button" disabled>
-      <span id="btnLabel">AI로 헤어스타일 3개 보기 (테스트)</span>
-    </button>
-    <p class="status-text" id="statusText"></p>
+            <!-- 프리뷰 -->
+            <div class="preview-frame">
+              <div class="preview-label">현재 고객 사진</div>
+              <div id="previewWrapper" style="width: 100%; display:none; justify-content: center;">
+                <img id="originalPreview" alt="고객 사진 미리보기" />
+              </div>
+              <div id="noPreviewText" style="font-size:11px;color:var(--text-sub);margin-top:4px;">
+                아직 업로드된 사진이 없습니다.
+              </div>
+            </div>
+          </div>
 
-    <div class="card" id="resultCard" style="display:none;">
-      <p class="section-label">3단계 · 스타일 미리보기</p>
-      <div class="result-grid" id="resultGrid"></div>
-    </div>
+          <!-- 옵션 영역 -->
+          <div class="options-section">
+            <div class="options-title">성별 선택</div>
+            <div class="options-row">
+              <div class="chip active" data-gender="female">
+                <span class="chip-dot"></span> 여성 고객
+              </div>
+              <div class="chip" data-gender="male">
+                <span class="chip-dot"></span> 남성 고객
+              </div>
+            </div>
 
-    <!-- 쿠팡 상품 페이지로 이동 -->
-    <button class="link-button" onclick="window.location.href='/products.html'">
-      💄 헤어케어/스타일링 추천 상품 보러가기
-    </button>
+            <div class="options-title" style="margin-top:8px;">현재 기장 기준</div>
+            <div class="options-row">
+              <div class="chip active" data-style="medium">
+                <span class="chip-dot"></span> 중단발 / 기본
+              </div>
+              <div class="chip" data-style="short">
+                <span class="chip-dot"></span> 단발 · 숏컷
+              </div>
+              <div class="chip" data-style="long">
+                <span class="chip-dot"></span> 긴 머리
+              </div>
+            </div>
+          </div>
+
+          <div class="tools-row">
+            <div class="tools-chip">
+              <span class="tools-chip-dot"></span> 촬영 후 바로 상담용
+            </div>
+            <div class="tools-chip">
+              <span class="tools-chip-dot"></span> 갤러리 사진도 사용 가능
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 오른쪽: 결과 영역 -->
+      <section class="panel">
+        <div class="panel-content">
+          <div class="result-top">
+            <div>
+              <div class="panel-title">AI 스타일 미리보기</div>
+              <div class="panel-caption">실제 적용 전에, 고객에게 느낌만 빠르게 보여주는 용도입니다.</div>
+            </div>
+            <div class="ai-pill">
+              <div class="ai-dot"></div>
+              AI 모의 스타일링
+            </div>
+          </div>
+
+          <button id="generateBtn" class="main-button" disabled>
+            <span class="icon">✨</span>
+            <span id="btnLabel">AI로 스타일 3가지 미리보기 (테스트)</span>
+          </button>
+          <p class="status-text" id="statusText"></p>
+
+          <div class="result-wrapper" id="resultCard" style="display:none;">
+            <div class="result-title-row">
+              <div class="panel-title" style="font-size:12px;">추천 스타일 3가지</div>
+              <div class="result-caption">현재는 테스트 단계라, 같은 사진이 3장 반복됩니다.</div>
+            </div>
+            <div class="result-grid" id="resultGrid"></div>
+          </div>
+
+          <button class="link-button" onclick="window.location.href='/products.html'">
+            💄 스타일 유지 · 홈케어 추천 상품 보러가기
+          </button>
+          <div class="foot-note">
+            * 쿠팡 파트너스 링크가 포함될 수 있습니다.
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script>
@@ -292,6 +688,7 @@
     const photoInput = document.getElementById("photoInput");
     const previewWrapper = document.getElementById("previewWrapper");
     const originalPreview = document.getElementById("originalPreview");
+    const noPreviewText = document.getElementById("noPreviewText");
     const generateBtn = document.getElementById("generateBtn");
     const btnLabel = document.getElementById("btnLabel");
     const statusText = document.getElementById("statusText");
@@ -306,24 +703,23 @@
       photoInput.click();
     });
 
-    // 파일 선택 → 미리보기 + base64 저장
     photoInput.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const dataUrl = event.target.result; // data:image/...;base64,~~
+        const dataUrl = event.target.result;
         selectedImageBase64 = dataUrl;
         originalPreview.src = dataUrl;
         previewWrapper.style.display = "flex";
+        if (noPreviewText) noPreviewText.style.display = "none";
         generateBtn.disabled = false;
-        statusText.textContent = "사진이 준비되었습니다. AI 분석을 실행해 보세요.";
+        statusText.textContent = "사진이 준비되었습니다. 오른쪽에서 AI 미리보기를 실행해 주세요.";
       };
       reader.readAsDataURL(file);
     });
 
-    // 성별 옵션
     document.querySelectorAll(".chip[data-gender]").forEach((chip) => {
       chip.addEventListener("click", () => {
         document.querySelectorAll(".chip[data-gender]").forEach(c => c.classList.remove("active"));
@@ -332,7 +728,6 @@
       });
     });
 
-    // 스타일 옵션
     document.querySelectorAll(".chip[data-style]").forEach((chip) => {
       chip.addEventListener("click", () => {
         document.querySelectorAll(".chip[data-style]").forEach(c => c.classList.remove("active"));
@@ -341,7 +736,6 @@
       });
     });
 
-    // AI 스타일 생성 버튼
     generateBtn.addEventListener("click", async () => {
       if (!selectedImageBase64) {
         alert("먼저 고객 사진을 업로드해 주세요.");
@@ -349,7 +743,7 @@
       }
 
       generateBtn.disabled = true;
-      btnLabel.textContent = "AI가 스타일 만드는 중...";
+      btnLabel.textContent = "AI가 스타일을 만드는 중입니다...";
       statusText.textContent = "잠시만 기다려 주세요.";
 
       try {
@@ -380,14 +774,14 @@
         });
 
         resultCard.style.display = "block";
-        statusText.textContent = "스타일 3개가 준비되었습니다. (현재는 테스트용으로 같은 사진이 3번 나오는 상태입니다.)";
+        statusText.textContent = "테스트용 스타일 3가지가 생성되었습니다. (현재는 동일 이미지입니다.)";
       } catch (err) {
         console.error(err);
         statusText.textContent = "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
         alert("AI 스타일 생성 중 오류가 발생했습니다.");
       } finally {
         generateBtn.disabled = false;
-        btnLabel.textContent = "AI로 헤어스타일 3개 보기 (테스트)";
+        btnLabel.textContent = "AI로 스타일 3가지 미리보기 (테스트)";
       }
     });
   </script>
