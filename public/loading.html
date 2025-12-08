@@ -177,12 +177,16 @@
     });
 
     async function callHairPreview() {
+      // 일단 기존 그대로 localStorage에서 읽어오고,
+      // 나중에 index.html 쪽도 sessionStorage로 옮기면 여기만 살짝 바꾸면 됨.
       const base64 =
         localStorage.getItem("image_base64") ||
-        localStorage.getItem("hair_image_base64");
+        localStorage.getItem("hair_image_base64") ||
+        sessionStorage.getItem("image_base64") ||
+        sessionStorage.getItem("hair_image_base64");
 
       if (!base64) {
-        showError("이전 페이지에서 사진 정보를 찾을 수 없습니다. 처음 화면으로 돌아가 다시 시도해 주세요.");
+        showError("이전 페이지에서 사진 정보를 찾을 수 없습니다.\n처음 화면으로 돌아가 다시 시도해 주세요.");
         return;
       }
 
@@ -207,7 +211,6 @@
         }
 
         if (!res.ok) {
-          // ⚠ 에러 우선순위: error → message → 원시 text → status 코드
           let parts = [];
 
           if (json) {
@@ -231,17 +234,33 @@
           throw new Error(parts.join("\n"));
         }
 
-        // 200인데 json이 없으면 방어적으로 빈 객체
-        if (!json) {
-          json = {};
-        }
+        if (!json) json = {};
 
         if (!json.success || !Array.isArray(json.styles) || json.styles.length === 0) {
           throw new Error(json.message || "이미지 생성 결과가 비어 있습니다.");
         }
 
+        // ✅ 여기서부터가 핵심 수정:
+        // 1) localStorage 대신 sessionStorage 사용
+        // 2) 저장 용량 초과 시 에러 처리
+        try {
+          sessionStorage.setItem("hair_preview_result", JSON.stringify(json));
+
+          // 이미지 원본(base64)은 더 이상 필요 없으므로 공간 확보를 위해 지우기
+          localStorage.removeItem("image_base64");
+          localStorage.removeItem("hair_image_base64");
+          sessionStorage.removeItem("image_base64");
+          sessionStorage.removeItem("hair_image_base64");
+        } catch (e) {
+          console.error("storage quota error:", e);
+          showError(
+            "기기 저장 한도를 넘어가서 결과를 저장할 수 없습니다.\n" +
+            "브라우저 탭을 새로 열거나, 다른 브라우저에서 다시 시도해 주세요."
+          );
+          return;
+        }
+
         // 결과 저장 후 result.html로 이동
-        localStorage.setItem("hair_preview_result", JSON.stringify(json));
         window.location.href = "result.html";
       } catch (err) {
         console.error(err);
