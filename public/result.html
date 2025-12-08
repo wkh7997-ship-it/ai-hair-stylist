@@ -240,7 +240,10 @@
     });
 
     function renderStyles() {
-      const raw = localStorage.getItem("hair_preview_result");
+      // ✅ sessionStorage 우선, 없으면 localStorage에서 fallback
+      const raw =
+        sessionStorage.getItem("hair_preview_result") ||
+        localStorage.getItem("hair_preview_result");
 
       if (!raw) {
         showError("AI 분석 결과를 찾을 수 없습니다. 처음 화면으로 돌아가 다시 시도해 주세요.");
@@ -275,7 +278,7 @@
 
         imgWrap.appendChild(img);
 
-        // 길게 눌렀을 때 확대를 위해 새 탭 열기 기능 (데스크톱용)
+        // 클릭 시 새 탭에서 크게 보기 (데스크톱용)
         imgWrap.addEventListener("click", () => {
           const newWin = window.open();
           newWin.document.write(
